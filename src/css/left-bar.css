@@ -1,0 +1,21 @@
+.category {
+    padding: 15px;
+    color: darkgray;
+    list-style: none;
+    margin: 10px;
+    text-align: center;
+}
+
+.category li div {
+    color: black;
+    padding: 5px;
+    border: 1px solid white;
+    text-align: left;
+    cursor: pointer;
+}
+
+.category li div:hover {
+    background-color: beige;
+    border-radius: 5px;
+    border: 1px solid beige;
+}
