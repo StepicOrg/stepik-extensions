@@ -14,9 +14,18 @@
       "name": "Login",
       "description": "Аутентификация на Stepik.org",
       "categories": [
-        2
+        10
       ],
       "need_authorization": false
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "description": "Dashboard",
+      "categories": [
+        2
+      ],
+      "need_authorization": true
     }
   ],
   "categories": [
@@ -29,6 +38,10 @@
     },
     {
       "id": 2,
+      "name": "Обучение"
+    },
+    {
+      "id": 10,
       "name": "Прочее"
     }
   ]

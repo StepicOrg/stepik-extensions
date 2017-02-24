@@ -7,16 +7,24 @@ window.stepik = {
         var access_token = $.cookie("access_token");
         var token_type = $.cookie("token_type");
 
+        this.getJson("api/stepics/1", function (data) {
+            var user = data.users[0];
+            success(user);
+        });
+    },
+
+    getJson: function (url, success) {
+        var access_token = $.cookie("access_token");
+        var token_type = $.cookie("token_type");
+
         $.get({
-            url: "https://stepik.org/api/stepics/1",
+            url: "https://stepik.org/" + url,
             dataType: "json",
             headers: {
                 "Authorization": token_type + " " + access_token
-            },
-            success: function (data) {
-                var user = data.users[0];
-                success(user);
             }
-        })
+        }).done(function (data) {
+            success(data);
+        });
     }
 };
