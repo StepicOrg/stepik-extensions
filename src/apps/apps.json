@@ -1,19 +1,17 @@
 {
   "applications": [
     {
-      "id": 1,
+      "id": "enrolment",
       "name": "Enrolment",
       "description": "Запись студентов на курсы Stepik.org",
-      "logo_url": "img/logo.png",
       "categories": [
         1
       ]
     },
     {
-      "id": 2,
+      "id": "app2",
       "name": "Application 2",
       "description": "Приложение №2",
-      "logo_url": "img/logo.png",
       "categories": [
         2
       ]

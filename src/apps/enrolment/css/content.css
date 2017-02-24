@@ -1,0 +1,73 @@
+.buttons {
+    flex-direction: row;
+    color: black;
+    width: 100%;
+    display: flex;
+    margin: 15px 0;
+    min-width: 315px;
+    flex-wrap: wrap;
+}
+
+.button {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    width: 88px;
+    font-size: 16px;
+    padding: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+#clear:hover {
+    background-color: red;
+}
+
+.button:hover {
+    background-color: beige;
+}
+
+.file_selector, .column_selector {
+    display: flex;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.column_selector select {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#ids_file {
+    min-width: 310px;
+}
+
+.table-wrapper {
+    display: flex;
+    flex-grow: 1;
+    font-size: 16px;
+    color: black;
+    font-weight: normal;
+}
+
+.table {
+    border-collapse: collapse;
+    min-width: 310px;
+}
+
+th {
+    font-weight: bold;
+}
+
+th, td {
+    border: 1px solid lightgray;
+}
+
+tr:nth-child(even) {
+    background-color: beige;
+}
+
+tr:hover {
+    background-color: lightblue;
+}

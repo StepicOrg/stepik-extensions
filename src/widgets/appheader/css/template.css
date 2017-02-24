@@ -1,0 +1,35 @@
+.app-header {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    color: black;
+    font-size: 16px;
+}
+
+.app-header-logo {
+    display: flex;
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.app-header-text {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 15px;
+}
+
+.app-header-name {
+    display: flex;
+    font-size: 20px;
+    color: black;
+    text-align: center;
+}
+
+.app-header-description {
+
+}

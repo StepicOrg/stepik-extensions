@@ -4,12 +4,8 @@
     margin-top: 10px;
     width: 100%;
     min-width: 230px;
-    color: white;
-    font-weight: bold;
-    font-size: 3em;
-    text-align: left;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-content: flex-start;
     justify-content: flex-start;
 }
