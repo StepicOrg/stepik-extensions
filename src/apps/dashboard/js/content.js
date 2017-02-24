@@ -5,11 +5,11 @@
 var APP_ID = "dashboard";
 
 var ratings = {};
-var courses_list = $("#dashboard_course");
 
 function init() {
+    var courses_list = $("#dashboard_course");
+
     function loadCourses(page) {
-        console.log(page);
         stepik.getJson("api/courses?enrolled=true&page=" + page, (function (page) {
             return function (data) {
                 var courses = data.courses;
@@ -31,8 +31,12 @@ function init() {
     loadCourses(1);
 
     function paint() {
+        if (courses_list.val() == null) {
+            return
+        }
         $("#dashboard_svg").empty();
-        stepik.getJson('course/' + $("#dashboard_course").val() + '/dashboard/ratings.json', function (data) {
+
+        stepik.getJson('course/' + courses_list.val() + '/dashboard/ratings.json', function (data) {
             ratings = data;
             var s = Snap("#dashboard_svg");
             var counts = ratings.counts;
@@ -80,7 +84,10 @@ function init() {
         });
     }
 
-    $("#dashboard_course").change(function () {
+    courses_list.change(function () {
+        if (courses_list.val() == null) {
+            return
+        }
         paint();
     });
 }
