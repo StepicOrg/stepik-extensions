@@ -100,16 +100,18 @@ function loadApplication(id, redirect_app) {
 
     var app = apps.getApp(id);
 
-    if (!(!!app)) {
+    if (!!!app) {
         return;
     }
 
-    if (app.need_authorization) {
-        console.log("Need login");
+    console.log(window.tokenInfo);
+
+    if (app.need_authorization && $.cookie("access_token") == null) {
         loadApplication("login", app.id);
+        return;
     }
 
-    if (!(!!app.content)) {
+    if (!!!app.content) {
         $.ajax({
             url: 'apps/' + app.id + '/content.html',
             dataType: "html",

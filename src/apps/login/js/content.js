@@ -7,7 +7,7 @@ var APP_ID = "login";
 function init(redirect_app) {
     function redirect() {
         if (!!redirect_app) {
-            window.location.search = "?app=" + "redirect_app";
+            window.location.search = "?app=" + redirect_app;
         }
     }
 
@@ -33,14 +33,17 @@ function init(redirect_app) {
                         password: $password.val()
                     },
                     success: function (data) {
-                        window.tokenInfo = data;
-                        setSuccessText("Ok!");
+                        var expires = data.expires_in;
+                        $.cookie("access_token", data.access_token, {expires: expires});
+                        $.cookie("refresh_token", data.refresh_token, {expires: expires});
+                        $.cookie("token_type", data.token_type, {expires: expires});
+                        $.cookie("scope", data.scope, {expires: expires});
                         redirect();
+                        setSuccessText("Ok!");
                     }
                 }
             ).fail(function () {
                 setFailText("Неверный логин или пароль");
-                redirect();
             });
         }
     });
@@ -55,6 +58,10 @@ function init(redirect_app) {
         $("#message").text(text)
             .removeClass("fail")
             .addClass("success");
+    }
+
+    if (!!redirect_app) {
+        setSuccessText("Приложение '" + apps.getApp(redirect_app).name + "' требует аутентификации на Stepik.org");
     }
 }
 
