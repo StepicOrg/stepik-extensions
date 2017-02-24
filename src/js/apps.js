@@ -86,6 +86,7 @@ function drawApplications(category) {
 
     $(".app").click(openApplication);
     $("title").text(title);
+    updateUserName();
 }
 
 function openApplication(event) {
@@ -130,6 +131,31 @@ function loadApplication(id, redirect_app) {
     }
 
     $("title").text(title + " - " + app.name);
+    updateUserName();
+}
+
+function updateUserName() {
+    var params = "";
+    var access_token = $.cookie("access_token");
+    var token_type = $.cookie("token_type");
+    if (access_token == null) {
+        params = "?access_token=" + access_token;
+    }
+    $.get({
+        url: "https://stepik.org/api/stepics/1" + params,
+        dataType: "json",
+        headers: {
+            "Authorization": token_type + " " + access_token
+        },
+        success: function (data) {
+            var user = data.users[0];
+            var first_name = user.first_name;
+            var last_name = user.last_name;
+            $("#user-name").text((first_name + " " + last_name).trim());
+            $("#user-avatar").attr("src", user.avatar);
+            console.log(data);
+        }
+    })
 }
 
 function processTemplate(template, map) {

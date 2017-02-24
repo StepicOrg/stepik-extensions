@@ -23,8 +23,16 @@ body {
     padding: 20px 0 10px;
     display: -webkit-flex;
     display: flex;
+    flex-direction: row;
     box-sizing: border-box;
     background-color: black;
+    justify-content: space-between;
+}
+
+.logo-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .logo {
@@ -44,6 +52,22 @@ body {
     margin: -10px 10px 10px 10px;
     color: white;
     font-size: 24px;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    color: white;
+    padding: 15px;
+    align-items: center;
+}
+
+#user-avatar {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    border-radius: 50%;
 }
 
 .main {
