@@ -1,0 +1,16 @@
+input {
+    display: block;
+    margin: 15px 0;
+}
+
+#message {
+    width: 100%;
+}
+
+.success {
+    color: black;
+}
+
+.fail {
+    color: red;
+}

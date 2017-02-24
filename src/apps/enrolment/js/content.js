@@ -2,19 +2,32 @@
  * Created by meanmail on 22.02.17.
  */
 
+var APP_ID = "enrolment";
+
+var localStorage = window['localStorage'];
 var rows = [];
 var course_id_column = 0;
 var user_id_column = 1;
 
 function reset_app() {
     clear_table();
-    rows = [];
-    var header = [];
-    header[0] = "course_id";
-    header[1] = "user_id";
-    rows[0] = header;
-    course_id_column = 0;
-    user_id_column = 1;
+    rows = readRows();
+    if (!!!rows || rows.length == 0) {
+        rows = [];
+        var header = [];
+        header[0] = "course_id";
+        header[1] = "user_id";
+        rows[0] = header;
+    }
+    course_id_column = localStorage.getItem(APP_ID + "_course_column_index");
+    if (course_id_column == null) {
+        course_id_column = 0;
+    }
+
+    user_id_column = localStorage.getItem(APP_ID + "_user_column_index");
+    if (user_id_column == null) {
+        user_id_column = 1;
+    }
     init_column_selector();
 }
 
@@ -73,6 +86,7 @@ function init() {
     });
 
     $("#clear").click(function () {
+        clearRows();
         reset_app();
         repaintTable();
         $("#ids_file").val(null);
@@ -128,6 +142,40 @@ function init() {
     repaintTable();
 }
 
-apps.getApp("enrolment").init = init;
+function saveRows() {
+    localStorage.setItem(APP_ID + "_rows_count", rows.length);
+    rows.forEach(function (item, i) {
+        localStorage.setItem(APP_ID + "_rows_" + i, item);
+    });
+
+    localStorage.setItem(APP_ID + "_course_column_index", course_id_column);
+    localStorage.setItem(APP_ID + "_user_column_index", user_id_column);
+}
+
+function readRows() {
+    var count = localStorage.getItem(APP_ID + "_rows_count");
+
+    if (isNaN(+count)) {
+        return [];
+    }
+    var rows = [];
+    for (var i = 0; i < count; i++) {
+        var item = localStorage.getItem(APP_ID + "_rows_" + i);
+        rows[i] = item.split(",");
+    }
+
+    return rows;
+}
+
+function clearRows() {
+    localStorage.setItem(APP_ID + "_rows_count", 0);
+    localStorage.setItem(APP_ID + "_course_column_index", 0);
+    localStorage.setItem(APP_ID + "_user_column_index", 1);
+}
+
+window.onbeforeunload = function () {
+    saveRows();
+};
+
+apps.getApp(APP_ID).init = init;
 reset_app();
-init();

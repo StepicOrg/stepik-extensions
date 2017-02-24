@@ -4,6 +4,16 @@
 'use strict';
 
 var widgets = window.widgets = {};
+var title = "Stepik Apps";
+
+var params = [];
+
+var parts = window.location.search.substr(1).split("&");
+
+for (var index in parts) {
+    var pair = parts[index].split("=");
+    params[pair[0]] = pair[1];
+}
 
 function loadWidget(name) {
     $.ajax({
@@ -39,7 +49,12 @@ $(document).ready(function () {
             apps.categories = data.categories;
 
             initCategories();
-            drawApplications();
+
+            if (!(!!params["app"])) {
+                drawApplications();
+            } else {
+                loadApplication(params["app"]);
+            }
         }
     });
 });
@@ -70,6 +85,7 @@ function drawApplications(category) {
         });
 
     $(".app").click(openApplication);
+    $("title").text(title);
 }
 
 function openApplication(event) {
@@ -78,11 +94,20 @@ function openApplication(event) {
     event.stopPropagation()
 }
 
-function loadApplication(id) {
+function loadApplication(id, redirect_app) {
     var content = $("#content");
     content.empty();
 
     var app = apps.getApp(id);
+
+    if (!(!!app)) {
+        return;
+    }
+
+    if (app.need_authorization) {
+        console.log("Need login");
+        loadApplication("login", app.id);
+    }
 
     if (!(!!app.content)) {
         $.ajax({
@@ -94,12 +119,15 @@ function loadApplication(id) {
                 var head = $("head");
                 head.append("<link rel='stylesheet' type='text/css' href='apps/" + app.id + "/css/content.css'>");
                 head.append("<script src='apps/" + app.id + "/js/content.js'>");
+                app.init(redirect_app);
             }
         });
     } else {
         content.append(processTemplate("${widget.appheader} ${content}", app));
-        app.init();
+        app.init(redirect_app);
     }
+
+    $("title").text(title + " - " + app.name);
 }
 
 function processTemplate(template, map) {

@@ -6,15 +6,17 @@
       "description": "Запись студентов на курсы Stepik.org",
       "categories": [
         1
-      ]
+      ],
+      "need_authorization": true
     },
     {
-      "id": "app2",
-      "name": "Application 2",
-      "description": "Приложение №2",
+      "id": "login",
+      "name": "Login",
+      "description": "Аутентификация на Stepik.org",
       "categories": [
         2
-      ]
+      ],
+      "need_authorization": false
     }
   ],
   "categories": [
