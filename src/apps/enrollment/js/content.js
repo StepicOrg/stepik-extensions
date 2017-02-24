@@ -71,12 +71,7 @@ function repaintTable() {
 
 function init() {
     $("#enrollment_as-single-id").click(function () {
-        var id = +prompt("Input id", 0);
-
-        if (isNaN(id)) {
-            return;
-        }
-
+        var id = prompt("Input id", 0);
         var row = [];
         row[user_id_column] = id;
         row[course_id_column] = 548;
@@ -138,8 +133,29 @@ function init() {
         course_id_column = $("#enrollment_course-id-column").val();
     });
 
+    $("#enrollment_course-id-column").change(function (e) {
+        course_id_column = $("#enrollment_course-id-column").val();
+    });
+
+    $("#enrollment_enroll").click(
+        function () {
+            for (var i = 1; i < rows.length; i++) {
+                addLearner(rows[i][course_id_column], rows[i][user_id_column]);
+            }
+        }
+    );
+
     init_column_selector();
     repaintTable();
+}
+
+function addLearner(course_id, user_id) {
+    course_id = +course_id;
+
+    if (isNaN(course_id) || user_id == "") {
+    }
+
+    console.log(user_id + "-->" + course_id)
 }
 
 function saveRows() {
