@@ -2,7 +2,7 @@
  * Created by meanmail on 22.02.17.
  */
 
-var APP_ID = "enrolment";
+var APP_ID = "enrollment";
 
 var localStorage = window['localStorage'];
 var rows = [];

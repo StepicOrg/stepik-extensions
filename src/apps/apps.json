@@ -1,8 +1,8 @@
 {
   "applications": [
     {
-      "id": "enrolment",
-      "name": "Enrolment",
+      "id": "enrollment",
+      "name": "Enrollment",
       "description": "Запись студентов на курсы Stepik.org",
       "categories": [
         1
