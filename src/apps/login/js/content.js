@@ -11,10 +11,10 @@ function init(redirect_app) {
         }
     }
 
-    $("#authorize").click(function () {
-        var $message = $("#message");
-        var $login = $("input[name='login']");
-        var $password = $("input[name='password']");
+    $("#login_authorize").click(function () {
+        var $message = $("#login_message");
+        var $login = $("input[name='login_login']");
+        var $password = $("input[name='login_password']");
 
         if ($login.val() == "" || $password.val() == "") {
             setFailText("Логин и пароль не должны быть пустыми");
@@ -49,15 +49,15 @@ function init(redirect_app) {
     });
 
     function setFailText(text) {
-        $("#message").text(text)
-            .addClass("fail")
-            .removeClass("success");
+        $("#login_message").text(text)
+            .addClass("login_fail")
+            .removeClass("login_success");
     }
 
     function setSuccessText(text) {
-        $("#message").text(text)
-            .removeClass("fail")
-            .addClass("success");
+        $("#login_message").text(text)
+            .removeClass("login_fail")
+            .addClass("login_success");
     }
 
     if (!!redirect_app) {

@@ -1,4 +1,4 @@
-.buttons {
+.enrollment_buttons {
     flex-direction: row;
     color: black;
     width: 100%;
@@ -8,7 +8,7 @@
     flex-wrap: wrap;
 }
 
-.button {
+.enrollment_button {
     border: 1px solid lightgray;
     border-radius: 5px;
     width: 88px;
@@ -20,30 +20,30 @@
     margin-bottom: 5px;
 }
 
-#clear:hover {
+#enrollment_clear:hover {
     background-color: red;
 }
 
-.button:hover {
+.enrollment_button:hover {
     background-color: beige;
 }
 
-.file_selector, .column_selector {
+.enrollment_file_selector, .enrollment_column_selector {
     display: flex;
     width: 100%;
     padding: 5px 0;
 }
 
-.column_selector select {
+.enrollment_column_selector select {
     display: inline-block;
     margin-right: 15px;
 }
 
-#ids_file {
+#enrollment_ids_file {
     min-width: 310px;
 }
 
-.table-wrapper {
+.enrollment_table-wrapper {
     display: flex;
     flex-grow: 1;
     font-size: 16px;
@@ -51,23 +51,23 @@
     font-weight: normal;
 }
 
-.table {
+.enrollment_table {
     border-collapse: collapse;
     min-width: 310px;
 }
 
-th {
+.enrollment_table th {
     font-weight: bold;
 }
 
-th, td {
+.enrollment_table th, .enrollment_table td {
     border: 1px solid lightgray;
 }
 
-tr:nth-child(even) {
+.enrollment_table tr:nth-child(even) {
     background-color: beige;
 }
 
-tr:hover {
+.enrollment_table tr:hover {
     background-color: lightblue;
 }

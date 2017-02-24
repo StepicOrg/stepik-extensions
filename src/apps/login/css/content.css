@@ -1,16 +1,16 @@
-input {
+.login_form input {
     display: block;
     margin: 15px 0;
 }
 
-#message {
+#login_message {
     width: 100%;
 }
 
-.success {
+.login_success {
     color: black;
 }
 
-.fail {
+.login_fail {
     color: red;
 }

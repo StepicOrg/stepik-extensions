@@ -34,8 +34,8 @@ function reset_app() {
 function init_column_selector(lines) {
     if (rows.length > 0) {
         var header = rows[0];
-        var userIdColumn = $("#user-id-column");
-        var courseIdColumn = $("#course-id-column");
+        var userIdColumn = $("#enrollment_user-id-column");
+        var courseIdColumn = $("#enrollment_course-id-column");
         userIdColumn.empty();
         courseIdColumn.empty();
 
@@ -50,13 +50,13 @@ function init_column_selector(lines) {
 }
 
 function clear_table() {
-    $(".table").empty();
+    $(".enrollment_table").empty();
 }
 
 function repaintTable() {
     clear_table();
 
-    var table = $(".table");
+    var table = $(".enrollment_table");
     var counter = 0;
     for (var row_index in rows) {
         var columns = rows[row_index];
@@ -70,7 +70,7 @@ function repaintTable() {
 }
 
 function init() {
-    $("#as-single-id").click(function () {
+    $("#enrollment_as-single-id").click(function () {
         var id = +prompt("Input id", 0);
 
         if (isNaN(id)) {
@@ -85,14 +85,14 @@ function init() {
         repaintTable();
     });
 
-    $("#clear").click(function () {
+    $("#enrollment_clear").click(function () {
         clearRows();
         reset_app();
         repaintTable();
-        $("#ids_file").val(null);
+        $("#enrollment_ids_file").val(null);
     });
 
-    $("#ids_file").change(function (event) {
+    $("#enrollment_ids_file").change(function (event) {
         var tfile;
         var reader = new FileReader();
 
@@ -130,12 +130,12 @@ function init() {
         };
     });
 
-    $("#user-id-column").change(function (e) {
-        user_id_column = $("#user-id-column").val();
+    $("#enrollment_user-id-column").change(function (e) {
+        user_id_column = $("#enrollment_user-id-column").val();
     });
 
-    $("#course-id-column").change(function (e) {
-        course_id_column = $("#course-id-column").val();
+    $("#enrollment_course-id-column").change(function (e) {
+        course_id_column = $("#enrollment_course-id-column").val();
     });
 
     init_column_selector();
