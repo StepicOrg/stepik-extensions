@@ -1,4 +1,4 @@
-.item-wrapper {
+.widget-app-item-wrapper {
     border: 1px solid lightgray;
     border-radius: 5px;
     width: 120px;
@@ -11,16 +11,14 @@
     cursor: pointer;
 }
 
-.item-logo {
+.widget-app-item-logo {
     display: block;
     margin: auto;
     width: 100px;
     height: 100px;
-    border: 1px solid lightgray;
-    border-radius: 5px;
 }
 
-.item-name {
+.widget-app-item-name {
     padding: 5px;
     font-size: 15px;
     margin: auto;
@@ -29,6 +27,6 @@
     flex-grow: 1;
 }
 
-.item-wrapper:hover {
+.widget-app-item-wrapper:hover {
     border-color: black;
 }
