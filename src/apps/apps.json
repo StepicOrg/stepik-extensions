@@ -1,6 +1,6 @@
 {
-  "applications": [
-    {
+  "applications": {
+    "enrollment": {
       "id": "enrollment",
       "name": "Enrollment",
       "description": "Запись студентов на курсы Stepik.org",
@@ -9,7 +9,7 @@
       ],
       "need_authorization": true
     },
-    {
+    "login": {
       "id": "login",
       "name": "Login",
       "description": "Аутентификация на Stepik.org",
@@ -18,7 +18,7 @@
       ],
       "need_authorization": false
     },
-    {
+    "dashboard": {
       "id": "dashboard",
       "name": "Dashboard",
       "description": "Dashboard",
@@ -27,7 +27,7 @@
       ],
       "need_authorization": true
     }
-  ],
+  },
   "categories": [
     {
       "name": "Показать всё"

@@ -191,6 +191,6 @@
         saveRows();
     };
 
-    apps.getApp(APP_ID).init = init;
+    apps.applications[APP_ID].init = init;
     reset_app();
 })();

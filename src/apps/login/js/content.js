@@ -62,9 +62,9 @@
         }
 
         if (!!redirect_app) {
-            setSuccessText("Приложение '" + apps.getApp(redirect_app).name + "' требует аутентификации на Stepik.org");
+            setSuccessText("Приложение '" + apps.applications[redirect_app].name + "' требует аутентификации на Stepik.org");
         }
     }
 
-    apps.getApp(APP_ID).init = init;
+    apps.applications[APP_ID].init = init;
 })();
