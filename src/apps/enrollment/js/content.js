@@ -6,7 +6,7 @@
 (function () {
     var APP_ID = "enrollment";
 
-    var localStorage = window['localStorage'];
+    var localStorage = window.localStorage;
     var rows = [];
     var course_id_column = 0;
     var user_id_column = 1;
@@ -73,10 +73,17 @@
 
     function init() {
         $("#enrollment_as-single-id").click(function () {
-            var id = prompt("Input id", 0);
+            var user_id = prompt("User id", 0);
+            if (user_id == null) {
+                return
+            }
+            var course_id = prompt("Course id", 0);
+            if (course_id == null) {
+                return
+            }
             var row = [];
-            row[user_id_column] = id;
-            row[course_id_column] = 548;
+            row[user_id_column] = user_id;
+            row[course_id_column] = course_id;
             rows[rows.length] = row;
 
             repaintTable();
@@ -137,9 +144,17 @@
 
         $("#enrollment_enroll").click(
             function () {
+                var members = {};
                 for (var i = 1; i < rows.length; i++) {
-                    addLearner(rows[i][course_id_column], rows[i][user_id_column]);
+                    var course_id = rows[i][course_id_column];
+                    var users = members[course_id] ||(members[course_id] = []);
+                    users.push(rows[i][user_id_column]);
                 }
+
+                for (var course_id in members) {
+                    addLearners(course_id, members[course_id]);
+                }
+                console.log(members);
             }
         );
 
@@ -147,13 +162,23 @@
         repaintTable();
     }
 
-    function addLearner(course_id, user_id) {
+    function addLearners(course_id, user_ids) {
         course_id = +course_id;
 
-        if (isNaN(course_id) || user_id == "") {
+        if (isNaN(course_id) || user_ids == null || user_ids.length == 0) {
+            return
         }
 
-        console.log(user_id + "-->" + course_id)
+        stepik.getCourse(course_id)
+            .done(function (data) {
+                var learners_group = data.courses[0].learners_group;
+                user_ids.forEach(function (user_id) {
+                    stepik.addMembers(learners_group, user_id)
+                        .done(function (data) {
+                            console.log(data);
+                        });
+                });
+            });
     }
 
     function saveRows() {
