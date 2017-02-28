@@ -131,12 +131,18 @@
     }
 
     function updateUserName() {
-        stepik.getCurrentUser(function (user) {
-            var first_name = user.first_name;
-            var last_name = user.last_name;
-            $("#user-name").text((first_name + " " + last_name).trim());
-            $("#user-avatar").attr("src", user.avatar);
-        });
+        if ($.cookie("access_token") != null) {
+            stepik.getCurrentUser().done(function (data) {
+                var user = data.users[0];
+                var first_name = user.first_name;
+                var last_name = user.last_name;
+                $("#user-name").text((first_name + " " + last_name).trim());
+                $("#user-avatar").attr("src", user.avatar);
+            });
+        } else {
+            $("#user-name").text("Didn't logged");
+            $("#user-avatar").attr("src", "img/default_avatar.png");
+        }
     }
 
     function processTemplate(template, map) {
