@@ -147,14 +147,13 @@
                 var members = {};
                 for (var i = 1; i < rows.length; i++) {
                     var course_id = rows[i][course_id_column];
-                    var users = members[course_id] ||(members[course_id] = []);
+                    var users = members[course_id] || (members[course_id] = []);
                     users.push(rows[i][user_id_column]);
                 }
 
                 for (var course_id in members) {
                     addLearners(course_id, members[course_id]);
                 }
-                console.log(members);
             }
         );
 
@@ -173,10 +172,7 @@
             .done(function (data) {
                 var learners_group = data.courses[0].learners_group;
                 user_ids.forEach(function (user_id) {
-                    stepik.addMembers(learners_group, user_id)
-                        .done(function (data) {
-                            console.log(data);
-                        });
+                    stepik.addMembers(learners_group, user_id);
                 });
             });
     }

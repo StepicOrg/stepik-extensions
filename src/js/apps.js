@@ -1,9 +1,8 @@
 /**
  * Created by meanmail on 22.02.17.
  */
-;'use strict';
-
 (function () {
+    'use strict';
     var widgets = window.widgets = {};
     var title = "Stepik Apps";
 
@@ -13,7 +12,11 @@
 
     for (var index in parts) {
         var pair = parts[index].split("=");
-        params[pair[0]] = pair[1];
+        params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+
+    if (!!params["code"]) {
+        stepik.authorize(params["state"], params["code"]);
     }
 
     function loadWidget(name) {
@@ -52,6 +55,8 @@
                 }
             }
         });
+
+        updateUserName();
     });
 
     function initCategories() {
@@ -66,6 +71,8 @@
         });
     }
 
+    updateUserName();
+
     function drawApplications(category) {
         var content = $("#content");
         content.empty();
@@ -73,6 +80,10 @@
 
         for (var appId in apps.applications) {
             var app = apps.applications[appId];
+
+            if (app.disabled) {
+                continue;
+            }
 
             if (!isNaN(category) && app.categories.indexOf(category) == -1) {
                 continue;
@@ -103,7 +114,7 @@
         }
 
         if (app.need_authorization && $.cookie("access_token") == null) {
-            loadApplication("login", app.id);
+            loadApplication("login", id);
             return;
         }
 
@@ -140,8 +151,11 @@
                 $("#user-avatar").attr("src", user.avatar);
             });
         } else {
-            $("#user-name").text("Didn't logged");
+            $("#user-name").html("<a class='authorize' href='javascript:void(0)'>Sign in</a>");
             $("#user-avatar").attr("src", "img/default_avatar.png");
+            $(".authorize").click(function () {
+                stepik.authorize(location.origin);
+            });
         }
     }
 
