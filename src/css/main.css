@@ -29,6 +29,11 @@ body {
     justify-content: space-between;
 }
 
+.header > a {
+    display: flex;
+    text-decoration: none;
+}
+
 .logo-name {
     display: flex;
     flex-direction: row;
