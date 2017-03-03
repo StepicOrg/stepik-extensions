@@ -204,26 +204,49 @@
                     repaintTable();
                     return;
                 }
-                users.forEach(function (user) {
-                    stepik.addMembers(learners_group, user.user_id)
-                        .done(function () {
-                            user.row.status = "added";
-                            user.row.status_description = "Done";
-                            repaintTable();
+
+                stepik.getMembers(learners_group)
+                    .done(function (data) {
+                        var members = [];
+                        for (var i = 0; i < data.members.length; i++) {
+                            members.push('' + data.members[i].user)
+                        }
+                        console.log(members);
+                        for (var index = 0; index < users.length; index++) {
+                            var user = users[index];
+                            if (members.indexOf(user.user_id) != -1) {
+                                user.skip = true;
+                                user.row.status = "added";
+                                user.row.status_description = "Already";
+                            }
+                        }
+                        repaintTable();
+                    })
+                    .always(function () {
+                        users.filter(function (user) {
+                            return !user.skip;
                         })
-                        .fail(function (data) {
-                            user.row.status = "fail";
-                            var json = data.responseJSON;
-                            user.row.status_description = json.detail || json.__all__;
-                            repaintTable();
-                        });
-                });
+                            .forEach(function (user) {
+                                stepik.addMembers(learners_group, user.user_id)
+                                    .done(function () {
+                                        user.row.status = "added";
+                                        user.row.status_description = "Done";
+                                        repaintTable();
+                                    })
+                                    .fail(function (data) {
+                                        user.row.status = "fail";
+                                        var json = data.responseJSON;
+                                        user.row.status_description = json.detail || json.__all__;
+                                        repaintTable();
+                                    });
+                            });
+                    });
             })
             .fail(function (data) {
                 users.forEach(function (user) {
                     user.row.status = "fail";
                     user.row.status_description = "Course: " + data.responseJSON.detail;
-                })
+                });
                 repaintTable();
             });
     }
