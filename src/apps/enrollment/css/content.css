@@ -86,3 +86,8 @@
 .enrollment_table tr td:first-child {
     text-align: center;
 }
+
+.enrollment_info {
+    display: flex;
+    width: 100%;
+}

@@ -66,8 +66,12 @@
 
         var table = $(".enrollment_table");
         var counter = 0;
+        var done_counter = 0;
         for (var row_index in rows) {
             var row = rows[row_index];
+            if (row.status == "added") {
+                done_counter++;
+            }
             var columns = row.fields;
             var td_class = APP_ID + "_" + row.status;
             var index = counter != 0 ? counter : "#";
@@ -80,6 +84,8 @@
             table_row += "</tr>";
             table.append(table_row);
         }
+
+        $(".enrollment_info").text(done_counter + " of " + (rows.length - 1) + " is completed.");
     }
 
     function init() {
@@ -211,7 +217,7 @@
                         for (var i = 0; i < data.members.length; i++) {
                             members.push('' + data.members[i].user)
                         }
-                        console.log(members);
+
                         for (var index = 0; index < users.length; index++) {
                             var user = users[index];
                             if (members.indexOf(user.user_id) != -1) {

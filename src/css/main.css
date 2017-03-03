@@ -94,3 +94,7 @@ body {
     box-sizing: border-box;
     background-color: black;
 }
+
+.footer a {
+    color: white;
+}
