@@ -3,7 +3,7 @@
     "enrollment": {
       "id": "enrollment",
       "name": "Enrollment",
-      "description": "Запись студентов на курсы Stepik.org",
+      "description": "Enrollment of students on Stepik.org",
       "categories": [
         1
       ],
@@ -12,7 +12,7 @@
     "login": {
       "id": "login",
       "name": "Login",
-      "description": "Аутентификация на Stepik.org",
+      "description": "Authentication on Stepik.org",
       "categories": [
         10
       ],
@@ -30,19 +30,19 @@
   },
   "categories": [
     {
-      "name": "Показать всё"
+      "name": "All"
     },
     {
       "id": 1,
-      "name": "Преподавание"
+      "name": "Teaching"
     },
     {
       "id": 2,
-      "name": "Обучение"
+      "name": "Learning"
     },
     {
       "id": 10,
-      "name": "Прочее"
+      "name": "Others"
     }
   ]
 }
