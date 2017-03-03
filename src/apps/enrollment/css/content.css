@@ -56,8 +56,9 @@
     min-width: 310px;
 }
 
-.enrollment_table th {
+.enrollment_table tr:first-child {
     font-weight: bold;
+    text-align: center;
 }
 
 .enrollment_table th, .enrollment_table td {
@@ -70,4 +71,18 @@
 
 .enrollment_table tr:hover {
     background-color: lightblue;
+}
+
+.enrollment_added {
+    background-color: green;
+    color: white;
+}
+
+.enrollment_fail {
+    background-color: red;
+    color: white;
+}
+
+.enrollment_table tr td:first-child {
+    text-align: center;
 }
