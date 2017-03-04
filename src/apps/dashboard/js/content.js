@@ -11,28 +11,16 @@ window.apps.register("dashboard", new function () {
 
     this.init = function () {
         var courses_list = $("#dashboard_course");
-
-        function loadCourses(page) {
-            stepik.getJson("api/courses?enrolled=true&page=" + page)
-                .done((function (page) {
-                    return function (data) {
-                        var courses = data.courses;
-                        for (var index in courses) {
-                            var course = courses[index];
-                            courses_list.append("<option value='" + course.slug + "'>" + course.title + "</option>")
-                        }
-
-                        if (data.meta.has_next) {
-                            loadCourses(page + 1);
-                        } else {
-                            paint();
-                        }
-                    }
-                })(page));
-        }
-
         courses_list.empty();
-        loadCourses(1);
+
+        stepik.getCourses(true)
+            .done(function (courses) {
+                courses.forEach(function (course) {
+                    courses_list.append("<option value='" + course.slug + "'>" + course.title + "</option>");
+                });
+
+                paint();
+            });
 
         function paint() {
             if (courses_list.val() == null) {

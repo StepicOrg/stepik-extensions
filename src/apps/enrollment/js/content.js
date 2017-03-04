@@ -191,64 +191,76 @@ window.apps.register("enrollment", new function () {
     function addLearners(course_id, users) {
         course_id = +course_id;
 
-        if (isNaN(course_id) || users == null || users.length == 0) {
-            users.forEach(function (user) {
+        if (isNaN(course_id) || users == null) {
+            for (var index in users) {
+                var user = users[index];
                 user.row.status = "fail";
                 user.row.status_description = "Not a correct data";
-            });
+            }
             repaintTable();
             return;
         }
 
         stepik.getCourse(course_id)
             .done(function (data) {
-                var learners_group = data.courses[0].learners_group;
-                if (!learners_group) {
-                    users.forEach(function (user) {
-                        user.row.status = "fail";
-                        user.row.status_description = "Course: You do not have permission to perform this action.";
-                    });
-                    repaintTable();
-                    return;
-                }
-
-                stepik.getMembers(learners_group)
-                    .done(function (data) {
-                        var members = [];
-                        for (var i = 0; i < data.members.length; i++) {
-                            members.push('' + data.members[i].user)
-                        }
-
-                        for (var index = 0; index < users.length; index++) {
+                    var learners_group = data.courses[0].learners_group;
+                    if (!learners_group) {
+                        for (var index in users) {
                             var user = users[index];
-                            if (members.indexOf(user.user_id) != -1) {
-                                user.skip = true;
-                                user.row.status = "added";
-                                user.row.status_description = "Already";
-                            }
+                            user.row.status = "fail";
+                            user.row.status_description = "Course: You do not have permission to perform this action.";
                         }
                         repaintTable();
-                    })
-                    .always(function () {
-                        users.filter(function (user) {
-                            return !user.skip;
+                        return;
+                    }
+
+                    var skip = [];
+
+                    stepik.getMembers(learners_group)
+                        .done(function (members) {
+                            for (var i = 0; i < members.length; i++) {
+                                var index = skip.length;
+                                var user_id = members[i].user;
+                                skip[user_id] = {
+                                    status: "added",
+                                    status_description: "Already"
+                                }
+                            }
                         })
-                            .forEach(function (user) {
+                        .always(function () {
+                            for (var index in users) {
+                                var user = users[index];
+
+                                var user_status = skip[user.user_id];
+                                if (!!user_status) {
+                                    user.row.status = user_status.status;
+                                    user.row.status_description = user_status.status_description;
+                                    repaintTable();
+                                    continue;
+                                }
+
+                                skip[user.user_id] = user.row;
+
                                 stepik.addMembers(learners_group, user.user_id)
-                                    .done(function () {
-                                        user.row.status = "added";
-                                        user.row.status_description = "Done";
-                                        repaintTable();
-                                    })
-                                    .fail(function (data) {
-                                        user.row.status = "fail";
-                                        var json = data.responseJSON;
-                                        user.row.status_description = json.detail || json.__all__;
-                                        repaintTable();
-                                    });
-                            });
-                    });
-            })
+                                    .done((function (user) {
+                                        return function () {
+                                            user.row.status = "added";
+                                            user.row.status_description = "Done";
+                                            repaintTable();
+                                        }
+                                    })(user))
+                                    .fail((function (user) {
+                                        return function (data) {
+                                            user.row.status = "fail";
+                                            var json = data.responseJSON;
+                                            user.row.status_description = json.detail || json.__all__ || json.user;
+                                            repaintTable();
+                                        }
+                                    })(user));
+                            }
+                        });
+                }
+            )
             .fail(function (data) {
                 users.forEach(function (user) {
                     user.row.status = "fail";
