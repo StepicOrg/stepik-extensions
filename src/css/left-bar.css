@@ -1,12 +1,12 @@
-.category {
-    padding: 15px;
+#categories {
+    padding: 0;
     color: darkgray;
     list-style: none;
     margin: 10px;
     text-align: center;
 }
 
-.category li div {
+.category {
     color: black;
     padding: 5px;
     border: 1px solid white;
@@ -14,7 +14,7 @@
     cursor: pointer;
 }
 
-.category li div:hover {
+.category:hover {
     background-color: beige;
     border-radius: 5px;
     border: 1px solid beige;
