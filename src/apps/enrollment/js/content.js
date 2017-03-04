@@ -3,7 +3,7 @@
  */
 ;'use strict';
 
-(function () {
+window.apps.register("enrollment", new function () {
     var APP_ID = "enrollment";
 
     var localStorage = window.localStorage;
@@ -88,7 +88,7 @@
         $(".enrollment_info").text(done_counter + " of " + (rows.length - 1) + " is completed.");
     }
 
-    function init() {
+    this.init = function () {
         $("#enrollment_as-single-id").click(function () {
             var user_id = prompt("User id", "0");
             if (user_id == null) {
@@ -186,7 +186,7 @@
 
         init_column_selector();
         repaintTable();
-    }
+    };
 
     function addLearners(course_id, users) {
         course_id = +course_id;
@@ -196,7 +196,8 @@
                 user.row.status = "fail";
                 user.row.status_description = "Not a correct data";
             });
-            return
+            repaintTable();
+            return;
         }
 
         stepik.getCourse(course_id)
@@ -346,6 +347,5 @@
         saveState();
     };
 
-    apps.applications[APP_ID].init = init;
     reset_app();
-})();
+});

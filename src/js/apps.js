@@ -12,6 +12,19 @@ window.apps = new function () {
         return params[name];
     };
 
+    var applications = {};
+    var categories = {};
+
+    this.register = function (id, app) {
+        var application = applications[id] || {};
+        application.init = app.init;
+        applications[id] = application;
+    };
+
+    function getApplication(id) {
+        return applications[id];
+    }
+
     function loadWidget(name) {
         $.ajax({
             url: 'widgets/' + name + '/template.html',
@@ -33,8 +46,8 @@ window.apps = new function () {
                 url: 'apps/apps.json',
                 dataType: "json"
             }).done(function (data) {
-                apps.applications = data.applications;
-                apps.categories = data.categories;
+                applications = data.applications;
+                categories = data.categories;
 
                 initCategories(apps);
 
@@ -51,9 +64,9 @@ window.apps = new function () {
     })(this));
 
     function initCategories(apps) {
-        var categories = $("#categories");
-        apps.categories.forEach(function (item) {
-            categories.append("<li><div class='category' category_id='" + item.id + "'>" + item.name + "</div></li>");
+        var $categories = $("#categories");
+        categories.forEach(function (item) {
+            $categories.append("<li><div class='category' category_id='" + item.id + "'>" + item.name + "</div></li>");
         });
 
         $(".category").click(function (event) {
@@ -69,8 +82,8 @@ window.apps = new function () {
         content.empty();
         category = parseInt(category);
 
-        for (var appId in apps.applications) {
-            var app = apps.applications[appId];
+        for (var appId in applications) {
+            var app = getApplication(appId);
 
             if (app.disabled) {
                 continue;
@@ -96,7 +109,7 @@ window.apps = new function () {
         var content = $("#content");
         content.empty();
 
-        var app = apps.applications[id];
+        var app = getApplication(id);
 
         if (!app) {
             return;

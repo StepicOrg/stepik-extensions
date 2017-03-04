@@ -4,12 +4,12 @@
 
 ;'use strict';
 
-(function () {
+window.apps.register("dashboard", new function () {
     var APP_ID = "dashboard";
 
     var ratings = {};
 
-    function init() {
+    this.init = function () {
         var courses_list = $("#dashboard_course");
 
         function loadCourses(page) {
@@ -96,6 +96,4 @@
             paint();
         });
     }
-
-    apps.applications[APP_ID].init = init;
-})();
+});
