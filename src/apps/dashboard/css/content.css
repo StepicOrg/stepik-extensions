@@ -13,8 +13,7 @@
     width: 100%;
 }
 
-#dashboard_svg {
-    border: 1px solid lightgray;
-    border-radius: 5px;
+#dashboard_progress,
+#dashboard_raiting {
     padding: 5px;
 }
