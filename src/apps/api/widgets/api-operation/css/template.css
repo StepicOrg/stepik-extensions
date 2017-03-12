@@ -1,0 +1,45 @@
+.api-item-operation {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.api-item-method {
+    background-color: green;
+    color: white;
+    border-radius: 5px 0 0 5px;
+    padding: 5px;
+}
+
+.api-item-path {
+    padding: 5px;
+    border: 1px solid beige;
+    border-radius: 0 5px 5px 0;
+}
+
+.api-item-notes {
+    margin: 5px 0;
+}
+
+.api-item-sections {
+    display: flex;
+    flex-direction: row;
+}
+
+.api-item-section {
+    display: flex;
+    padding: 5px 5px;
+    margin-right: 5px;
+    border-bottom: 1px solid beige;
+    color: darkblue;
+}
+
+.api-item-section:hover {
+    border-bottom: 1px solid gray;
+    cursor: pointer;
+}
+
+.api-active-section {
+    background-color: beige;
+    border-radius: 5px 5px 0 0;
+}

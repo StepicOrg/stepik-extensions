@@ -43,6 +43,13 @@ window.apps.register("api", new function () {
                 }).done(function (data) {
                     api_description.empty();
                     data.apis.forEach(function (item) {
+                        item.operation_list = "";
+                        item.operations.forEach(function (operation) {
+                            operation.path = item.path;
+                            operation.basePath = data.basePath;
+                            item.operation_list += apps.processTemplate("${widget.api-operation}", operation);
+                        });
+
                         var description = apps.processTemplate("${widget.api-description}", item);
                         api_description.append(description);
                     });

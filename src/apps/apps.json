@@ -36,7 +36,7 @@
       ],
       "need_authorization": false,
       "widgets": [
-        "api-description"
+        "api-description", "api-operation"
       ]
     }
   },
