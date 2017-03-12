@@ -26,6 +26,18 @@
         2
       ],
       "need_authorization": true
+    },
+    "api": {
+      "id": "api",
+      "name": "Stepik API",
+      "description": "Stepik API description and examples",
+      "categories": [
+        10
+      ],
+      "need_authorization": false,
+      "widgets": [
+        "api-description"
+      ]
     }
   },
   "categories": [

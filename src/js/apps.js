@@ -3,7 +3,7 @@
  */
 window.apps = new function () {
     'use strict';
-    var widgets = window.widgets = {};
+    var widgets = this.widgets = {};
     var title = "Stepik Apps";
 
     var params = getParams();
@@ -25,20 +25,20 @@ window.apps = new function () {
         return applications[id];
     }
 
-    function loadWidget(name) {
+    function loadWidget(path, name) {
         $.ajax({
-            url: 'widgets/' + name + '/template.html',
+            url: path + "/" + name + '/template.html',
             dataType: "html",
             success: function (data) {
                 var widget = widgets[name] = {};
                 widget.template = data;
-                $("head").append("<link rel='stylesheet' type='text/css' href='widgets/" + name + "/css/template.css'>")
+                $("head").append("<link rel='stylesheet' type='text/css' href='" + path + "/" + name + "/css/template.css'>")
             }
         });
     }
 
-    loadWidget("app");
-    loadWidget("appheader");
+    loadWidget("widgets", "app");
+    loadWidget("widgets", "appheader");
 
     $(document).ready((function (apps) {
         return function () {
@@ -93,7 +93,7 @@ window.apps = new function () {
                 continue;
             }
 
-            content.append(processTemplate("${widget.app}", app));
+            content.append(apps.processTemplate("${widget.app}", app));
         }
 
         $(".app").click(function (event) {
@@ -129,13 +129,18 @@ window.apps = new function () {
                     head.append("<link rel='stylesheet' type='text/css' href='apps/" + app.id + "/css/content.css'>");
                     head.append("<script src='apps/" + app.id + "/js/content.js'>");
 
+                    if (!!app.widgets) {
+                        app.widgets.forEach(function (widget_id) {
+                            loadWidget("apps/" + app.id + "/widgets/", widget_id);
+                        });
+                    }
                     app.content = data;
-                    content.append(processTemplate("${widget.appheader} ${content}", app));
+                    content.append(apps.processTemplate("${widget.appheader} ${content}", app));
                     app.init(redirect_app);
                 }
             });
         } else {
-            content.append(processTemplate("${widget.appheader} ${content}", app));
+            content.append(apps.processTemplate("${widget.appheader} ${content}", app));
             app.init(redirect_app);
         }
 
@@ -171,12 +176,12 @@ window.apps = new function () {
         }
     }
 
-    function processTemplate(template, map) {
+    this.processTemplate = function (template, map) {
         var fields;
 
         while ((fields = template.match(".*\\$\\{widget.([^${}]*)}.*")) != null) {
             var field = fields[1];
-            var widget = widgets[field];
+            var widget = this.widgets[field];
             var widget_template;
 
             if (!!widget) {
@@ -193,7 +198,7 @@ window.apps = new function () {
         }
 
         return template;
-    }
+    };
 
     function getParams() {
         var params = {};
