@@ -43,10 +43,26 @@ window.apps.register("api", new function () {
                 }).done(function (data) {
                     api_description.empty();
                     data.apis.forEach(function (item) {
+                        if (item.operations.length == 0) {
+                            return;
+                        }
                         item.operation_list = "";
                         item.operations.forEach(function (operation) {
                             operation.path = item.path;
                             operation.basePath = data.basePath;
+                            operation.params = "";
+                            operation.parameters.forEach(function (parameter) {
+                                operation.params += "<tr>";
+                                operation.params += "<td>" + (parameter.required ? "*" : "") + "</td>";
+                                operation.params += "<td>" + parameter.name + "</td>";
+                                operation.params += "<td>" + (parameter.type || parameter.dataType) + "</td>";
+                                operation.params += "<td>" + (parameter.defaultValue ? parameter.defaultValue : "") + "</td>";
+                                operation.params += "<td>" + (parameter.format ? parameter.format : "") + "</td>";
+                                operation.params += "<td>" + parameter.paramType + "</td>";
+                                operation.params += "<td>" + parameter.description + "</td>";
+                                operation.params += "</tr>\n";
+                            });
+
                             item.operation_list += apps.processTemplate("${widget.api-operation}", operation);
                         });
 

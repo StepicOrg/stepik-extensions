@@ -7,14 +7,16 @@
 .api-item-method {
     background-color: green;
     color: white;
+    border: 1px solid green;
     border-radius: 5px 0 0 5px;
     padding: 5px;
 }
 
 .api-item-path {
     padding: 5px;
-    border: 1px solid beige;
+    border: 1px solid green;
     border-radius: 0 5px 5px 0;
+    font-weight: bold;
 }
 
 .api-item-notes {
@@ -42,4 +44,12 @@
 .api-active-section {
     background-color: beige;
     border-radius: 5px 5px 0 0;
+}
+
+.api-params {
+    border-collapse: collapse;
+}
+
+.api-params td, .api-params th {
+    border: 1px solid beige;
 }
