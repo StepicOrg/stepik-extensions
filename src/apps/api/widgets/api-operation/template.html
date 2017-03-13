@@ -3,18 +3,21 @@
     <div class="api-item-path">${basePath}${path}</div>
 </div>
 <div class="api-item-notes">${notes}</div>
-<div class="api-item-sections">
-    <div class="api-item-section api-active-section">Parameters</div>
-    <div class="api-item-section">Request</div>
-    <div class="api-item-section">Response</div>
-    <div class="api-item-section">Error Code</div>
+<div class="api-item-sections api-item${item_index}-sections-${index}">
+    <div item_index="${item_index}" operation_index="${index}" index="0" class="api-item-section api-active-section">
+        Parameters
+    </div>
+    <div item_index="${item_index}" operation_index="${index}" index="1" class="api-item-section">Request</div>
+    <div item_index="${item_index}" operation_index="${index}" index="2" class="api-item-section">Response</div>
+    <div item_index="${item_index}" operation_index="${index}" index="3" class="api-item-section">Error Code</div>
 </div>
 
-<table class="api-params">
+<table id="api-item${item_index}-operation${index}-0" class="api-params api-item${item_index}-operation${index}">
     <tr>
         <th>*</th>
         <th>Name</th>
         <th>Type</th>
+        <th>Values</th>
         <th>Default value</th>
         <th>Format</th>
         <th>Location</th>
@@ -22,5 +25,10 @@
     </tr>
     ${params}
 </table>
+
+<ul id="api-item${item_index}-operation${index}-3"
+    class="api-response-messages api-item${item_index}-operation${index}">
+    ${responseMessages}
+</ul>
 
 <div>Code Samples</div>
