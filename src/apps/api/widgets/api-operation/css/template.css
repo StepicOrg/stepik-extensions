@@ -5,11 +5,39 @@
 }
 
 .api-item-method {
-    background-color: green;
     color: white;
     border: 1px solid green;
     border-radius: 5px 0 0 5px;
     padding: 5px;
+}
+
+.api-item-method-GET {
+    background-color: green;
+}
+
+.api-item-method-HEAD{
+    background-color: darkorange;
+}
+
+.api-item-method-POST{
+    background-color: red;
+}
+
+.api-item-method-PUT{
+    background-color: blue;
+}
+
+.api-item-method-PATCH{
+    background-color: lightblue;
+}
+
+.api-item-method-DELETE{
+    background-color: black;
+}
+
+.api-item-method-OPTIONS{
+    background-color: yellow;
+    color: black;
 }
 
 .api-item-path {
@@ -32,6 +60,7 @@
     display: flex;
     padding: 5px 5px;
     border: 1px solid coral;
+    border-bottom-width: 0;
     border-radius: 5px 5px 0 0;
     color: darkblue;
 }

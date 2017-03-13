@@ -1,6 +1,7 @@
 .api-container {
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 #api-list {
@@ -8,7 +9,7 @@
     flex-direction: column;
     flex-shrink: 0;
     list-style: none;
-    margin: 5px 0;
+    margin: 10px 0;
     padding: 0;
     border: 1px solid lightgray;
     border-radius: 5px;
@@ -40,5 +41,6 @@
     flex-direction: column;
     min-width: 250px;
     flex-shrink: 1;
-    padding: 5px 10px;
+    padding: 10px;
+    flex-grow: 1;
 }
