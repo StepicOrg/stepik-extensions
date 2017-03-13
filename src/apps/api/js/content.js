@@ -8,16 +8,32 @@ window.apps.register("api", new function () {
     var APP_ID = "api";
     var api_docs = {apis: []};
 
+    var swaggerUtils = new function () {
+        this.getApiDocs = function (url) {
+            return $.get({
+                url: url,
+                dataType: "json"
+            });
+        };
+
+        var PRIMITIVES = ["integer", "boolean", "number", "string", "void", "datetime", "choice",
+            "object", "array", "float", "file upload", "url", "decimal"];
+
+        this.isPrimitive = function(type) {
+            return PRIMITIVES.indexOf(type) != -1;
+        }
+    };
+
     this.init = function () {
-        $.get({
-            url: "https://stepik.org/api/docs/api-docs/",
-            dataType: "json"
-        }).done(function (data) {
-            api_docs = data;
-            paint();
-        }).fail(function () {
-            api_docs = {apis: []};
-        });
+        swaggerUtils.getApiDocs("https://stepik.org/api/docs/api-docs/")
+            .done(function (data) {
+                api_docs = data;
+                paint();
+            })
+            .fail(function () {
+                api_docs = {apis: []};
+                paint();
+            });
 
         function paint() {
             var api_list = $("#api-list");
@@ -44,10 +60,6 @@ window.apps.register("api", new function () {
                 }).done(function (data) {
                     api_description.empty();
                     data.apis.forEach(function (item, item_index) {
-                        if (item.operations.length == 0) {
-                            api_description.text("Nothing");
-                            return;
-                        }
                         item.operation_list = "";
 
                         function getValues(type, parameter) {
@@ -106,7 +118,77 @@ window.apps.register("api", new function () {
                                     responseMessages.push("Message: " + responseMessage.message);
                                 })
                             }
-                            return responseMessages.length > 0 ? responseMessages.join("<br><br>") : "Nothing";
+                            return responseMessages.length > 0 ? responseMessages.join("<br><br>") : "No error response defined";
+                        }
+
+                        function getRequest(operation) {
+                            var request = operation.method + " " + operation.path + " HTTP/1.1<br>";
+                            request += "Host: " + operation.basePath;
+
+
+                            return request;
+                        }
+
+                        function getPrimitivePresentation(type) {
+                            if (type == "array") {
+                                return "[]";
+                            }
+                            if (type == "object") {
+                                return "{}";
+                            }
+
+                            return "<b>" + type + "</b>";
+                        }
+
+                        function getModelPresentation(models, dataType, level) {
+                            if (swaggerUtils.isPrimitive(dataType)) {
+                                return getPrimitivePresentation(dataType);
+                            }
+                            var model = models[dataType];
+                            if (!model) {
+                                console.log(dataType);
+                            }
+                            level = level ? level : 0;
+                            var base_indent = new Array(level * 4).join(" ");
+                            var presentation = "{\n";
+                            var indent = base_indent + new Array(4).join(" ");
+
+                            var properties_list = model.properties;
+                            var properties = [];
+                            for (var name in properties_list) {
+                                var property = properties_list[name];
+                                var value;
+                                var type = property.type;
+                                if (swaggerUtils.isPrimitive(type)) {
+                                    var typePresentation = getPrimitivePresentation(type);
+                                    var format = type == "string" ? type : property.format;
+                                    var defValue = property.defaultValue;
+                                    if (typeof defValue == "object") {
+                                        defValue = JSON.stringify(defValue, ' ', 4);
+                                    } else if (!!defValue && (type == "string" || format == "string")) {
+                                        defValue = '"' + defValue + '"';
+                                    }
+
+                                    defValue = defValue ? defValue : "";
+
+                                    value = defValue + " (" + typePresentation;
+
+                                    if (!!format && type != format) {
+                                        value += " as " + format;
+                                    }
+
+                                    value += ")";
+                                } else {
+                                    value = getModelPresentation(models, type, level + 1);
+                                }
+                                properties.push(indent + '"' + name + '":' + value);
+                            }
+
+                            return presentation += properties.join(",\n") + "\n" + base_indent + "}"
+                        }
+
+                        function getResponse(operation, models) {
+                            return "<code><pre>" + getModelPresentation(models, operation.type) + "</pre></code>";
                         }
 
                         item.operations.forEach(function (operation, index) {
@@ -116,9 +198,15 @@ window.apps.register("api", new function () {
                             operation.item_index = item_index;
                             operation.index = index;
                             operation.responseMessages = getResponseMessages(operation);
+                            operation.request = getRequest(operation);
+                            operation.response = getResponse(operation, data.models);
 
                             item.operation_list += apps.processTemplate("${widget.api-operation}", operation);
                         });
+
+                        if (item.operation_list == "") {
+                            item.operation_list = "Nothing";
+                        }
 
                         var description = apps.processTemplate("${widget.api-description}", item);
                         api_description.append(description);
@@ -153,4 +241,6 @@ window.apps.register("api", new function () {
             });
         }
     }
+
+
 });

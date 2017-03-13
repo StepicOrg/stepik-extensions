@@ -97,7 +97,9 @@
     min-width: 100px;
 }
 
-.api-response-messages {
+.api-response-messages,
+.api-request,
+.api-response {
     display: none;
     margin: 0;
     padding: 5px;
