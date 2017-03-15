@@ -10,6 +10,7 @@
     <div item_index="${item_index}" operation_index="${index}" index="1" class="api-item-section">Request</div>
     <div item_index="${item_index}" operation_index="${index}" index="2" class="api-item-section">Response</div>
     <div item_index="${item_index}" operation_index="${index}" index="3" class="api-item-section">Error Code</div>
+    <div item_index="${item_index}" operation_index="${index}" index="4" class="api-item-section">Models</div>
 </div>
 
 <table id="api-item${item_index}-operation${index}-0" class="api-params api-item${item_index}-operation${index}">
@@ -17,9 +18,9 @@
         <th>*</th>
         <th>Name</th>
         <th>Type</th>
+        <th>Format</th>
         <th>Values</th>
         <th>Default value</th>
-        <th>Format</th>
         <th>Location</th>
         <th>Description</th>
     </tr>
@@ -27,7 +28,7 @@
 </table>
 
 <div id="api-item${item_index}-operation${index}-1"
-    class="api-request api-item${item_index}-operation${index}">
+     class="api-request api-item${item_index}-operation${index}">
     ${request}
 </div>
 
@@ -41,4 +42,10 @@
     ${responseMessages}
 </ul>
 
-<div>Code Samples</div>
+
+<div id="api-item${item_index}-operation${index}-4"
+     class="api-models api-item${item_index}-operation${index}">
+    ${models}
+</div>
+
+<div></div>

@@ -15,27 +15,27 @@
     background-color: green;
 }
 
-.api-item-method-HEAD{
+.api-item-method-HEAD {
     background-color: darkorange;
 }
 
-.api-item-method-POST{
+.api-item-method-POST {
     background-color: red;
 }
 
-.api-item-method-PUT{
+.api-item-method-PUT {
     background-color: blue;
 }
 
-.api-item-method-PATCH{
+.api-item-method-PATCH {
     background-color: lightblue;
 }
 
-.api-item-method-DELETE{
+.api-item-method-DELETE {
     background-color: black;
 }
 
-.api-item-method-OPTIONS{
+.api-item-method-OPTIONS {
     background-color: yellow;
     color: black;
 }
@@ -93,13 +93,18 @@
     padding: 2px;
 }
 
+.api-params tr td:first-child {
+    text-align: center;
+}
+
 .api-parameter-values {
     min-width: 100px;
 }
 
 .api-response-messages,
 .api-request,
-.api-response {
+.api-response,
+.api-models {
     display: none;
     margin: 0;
     padding: 5px;

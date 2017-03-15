@@ -17,9 +17,9 @@ window.apps.register("api", new function () {
         };
 
         var PRIMITIVES = ["integer", "boolean", "number", "string", "void", "datetime", "choice",
-            "object", "array", "float", "file upload", "url", "decimal"];
+            "object", "array", "float", "file upload", "url", "decimal", "email"];
 
-        this.isPrimitive = function(type) {
+        this.isPrimitive = function (type) {
             return PRIMITIVES.indexOf(type) != -1;
         }
     };
@@ -54,10 +54,7 @@ window.apps.register("api", new function () {
                 var path = $(target).text();
                 var api_description = $("#api-description");
 
-                $.get({
-                    url: api_docs.basePath + path,
-                    dataType: "json"
-                }).done(function (data) {
+                function drawApi(data) {
                     api_description.empty();
                     data.apis.forEach(function (item, item_index) {
                         item.operation_list = "";
@@ -76,17 +73,18 @@ window.apps.register("api", new function () {
                                 values.push("Unique items");
                             }
 
-                            if (type == "enum") {
+                            if (type == "enum" || type == "choice") {
                                 values.push(parameter.enum.join(", "));
                             }
 
                             return values.join("<br>");
                         }
 
-                        function getParams(operation) {
+                        function getParams(parameters, show_location) {
                             var params = "";
-                            if (!!operation.parameters) {
-                                operation.parameters.forEach(function (parameter) {
+                            if (!!parameters) {
+                                for (var id in parameters) {
+                                    var parameter = parameters[id];
                                     var required = parameter.required ? "*" : "";
                                     var type = parameter.type || parameter.dataType || parameter["$ref"];
                                     var values = getValues(type, parameter);
@@ -95,15 +93,17 @@ window.apps.register("api", new function () {
                                     var description = parameter.description ? parameter.description : "";
                                     params += "<tr>";
                                     params += "<td>" + required + "</td>";
-                                    params += "<td>" + parameter.name + "</td>";
+                                    params += "<td>" + (parameter.name || id) + "</td>";
                                     params += "<td>" + type + "</td>";
+                                    params += "<td>" + format + "</td>";
                                     params += "<td class='api-parameter-values'>" + values + "</td>";
                                     params += "<td>" + defaultValue + "</td>";
-                                    params += "<td>" + format + "</td>";
-                                    params += "<td>" + parameter.paramType + "</td>";
+                                    if (show_location) {
+                                        params += "<td>" + parameter.paramType + "</td>";
+                                    }
                                     params += "<td>" + description + "</td>";
                                     params += "</tr>\n";
-                                });
+                                }
                             }
 
                             return params;
@@ -191,15 +191,38 @@ window.apps.register("api", new function () {
                             return "<code><pre>" + getModelPresentation(models, operation.type) + "</pre></code>";
                         }
 
+                        function getModels(operation, models) {
+                            var result = "";
+                            for (var id in models) {
+                                result += "<b>" + id + "</b><br>";
+                                result += "<table class='api-params'>";
+                                result += "<tr>";
+                                result += "<th>*</th>";
+                                result += "<th>Name</th>";
+                                result += "<th>Type</th>";
+                                result += "<th>Format</th>";
+                                result += "<th>Values</th>";
+                                result += "<th>Default value</th>";
+                                result += "<th>Description</th>";
+                                result += "</tr>";
+                                result += getParams(models[id].properties);
+                                result += "</table>";
+                                result += "<br>";
+                            }
+
+                            return result;
+                        }
+
                         item.operations.forEach(function (operation, index) {
                             operation.path = item.path;
                             operation.basePath = data.basePath;
-                            operation.params = getParams(operation);
+                            operation.params = getParams(operation.parameters, true);
                             operation.item_index = item_index;
                             operation.index = index;
                             operation.responseMessages = getResponseMessages(operation);
                             operation.request = getRequest(operation);
                             operation.response = getResponse(operation, data.models);
+                            operation.models = getModels(operation, data.models);
 
                             item.operation_list += apps.processTemplate("${widget.api-operation}", operation);
                         });
@@ -223,7 +246,7 @@ window.apps.register("api", new function () {
                         var operation_index = target.getAttribute("operation_index");
                         var index = target.getAttribute("index");
 
-                        for (var i = 0; i <= 3; i++) {
+                        for (var i = 0; i <= 4; i++) {
                             var tab = $(".api-item" + item_index + "-sections-" + operation_index + " div:nth-child(" + (i + 1) + ")");
                             var tab_content = $("#api-item" + item_index + "-operation" + operation_index + "-" + i);
                             if (i == index) {
@@ -235,6 +258,13 @@ window.apps.register("api", new function () {
                             }
                         }
                     });
+                }
+
+                $.get({
+                    url: api_docs.basePath + path,
+                    dataType: "json"
+                }).done(function (data) {
+                    drawApi(data);
                 }).fail(function () {
                     api_description.empty();
                 });
