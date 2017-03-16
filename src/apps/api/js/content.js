@@ -236,6 +236,23 @@ window.apps.register("api", new function () {
 
                     });
 
+                    $('.panel').on('panelShow', function(event) {
+                        var target = event.currentTarget;
+                        if (target != this) {
+                            return;
+                        }
+                        var url = target.getAttribute("data-path");
+                        if (!url) {
+                            return;
+                        }
+                        $.get({
+                            url: "apps/" + APP_ID + "/" + url
+                        }).done(function (data) {
+                            $(target).text(data);
+                        }).fail(function () {
+                            $(target).text("Not Found");
+                        });
+                    });
 
                     $(".tab").click(function (event) {
                         var target = event.currentTarget;
@@ -250,7 +267,9 @@ window.apps.register("api", new function () {
                             $("#" + panel).hide();
                         });
                         $(target).addClass("tab-active");
-                        $("#" + panel_id).show();
+                        var panel = $("#" + panel_id);
+                        panel.show();
+                        panel.trigger("panelShow")
                     });
                 }
 
@@ -264,6 +283,18 @@ window.apps.register("api", new function () {
                 });
             });
         }
+
+        $("#api-auth").click(function () {
+            var api_description = $("#api-description");
+            $.get({
+                url: "apps/" + APP_ID + "/oauth2.html",
+                dataType: "html"
+            }).done(function (data) {
+                api_description.html(data);
+            }).fail(function () {
+                api_description.html("<h1>Authentication</h1>");
+            });
+        });
     }
 
 

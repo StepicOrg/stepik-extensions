@@ -15,6 +15,7 @@
     border-radius: 5px;
     overflow: scroll;
     max-height: 400px;
+    min-width: 200px;
 }
 
 #api-list .api-path:nth-child(odd) {
