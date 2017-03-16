@@ -162,7 +162,8 @@ window.extensions = new function () {
                 if (!user.is_guest) {
                     var first_name = user.first_name;
                     var last_name = user.last_name;
-                    $("#user-name").text((first_name + " " + last_name).trim() + " on " + stepik.host);
+                    $("#user-name").text((first_name + " " + last_name).trim());
+                    $("#user-host").text("@" + stepik.getHost());
                     $("#user-avatar").attr("src", user.avatar);
                 } else {
                     $.removeCookie('access_token', {path: '/'});

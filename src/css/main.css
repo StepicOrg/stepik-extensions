@@ -68,6 +68,15 @@ body {
     align-items: center;
 }
 
+#user-name {
+    font-weight: bold;
+}
+
+#user-name a {
+    color: white;
+    text-decoration: none;
+}
+
 #user-avatar {
     width: 30px;
     height: 30px;

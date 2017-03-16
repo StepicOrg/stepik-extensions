@@ -86,7 +86,23 @@
     }
 
     window.stepik = {
-        host: "https://stepik.org/",
+        _host: null,
+        getHost: function () {
+            if (!this._host) {
+                this._host = $.cookie("stepik.host");
+
+                if (!this._host) {
+                    this._host = "https://stepik.org/";
+                    $.cookie("stepik.host", this._host)
+                }
+            }
+            return this._host;
+        },
+
+        setHost: function (host) {
+            this._host = host;
+            $.cookie("stepik.host", this._host)
+        },
 
         getCurrentUser: function () {
             return this.getJson("api/stepics/1");
@@ -97,7 +113,7 @@
             var token_type = $.cookie("token_type");
 
             return $.get({
-                url: this.host + url,
+                url: this.getHost() + url,
                 dataType: "json",
                 headers: {
                     "Authorization": token_type + " " + access_token
@@ -110,7 +126,7 @@
             var token_type = $.cookie("token_type");
 
             return $.post({
-                url: this.host + url,
+                url: this.getHost() + url,
                 dataType: "json",
                 data: JSON.stringify(data),
                 headers: {
@@ -158,7 +174,7 @@
                 state = state || location.origin;
                 var encoded_state = btoa(state + "::" + Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
                 $.cookie("state", encoded_state);
-                window.location.href = this.host + "oauth2/authorize/" +
+                window.location.href = this.getHost() + "oauth2/authorize/" +
                     "?client_id=" + client_id +
                     "&redirect_uri=" + redirect_uri +
                     "&scope=write" +
@@ -166,7 +182,7 @@
                     "&response_type=code";
             } else {
                 return $.post({
-                    url: this.host + "oauth2/token/",
+                    url: this.getHost() + "oauth2/token/",
                     dataType: "json",
                     data: {
                         grant_type: "authorization_code",

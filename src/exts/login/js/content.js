@@ -17,10 +17,10 @@ window.extensions.register("login", new function () {
         domains.forEach(function (domain) {
             domain_selector.append("<option value='" + domain + "'>" + domain + "</option>");
         });
-        domain_selector.val(stepik.host);
+        domain_selector.val(stepik.getHost());
 
         $(".authorize").click(function () {
-            stepik.host = domain_selector.val();
+            stepik.setHost(domain_selector.val());
 
             if (!!redirect_ext) {
                 stepik.authorize(location.origin + "?ext=" + redirect_ext);
