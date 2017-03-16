@@ -86,6 +86,8 @@
     }
 
     window.stepik = {
+        host: "https://stepik.org/",
+
         getCurrentUser: function () {
             return this.getJson("api/stepics/1");
         },
@@ -95,7 +97,7 @@
             var token_type = $.cookie("token_type");
 
             return $.get({
-                url: "https://stepik.org/" + url,
+                url: this.host + url,
                 dataType: "json",
                 headers: {
                     "Authorization": token_type + " " + access_token
@@ -108,7 +110,7 @@
             var token_type = $.cookie("token_type");
 
             return $.post({
-                url: "https://stepik.org/" + url,
+                url: this.host + url,
                 dataType: "json",
                 data: JSON.stringify(data),
                 headers: {
@@ -150,13 +152,13 @@
         },
 
         authorize: function (state, code) {
-            var redirect_uri = "https://apps.stepik.org";
+            var redirect_uri = location.origin;
             var client_id = "gTUqSYtRjiT9wnrmCYEWKDR2ZfeDOcdlNN8Q0Avc";
             if (!code) {
                 state = state || location.origin;
                 var encoded_state = btoa(state + "::" + Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
                 $.cookie("state", encoded_state);
-                window.location.href = "https://stepik.org/oauth2/authorize/" +
+                window.location.href = this.host + "oauth2/authorize/" +
                     "?client_id=" + client_id +
                     "&redirect_uri=" + redirect_uri +
                     "&scope=write" +
@@ -164,7 +166,7 @@
                     "&response_type=code";
             } else {
                 return $.post({
-                    url: "https://stepik.org/oauth2/token/",
+                    url: this.host + "oauth2/token/",
                     dataType: "json",
                     data: {
                         grant_type: "authorization_code",
