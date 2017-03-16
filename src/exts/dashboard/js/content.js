@@ -4,8 +4,8 @@
 
 ;'use strict';
 
-window.apps.register("dashboard", new function () {
-    var APP_ID = "dashboard";
+window.extensions.register("dashboard", new function () {
+    var EXT_ID = "dashboard";
 
     var ratings = {};
 

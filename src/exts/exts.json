@@ -1,5 +1,5 @@
 {
-  "applications": {
+  "extensions": {
     "enrollment": {
       "id": "enrollment",
       "name": "Enrollment",
@@ -36,7 +36,8 @@
       ],
       "need_authorization": false,
       "widgets": [
-        "api-description", "api-operation"
+        "api-description",
+        "api-operation"
       ]
     }
   },

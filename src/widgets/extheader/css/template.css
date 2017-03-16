@@ -1,4 +1,4 @@
-.app-header {
+.ext-header {
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -6,7 +6,7 @@
     font-size: 16px;
 }
 
-.app-header-logo {
+.ext-header-logo {
     display: flex;
     width: 100px;
     height: 100px;
@@ -14,7 +14,7 @@
     border-radius: 5px;
 }
 
-.app-header-text {
+.ext-header-text {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -22,13 +22,13 @@
     padding-left: 15px;
 }
 
-.app-header-name {
+.ext-header-name {
     display: flex;
     font-size: 20px;
     color: black;
     text-align: center;
 }
 
-.app-header-description {
+.ext-header-description {
 
 }

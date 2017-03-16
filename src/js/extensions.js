@@ -1,10 +1,10 @@
 /**
  * Created by meanmail on 22.02.17.
  */
-window.apps = new function () {
+window.extensions = new function () {
     'use strict';
     var widgets = this.widgets = {};
-    var title = "Stepik Apps";
+    var title = "Stepik Extensions";
 
     var params = getParams();
 
@@ -12,17 +12,17 @@ window.apps = new function () {
         return params[name];
     };
 
-    var applications = {};
+    var extensions = {};
     var categories = {};
 
-    this.register = function (id, app) {
-        var application = applications[id] || {};
-        application.init = app.init;
-        applications[id] = application;
+    this.register = function (id, ext) {
+        var extension = extensions[id] || {};
+        extension.init = ext.init;
+        extensions[id] = extension;
     };
 
-    function getApplication(id) {
-        return applications[id];
+    function getExtension(id) {
+        return extensions[id];
     }
 
     function loadWidget(path, name) {
@@ -37,25 +37,26 @@ window.apps = new function () {
         });
     }
 
-    loadWidget("widgets", "app");
-    loadWidget("widgets", "appheader");
+    loadWidget("widgets", "ext");
+    loadWidget("widgets", "extheader");
 
-    $(document).ready((function (apps) {
+    $(document).ready((function (exts) {
         return function () {
             $.ajax({
-                url: 'apps/apps.json',
+                url: 'exts/exts.json',
                 dataType: "json"
             }).done(function (data) {
-                applications = data.applications;
+                extensions = data.extensions;
                 categories = data.categories;
 
-                initCategories(apps);
+                initCategories();
 
-                if (!apps.getParam("app")) {
-                    var category = apps.getParam("category");
-                    drawApplications(apps, category);
+                var ext_param = exts.getParam("ext");
+                if (!ext_param) {
+                    var category = exts.getParam("category");
+                    drawExtensions(exts, category);
                 } else {
-                    loadApplication(apps, apps.getParam("app"));
+                    loadExtension(exts, ext_param);
                 }
             });
 
@@ -63,7 +64,7 @@ window.apps = new function () {
         }
     })(this));
 
-    function initCategories(apps) {
+    function initCategories() {
         var $categories = $("#categories");
         categories.forEach(function (item) {
             $categories.append("<li><div class='category' category_id='" + item.id + "'>" + item.name + "</div></li>");
@@ -77,74 +78,74 @@ window.apps = new function () {
 
     updateUserName();
 
-    function drawApplications(apps, category) {
+    function drawExtensions(exts, category) {
         var content = $("#content");
         content.empty();
         category = parseInt(category);
 
-        for (var appId in applications) {
-            var app = getApplication(appId);
+        for (var extId in extensions) {
+            var extension = getExtension(extId);
 
-            if (app.disabled) {
+            if (extension.disabled) {
                 continue;
             }
 
-            if (!isNaN(category) && app.categories.indexOf(category) == -1) {
+            if (!isNaN(category) && extension.categories.indexOf(category) == -1) {
                 continue;
             }
 
-            content.append(apps.processTemplate("${widget.app}", app));
+            content.append(exts.processTemplate("${widget.ext}", extension));
         }
 
-        $(".app").click(function (event) {
-            var id = event.currentTarget.getAttribute("app_id");
-            location.search = "?app=" + id;
+        $(".ext").click(function (event) {
+            var id = event.currentTarget.getAttribute("ext_id");
+            location.search = "?ext=" + id;
         });
 
         $("title").text(title);
         updateUserName();
     }
 
-    function loadApplication(apps, id, redirect_app) {
+    function loadExtension(exts, id, redirect_ext) {
         var content = $("#content");
         content.empty();
 
-        var app = getApplication(id);
+        var extension = getExtension(id);
 
-        if (!app) {
+        if (!extension) {
             return;
         }
 
-        if (app.need_authorization && $.cookie("access_token") == null) {
-            loadApplication(apps, "login", id);
+        if (extension.need_authorization && $.cookie("access_token") == null) {
+            loadExtension(exts, "login", id);
             return;
         }
 
-        if (!app.content) {
+        if (!extension.content) {
             $.ajax({
-                url: 'apps/' + app.id + '/content.html',
+                url: 'exts/' + extension.id + '/content.html',
                 dataType: "html",
                 success: function (data) {
                     var head = $("head");
-                    head.append("<link rel='stylesheet' type='text/css' href='apps/" + app.id + "/css/content.css'>");
-                    head.append("<script src='apps/" + app.id + "/js/content.js'>");
+                    head.append("<link rel='stylesheet' type='text/css' href='exts/" + extension.id + "/css/content.css'>");
+                    head.append("<script src='exts/" + extension.id + "/js/content.js'>");
 
-                    if (!!app.widgets) {
-                        app.widgets.forEach(function (widget_id) {
-                            loadWidget("apps/" + app.id + "/widgets/", widget_id);
+                    if (!!extension.widgets) {
+                        extension.widgets.forEach(function (widget_id) {
+                            loadWidget("exts/" + extension.id + "/widgets/", widget_id);
                         });
                     }
-                    app.content = data;
-                    content.append(apps.processTemplate("${widget.appheader} ${content}", app));
-                    app.init(redirect_app);
+                    extension.content = data;
+                    content.append(exts.processTemplate("${widget.extheader} ${content}", extension));
+                    extension.init(redirect_ext);
                 }
             });
         } else {
-            content.append(apps.processTemplate("${widget.appheader} ${content}", app));
-            app.init(redirect_app);
+            content.append(exts.processTemplate("${widget.extheader} ${content}", extension));
+            extension.init(redirect_ext);
         }
 
-        $("title").text(title + " - " + app.name);
+        $("title").text(title + " - " + extension.name);
         updateUserName();
     }
 
