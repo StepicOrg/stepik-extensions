@@ -51,12 +51,13 @@
     margin: 5px 0;
 }
 
-.api-item-sections {
+.tabs {
     display: flex;
     flex-direction: row;
+    margin-top: 10px;
 }
 
-.api-item-section {
+.tab {
     display: flex;
     padding: 5px 5px;
     border: 1px solid coral;
@@ -65,16 +66,16 @@
     color: darkblue;
 }
 
-.api-item-section:hover {
+.tab:hover {
     background-color: beige;
     cursor: pointer;
 }
 
-.api-active-section {
+.tab-active {
     background-color: coral;
 }
 
-.api-active-section:hover {
+.tab-active:hover {
     color: blue;
     background-color: coral;
 }
@@ -101,12 +102,13 @@
     min-width: 100px;
 }
 
-.api-response-messages,
-.api-request,
-.api-response,
-.api-models {
+.panel {
     display: none;
     margin: 0;
     padding: 5px;
     border: 1px solid coral;
+}
+
+.panel-active {
+    display: flex;
 }

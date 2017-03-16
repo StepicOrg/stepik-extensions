@@ -237,26 +237,20 @@ window.apps.register("api", new function () {
                     });
 
 
-                    $(".api-item-section").click(function (event) {
+                    $(".tab").click(function (event) {
                         var target = event.currentTarget;
                         if (target != this) {
                             return;
                         }
-                        var item_index = target.getAttribute("item_index");
-                        var operation_index = target.getAttribute("operation_index");
-                        var index = target.getAttribute("index");
+                        var panel_id = target.getAttribute("data-panel-id");
 
-                        for (var i = 0; i <= 4; i++) {
-                            var tab = $(".api-item" + item_index + "-sections-" + operation_index + " div:nth-child(" + (i + 1) + ")");
-                            var tab_content = $("#api-item" + item_index + "-operation" + operation_index + "-" + i);
-                            if (i == index) {
-                                tab.addClass("api-active-section");
-                                tab_content.show();
-                            } else {
-                                tab.removeClass("api-active-section");
-                                tab_content.hide();
-                            }
-                        }
+                        $(target).parent(".tabs").find(".tab").each(function (index, tab) {
+                            $(tab).removeClass("tab-active");
+                            var panel = tab.getAttribute("data-panel-id");
+                            $("#" + panel).hide();
+                        });
+                        $(target).addClass("tab-active");
+                        $("#" + panel_id).show();
                     });
                 }
 
