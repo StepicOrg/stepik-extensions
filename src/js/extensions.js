@@ -107,6 +107,11 @@ window.extensions = new function () {
     }
 
     function loadExtension(exts, id, redirect_ext) {
+        if (id == "logout") {
+            stepik.logout();
+            location.href = exts.getParam("redirect") || "/";
+            return;
+        }
         var content = $("#content");
         content.empty();
 
@@ -155,6 +160,8 @@ window.extensions = new function () {
             $("#user-avatar").attr("src", "img/default_avatar.png");
         }
 
+        $("#user-logout").hide();
+
         if ($.cookie("access_token") != null) {
             stepik.getCurrentUser().done(function (data) {
                 var user = data.users[0];
@@ -165,6 +172,7 @@ window.extensions = new function () {
                     $("#user-name").text((first_name + " " + last_name).trim());
                     $("#user-host").text("@" + stepik.getHost());
                     $("#user-avatar").attr("src", user.avatar);
+                    $("#user-logout").show();
                 } else {
                     $.removeCookie('access_token', {path: '/'});
                     setAnonymousUser();

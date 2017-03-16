@@ -205,6 +205,13 @@
                     }
                 });
             }
+        },
+
+        logout: function () {
+            $.cookie("access_token", null);
+            $.cookie("refresh_token", null);
+            $.cookie("token_type", null);
+            $.cookie("scope", null);
         }
     };
 })();
