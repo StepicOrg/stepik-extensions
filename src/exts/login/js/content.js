@@ -5,9 +5,23 @@
 
 window.extensions.register("login", new function () {
     var EXT_ID = "login";
+    var domains = [
+        "https://stepik.org/",
+        "https://dev.stepik.org/",
+        "https://release.stepik.org/",
+        "https://sb.stepic.org/"
+    ];
 
     this.init = function (redirect_ext) {
+        var domain_selector = $("#domain_selector");
+        domains.forEach(function (domain) {
+            domain_selector.append("<option value='" + domain + "'>" + domain + "</option>");
+        });
+        domain_selector.val(stepik.getHost());
+
         $(".authorize").click(function () {
+            stepik.setHost(domain_selector.val());
+
             if (!!redirect_ext) {
                 stepik.authorize(location.origin + "?ext=" + redirect_ext);
             } else {

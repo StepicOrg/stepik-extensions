@@ -21,9 +21,9 @@ window.extensions = new function () {
         extensions[id] = extension;
     };
 
-    function getExtension(id) {
+    this.getExtension = function (id) {
         return extensions[id];
-    }
+    };
 
     function loadWidget(path, name) {
         $.ajax({
@@ -84,7 +84,7 @@ window.extensions = new function () {
         category = parseInt(category);
 
         for (var extId in extensions) {
-            var extension = getExtension(extId);
+            var extension = exts.getExtension(extId);
 
             if (extension.disabled) {
                 continue;
@@ -107,10 +107,15 @@ window.extensions = new function () {
     }
 
     function loadExtension(exts, id, redirect_ext) {
+        if (id == "logout") {
+            stepik.logout();
+            location.href = exts.getParam("redirect") || "/";
+            return;
+        }
         var content = $("#content");
         content.empty();
 
-        var extension = getExtension(id);
+        var extension = exts.getExtension(id);
 
         if (!extension) {
             return;
@@ -151,12 +156,11 @@ window.extensions = new function () {
 
     function updateUserName() {
         function setAnonymousUser() {
-            $("#user-name").html("<a class='authorize' href='javascript:void(0)'>Sign in</a>");
+            $("#user-name").html("<a class='authorize' href='/?ext=login'>Sign in</a>");
             $("#user-avatar").attr("src", "img/default_avatar.png");
-            $(".authorize").click(function () {
-                stepik.authorize(location.origin);
-            });
         }
+
+        $("#user-logout").hide();
 
         if ($.cookie("access_token") != null) {
             stepik.getCurrentUser().done(function (data) {
@@ -166,7 +170,9 @@ window.extensions = new function () {
                     var first_name = user.first_name;
                     var last_name = user.last_name;
                     $("#user-name").text((first_name + " " + last_name).trim());
+                    $("#user-host").text("@" + stepik.getHost());
                     $("#user-avatar").attr("src", user.avatar);
+                    $("#user-logout").show();
                 } else {
                     $.removeCookie('access_token', {path: '/'});
                     setAnonymousUser();

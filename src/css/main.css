@@ -68,6 +68,25 @@ body {
     align-items: center;
 }
 
+#user-name {
+    font-weight: bold;
+}
+
+#user-name a {
+    color: white;
+    text-decoration: none;
+}
+
+#user-logout {
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+    color: white;
+    text-decoration: none;
+    background-color: darkgrey;
+    border-radius: 5px;
+}
+
 #user-avatar {
     width: 30px;
     height: 30px;

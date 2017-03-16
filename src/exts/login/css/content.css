@@ -14,3 +14,8 @@
 .login_fail {
     color: red;
 }
+
+#domain_selector {
+    display: inline-block;
+    margin-right: 10px;
+}
