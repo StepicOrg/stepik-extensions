@@ -4,8 +4,8 @@
 
 ;'use strict';
 
-window.apps.register("api", new function () {
-    var APP_ID = "api";
+window.extensions.register("api", new function () {
+    var EXT_ID = "api";
     var api_docs = {apis: []};
 
     var swaggerUtils = new function () {
@@ -224,19 +224,19 @@ window.apps.register("api", new function () {
                             operation.response = getResponse(operation, data.models);
                             operation.models = getModels(operation, data.models);
 
-                            item.operation_list += apps.processTemplate("${widget.api-operation}", operation);
+                            item.operation_list += extensions.processTemplate("${widget.api-operation}", operation);
                         });
 
                         if (item.operation_list == "") {
                             item.operation_list = "Nothing";
                         }
 
-                        var description = apps.processTemplate("${widget.api-description}", item);
+                        var description = extensions.processTemplate("${widget.api-description}", item);
                         api_description.append(description);
 
                     });
 
-                    $('.panel').on('panelShow', function(event) {
+                    $('.panel').on('panelShow', function (event) {
                         var target = event.currentTarget;
                         if (target != this) {
                             return;
@@ -246,7 +246,7 @@ window.apps.register("api", new function () {
                             return;
                         }
                         $.get({
-                            url: "apps/" + APP_ID + "/" + url
+                            url: "exts/" + EXT_ID + "/" + url
                         }).done(function (data) {
                             $(target).text(data);
                         }).fail(function () {
@@ -287,7 +287,7 @@ window.apps.register("api", new function () {
         $("#api-auth").click(function () {
             var api_description = $("#api-description");
             $.get({
-                url: "apps/" + APP_ID + "/oauth2.html",
+                url: "exts/" + EXT_ID + "/oauth2.html",
                 dataType: "html"
             }).done(function (data) {
                 api_description.html(data);

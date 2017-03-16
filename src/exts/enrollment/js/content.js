@@ -3,15 +3,15 @@
  */
 ;'use strict';
 
-window.apps.register("enrollment", new function () {
-    var APP_ID = "enrollment";
+window.extensions.register("enrollment", new function () {
+    var EXT_ID = "enrollment";
 
     var localStorage = window.localStorage;
     var rows = [];
     var course_id_column = 0;
     var user_id_column = 1;
 
-    function reset_app() {
+    function reset_ext() {
         clear_table();
         rows = readRows();
         if (!rows || rows.length == 0) {
@@ -24,12 +24,12 @@ window.apps.register("enrollment", new function () {
                 status: ""
             };
         }
-        course_id_column = localStorage.getItem(APP_ID + "_course_column_index");
+        course_id_column = localStorage.getItem(EXT_ID + "_course_column_index");
         if (course_id_column == null) {
             course_id_column = 0;
         }
 
-        user_id_column = localStorage.getItem(APP_ID + "_user_column_index");
+        user_id_column = localStorage.getItem(EXT_ID + "_user_column_index");
         if (user_id_column == null) {
             user_id_column = 1;
         }
@@ -73,7 +73,7 @@ window.apps.register("enrollment", new function () {
                 done_counter++;
             }
             var columns = row.fields;
-            var td_class = APP_ID + "_" + row.status;
+            var td_class = EXT_ID + "_" + row.status;
             var index = counter != 0 ? counter : "#";
             var title = counter != 0 ? row.status_description : "";
             counter++;
@@ -110,7 +110,7 @@ window.apps.register("enrollment", new function () {
 
         $("#enrollment_clear").click(function () {
             clearRows();
-            reset_app();
+            reset_ext();
             repaintTable();
             $("#enrollment_ids_file").val(null);
         });
@@ -121,7 +121,7 @@ window.apps.register("enrollment", new function () {
 
             file = event.target.files[0];
             reader.readAsText(file);
-            reset_app();
+            reset_ext();
             reader.onload = function (e) {
                 var str = e.target.result;
                 var lines = str.split("\n");
@@ -271,28 +271,28 @@ window.apps.register("enrollment", new function () {
     }
 
     function saveState() {
-        localStorage.setItem(APP_ID + "_rows_count", rows.length);
+        localStorage.setItem(EXT_ID + "_rows_count", rows.length);
         rows.forEach(function (item, i) {
-            localStorage.setItem(APP_ID + "_rows_fields_" + i, join(item.fields));
-            localStorage.setItem(APP_ID + "_rows_status_" + i, item.status);
-            localStorage.setItem(APP_ID + "_rows_status_description_" + i, item.status_description);
+            localStorage.setItem(EXT_ID + "_rows_fields_" + i, join(item.fields));
+            localStorage.setItem(EXT_ID + "_rows_status_" + i, item.status);
+            localStorage.setItem(EXT_ID + "_rows_status_description_" + i, item.status_description);
         });
 
-        localStorage.setItem(APP_ID + "_course_column_index", course_id_column);
-        localStorage.setItem(APP_ID + "_user_column_index", user_id_column);
+        localStorage.setItem(EXT_ID + "_course_column_index", course_id_column);
+        localStorage.setItem(EXT_ID + "_user_column_index", user_id_column);
     }
 
     function readRows() {
-        var count = localStorage.getItem(APP_ID + "_rows_count");
+        var count = localStorage.getItem(EXT_ID + "_rows_count");
 
         if (isNaN(+count)) {
             return [];
         }
         var rows = [];
         for (var i = 0; i < count; i++) {
-            var item = localStorage.getItem(APP_ID + "_rows_fields_" + i);
-            var status = localStorage.getItem(APP_ID + "_rows_status_" + i);
-            var status_description = localStorage.getItem(APP_ID + "_rows_status_description_" + i);
+            var item = localStorage.getItem(EXT_ID + "_rows_fields_" + i);
+            var status = localStorage.getItem(EXT_ID + "_rows_status_" + i);
+            var status_description = localStorage.getItem(EXT_ID + "_rows_status_description_" + i);
 
             if (!!item) {
                 rows[i] = {
@@ -307,9 +307,9 @@ window.apps.register("enrollment", new function () {
     }
 
     function clearRows() {
-        localStorage.setItem(APP_ID + "_rows_count", 0);
-        localStorage.setItem(APP_ID + "_course_column_index", 0);
-        localStorage.setItem(APP_ID + "_user_column_index", 1);
+        localStorage.setItem(EXT_ID + "_rows_count", 0);
+        localStorage.setItem(EXT_ID + "_course_column_index", 0);
+        localStorage.setItem(EXT_ID + "_user_column_index", 1);
     }
 
     function split(line) {
@@ -359,5 +359,5 @@ window.apps.register("enrollment", new function () {
         saveState();
     };
 
-    reset_app();
+    reset_ext();
 });
