@@ -148,6 +148,18 @@
                 })(this));
         },
 
+        getLessons: function (enrolled, teacher) {
+            var params = (!!enrolled ? "enrolled=true&" : "");
+            params += (!!teacher ? "teacher=" + teacher + "&" : "");
+            return new UnPagination("lessons",
+                (function (context) {
+                    return function (page) {
+
+                        return context.getJson("api/lessons?" + params + "page=" + page);
+                    };
+                })(this));
+        },
+
         getMembers: function (group) {
             return new UnPagination("members",
                 (function (context) {
