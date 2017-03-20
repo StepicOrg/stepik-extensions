@@ -136,11 +136,14 @@
             })
         },
 
-        getCourses: function (enrolled) {
+        getCourses: function (enrolled, teacher) {
+            var params = (!!enrolled ? "enrolled=true&" : "");
+            params += (!!teacher ? "teacher=" + teacher + "&" : "");
             return new UnPagination("courses",
                 (function (context) {
                     return function (page) {
-                        return context.getJson("api/courses?enrolled=" + !!enrolled + "&page=" + page);
+
+                        return context.getJson("api/courses?" + params + "page=" + page);
                     };
                 })(this));
         },

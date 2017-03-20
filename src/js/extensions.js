@@ -177,6 +177,8 @@ window.extensions = new function () {
                     $.removeCookie('access_token', {path: '/'});
                     setAnonymousUser();
                 }
+
+                $.cookie("last_user_id", user.id);
             });
         } else {
             setAnonymousUser();
