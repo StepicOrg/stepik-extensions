@@ -39,6 +39,15 @@
         "api-description",
         "api-operation"
       ]
+    },
+    "statistics": {
+      "id": "statistics",
+      "name": "Statistics",
+      "description": "Courses and lessons statistics",
+      "categories": [
+        1
+      ],
+      "need_authorization": true
     }
   },
   "categories": [
