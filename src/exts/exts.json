@@ -40,10 +40,19 @@
         "api-operation"
       ]
     },
-    "statistics": {
-      "id": "statistics",
-      "name": "Statistics",
-      "description": "Courses and lessons statistics",
+    "course-stat": {
+      "id": "course-stat",
+      "name": "Course statistics",
+      "description": "Courses statistics",
+      "categories": [
+        1
+      ],
+      "need_authorization": true
+    },
+    "lesson-stat": {
+      "id": "lesson-stat",
+      "name": "Lesson statistics",
+      "description": "Lesson statistics",
       "categories": [
         1
       ],

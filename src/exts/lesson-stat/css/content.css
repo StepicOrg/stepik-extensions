@@ -1,0 +1,24 @@
+#lesson-stat_lesson {
+    display: flex;
+    min-width: 230px;
+    margin: 15px 0;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#lesson-stat-item-selector {
+    width: 100%;
+}
+
+.lesson-stat_wrapper {
+    display: flex;
+    margin: 15px 0;
+    width: 100%;
+}
+
+.lesson-plot {
+    padding: 5px;
+    width: 600px;
+    height: 300px
+}

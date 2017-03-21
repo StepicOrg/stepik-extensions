@@ -1,0 +1,28 @@
+#course-stat_course {
+    display: flex;
+    min-width: 230px;
+    margin: 15px 0;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#course-stat-item-selector {
+    width: 100%;
+}
+
+.course-stat_wrapper {
+    display: flex;
+    margin: 15px 0;
+    width: 100%;
+}
+
+#course-stat_joined {
+    padding: 5px;
+    width: 600px;
+    height: 300px
+}
+
+#course-stat_lessons {
+    padding: 5px;
+}

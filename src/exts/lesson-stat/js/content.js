@@ -4,59 +4,15 @@
 
 ;'use strict';
 
-window.extensions.register("statistics", new function () {
-    var EXT_ID = "statistics";
+window.extensions.register("lesson-stat", new function () {
+    var EXT_ID = "lesson-stat";
 
     this.init = function () {
-        var selected_kind = !!extensions.getParam("lesson") ? "lesson" : "course";
-
-        $(".tab").click(function (event) {
-            var target = event.currentTarget;
-            if (target != this) {
-                return;
-            }
-            var panel_id = target.getAttribute("data-panel-id");
-
-            $(target).parent(".tabs").find(".tab").each(function (index, tab) {
-                $(tab).removeClass("tab-active");
-                var panel = tab.getAttribute("data-panel-id");
-                $("#" + panel).hide();
-            });
-            $(target).addClass("tab-active");
-            var panel = $("#" + panel_id);
-            panel.show();
-            panel.trigger("panelShow");
-
-            selected_kind = target.id == "statistics-tab-course" ? "course" : "lesson";
-
-            paint();
-        });
-
-        var course_list = $("#statistics_course");
-        course_list.empty();
-
-        var lesson_list = $("#statistics_lesson");
+        var lesson_list = $("#" + EXT_ID + "_lesson");
         lesson_list.empty();
-
-        $("#statistics-tab-" + selected_kind).trigger("click");
 
         stepik.getCurrentUser().done(function (data) {
             var user_id = data.users[0].id;
-            stepik.getCourses({"teacher": user_id})
-                .done(function (courses) {
-                    courses.forEach(function (course) {
-                        course_list.append("<option value='" + course.id + "'>" + course.title + "</option>");
-                    });
-
-                    var course = extensions.getParam("course");
-                    if (!!course) {
-                        course_list.val(course);
-                    }
-
-                    if (selected_kind == "course") {
-                        paint();
-                    }
-                });
 
             stepik.getLessons({"teacher": user_id})
                 .done(function (lessons) {
@@ -69,18 +25,12 @@ window.extensions.register("statistics", new function () {
                         lesson_list.val(lesson);
                     }
 
-                    if (selected_kind == "lesson") {
-                        paint();
-                    }
+                    paint();
                 });
         });
 
         function paint() {
-            if (selected_kind == "course") {
-                draw_course_statistics();
-            } else if (selected_kind == "lesson") {
-                draw_lesson_statistics();
-            }
+            draw_lesson_statistics();
         }
 
         $("<div id='tooltip'></div>").css({
@@ -92,85 +42,7 @@ window.extensions.register("statistics", new function () {
             opacity: 0.80
         }).appendTo("body");
 
-        function draw_course_statistics() {
-            var course = course_list.val();
-
-            if (!!course) {
-                stepik.getLessons({"course": course})
-                    .done(function (lessons) {
-                        var step_count = 0;
-                        var statistics_lessons = $("#statistics_lessons");
-                        statistics_lessons.html("Lessons:<br>");
-                        lessons.forEach(function (lesson) {
-                            step_count += lesson.steps.length;
-                            statistics_lessons.append("<a href='?ext=" + EXT_ID + "&lesson=" + lesson.id + "'>" + lesson.title + "</a><br>");
-                        });
-                        $("#statistics_course_info").text("Lessons: " + lessons.length + ", steps: " + step_count);
-                    });
-
-                stepik.getCourseGrades(course)
-                    .done(function (data) {
-                        var users_joined = {};
-                        data.forEach(function (item) {
-                            var date = new Date(item.date_joined.substring(0, 10)).getTime();
-                            var count = users_joined[date] || 0;
-                            users_joined[date] = ++count;
-                        });
-
-                        var d1 = [];
-
-                        for (var date in users_joined) {
-                            d1.push([date, users_joined[date]]);
-                        }
-
-                        $.plot("#statistics_joined", [{
-                            data: d1,
-                            label: "Users count",
-                            points: {
-                                radius: 3,
-                                symbol: "circle",
-                                show: true
-                            },
-                            lines: {
-                                show: true
-                            },
-                            color: "green"
-                        }], {
-                            yaxis: {
-                                label: "Count",
-                                min: 0,
-                                minTickSize: 1,
-                                tickDecimals: 0
-                            },
-                            xaxis: {
-                                label: "Date",
-                                mode: "time"
-                            },
-
-                            selection: {mode: "x"},
-                            grid: {
-                                hoverable: true
-                            }
-                        });
-
-                        $("#statistics_joined").bind("plothover", function (event, pos, item) {
-                            if (item) {
-                                var date = new Date(item.datapoint[0]).toDateString();
-                                var count = item.datapoint[1];
-
-                                $("#tooltip").html(count + " user" + (count > 1 ? "s" : "") + " joined at " + date)
-                                    .css({top: item.pageY + 5, left: item.pageX + 5})
-                                    .fadeIn(200);
-                            } else {
-                                $("#tooltip").hide();
-                            }
-                        });
-                    });
-            }
-        }
-
         function draw_lesson_statistics() {
-
             var option = lesson_list.find("option:selected");
             var slug = option.attr("data-slug");
             if (!slug) {
@@ -190,7 +62,7 @@ window.extensions.register("statistics", new function () {
                         ticks.push([index, item.title])
                     });
 
-                    $.plot("#statistics_views", [{
+                    $.plot("#" + EXT_ID + "_views", [{
                         data: total_views,
                         label: "Total views",
                         points: {
@@ -247,7 +119,7 @@ window.extensions.register("statistics", new function () {
                         }
                     });
 
-                    $("#statistics_views").bind("plothover", function (event, pos, item) {
+                    $("#" + EXT_ID + "_views").bind("plothover", function (event, pos, item) {
                         if (item) {
                             var count = item.datapoint[1];
 
@@ -261,7 +133,7 @@ window.extensions.register("statistics", new function () {
                 });
 
             function avg(values) {
-                if (values.length == 0) {
+                if (values.length === 0) {
                     return;
                 }
 
@@ -272,7 +144,7 @@ window.extensions.register("statistics", new function () {
 
             function median(values) {
                 var length = values.length;
-                if (length == 0) {
+                if (length === 0) {
                     return;
                 }
                 values.sort(function (a, b) {
@@ -288,10 +160,10 @@ window.extensions.register("statistics", new function () {
 
                 var index = Math.floor(length / 2);
 
-                if (length % 2 != 0) {
+                if (length % 2 !== 0) {
                     return values[index];
                 } else {
-                    return (values[index] + values[index - 1])/2;
+                    return (values[index] + values[index - 1]) / 2;
                 }
             }
 
@@ -307,18 +179,20 @@ window.extensions.register("statistics", new function () {
                     var points = [];
                     var ticks = [];
                     for (var step_id in views) {
-                        var data = steps[step_id];
-                        var index = data[2];
-                        avr_views.push([index, avg(views[step_id])]);
-                        avr_attempts.push([index, avg(attempts[step_id])]);
-                        medians.push([index, median(views[step_id]), 1, 1]);
-                        views[step_id].forEach(function (value) {
+                        var view = views[step_id];
+                        var attempt = attempts[step_id];
+                        var step = steps[step_id];
+                        var index = step[2];
+                        avr_views.push([index, avg(view)]);
+                        avr_attempts.push([index, avg(attempt)]);
+                        medians.push([index, median(view), 1, 1]);
+                        view.forEach(function (value) {
                             points.push([index, value]);
                         });
-                        ticks.push([index, data[0]])
+                        ticks.push([index, step[0]])
                     }
 
-                    $.plot("#statistics_avg_views", [{
+                    $.plot("#" + EXT_ID + "_avg_views", [{
                         data: avr_views,
                         label: "Avg views",
                         bars: {
@@ -342,7 +216,7 @@ window.extensions.register("statistics", new function () {
                         }
                     });
 
-                    $("#statistics_avg_views").bind("plothover", function (event, pos, item) {
+                    $("#" + EXT_ID + "_avg_views").bind("plothover", function (event, pos, item) {
                         if (item) {
                             var count = item.datapoint[1].toFixed(2);
 
@@ -354,7 +228,7 @@ window.extensions.register("statistics", new function () {
                         }
                     });
 
-                    $.plot("#statistics_avg_attempts", [{
+                    $.plot("#" + EXT_ID + "_avg_attempts", [{
                         data: avr_attempts,
                         label: "Avg attempts",
                         bars: {
@@ -378,7 +252,7 @@ window.extensions.register("statistics", new function () {
                         }
                     });
 
-                    $("#statistics_avg_attempts").bind("plothover", function (event, pos, item) {
+                    $("#" + EXT_ID + "_avg_attempts").bind("plothover", function (event, pos, item) {
                         if (item) {
                             var count = item.datapoint[1].toFixed(2);
 
@@ -395,7 +269,7 @@ window.extensions.register("statistics", new function () {
                         ctx.lineTo(x + radius, y);
                     }
 
-                    $.plot("#statistics_quartiles_views", [{
+                    $.plot("#" + EXT_ID + "_quartiles_views", [{
                         data: points,
                         label: "Views",
                         points: {
@@ -409,7 +283,7 @@ window.extensions.register("statistics", new function () {
                             radius: 10,
                             symbol: line,
                             errorbars: "y",
-                            yerr: {show:true, asymmetric:true, upperCap: "-", lowerCap: "-", radius: 10},
+                            yerr: {show: true, asymmetric: true, upperCap: "-", lowerCap: "-", radius: 10},
                             show: true
                         },
                         color: "red"
@@ -429,7 +303,7 @@ window.extensions.register("statistics", new function () {
                         }
                     });
 
-                    $("#statistics_quartiles_views").bind("plothover", function (event, pos, item) {
+                    $("#" + EXT_ID + "_quartiles_views").bind("plothover", function (event, pos, item) {
                         if (item) {
                             var count = item.datapoint[1].toFixed(2);
 
@@ -442,14 +316,6 @@ window.extensions.register("statistics", new function () {
                     });
                 })
         }
-
-        course_list.change(function () {
-            if (course_list.val() === null) {
-                return;
-            }
-
-            location.search = "?ext=" + EXT_ID + "&course=" + course_list.val();
-        });
 
         lesson_list.change(function () {
             if (lesson_list.val() === null) {
