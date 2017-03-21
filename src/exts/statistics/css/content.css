@@ -11,3 +11,19 @@
 #statistics-item-selector {
     width: 100%;
 }
+
+.statistics_wrapper {
+    display: flex;
+    margin: 15px 0;
+    width: 100%;
+}
+
+#statistics_joined,
+#statistics_views,
+#statistics_avg_views,
+#statistics_avg_attempts,
+#statistics_quartiles_views {
+    padding: 5px;
+    width:600px;
+    height:300px
+}

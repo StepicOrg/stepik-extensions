@@ -4,6 +4,8 @@
 (function () {
     'use strict';
 
+    var NO_LIMIT = 0;
+
     function UnPagination(field, query, limit) {
         var status = "pending";
         var members = [];
@@ -13,7 +15,7 @@
 
         function getPage(page) {
             page_count++;
-            if (page_count > limit) {
+            if (limit > 0 &&page_count > limit) {
                 done();
             }
 
@@ -85,6 +87,16 @@
         };
     }
 
+    function asUriParams(parameters) {
+        var params = "";
+        for (var name in parameters) {
+            if (parameters.hasOwnProperty(name)) {
+                params += name + "=" + encodeURIComponent(parameters[name]) + "&";
+            }
+        }
+        return params;
+    }
+
     window.stepik = {
         _host: null,
         getHost: function () {
@@ -136,28 +148,36 @@
             })
         },
 
-        getCourses: function (enrolled, teacher) {
-            var params = (!!enrolled ? "enrolled=true&" : "");
-            params += (!!teacher ? "teacher=" + teacher + "&" : "");
+        getCourses: function (parameters) {
+            var params = asUriParams(parameters);
+
             return new UnPagination("courses",
                 (function (context) {
                     return function (page) {
-
                         return context.getJson("api/courses?" + params + "page=" + page);
                     };
                 })(this));
         },
 
-        getLessons: function (enrolled, teacher) {
-            var params = (!!enrolled ? "enrolled=true&" : "");
-            params += (!!teacher ? "teacher=" + teacher + "&" : "");
+        getLessons: function (parameters) {
+            var params = asUriParams(parameters);
+
             return new UnPagination("lessons",
                 (function (context) {
                     return function (page) {
-
                         return context.getJson("api/lessons?" + params + "page=" + page);
                     };
                 })(this));
+        },
+
+        getCourseGrades: function (course) {
+            var params = (!!course ? "course=" + course + "&" : "");
+            return new UnPagination("course-grades",
+                (function (context) {
+                    return function (page) {
+                        return context.getJson("api/course-grades?" + params + "page=" + page);
+                    };
+                })(this), NO_LIMIT);
         },
 
         getMembers: function (group) {

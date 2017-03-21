@@ -1,16 +1,36 @@
 <div id="statistics-item-selector">
     <div class="tabs">
-        <div data-panel-id="statistics-courses" class="tab tab-active">Courses</div>
-        <div data-panel-id="statistics-lessons" class="tab">Lessons</div>
+        <div id="statistics-tab-course" data-panel-id="statistics-courses" class="tab tab-active">Courses</div>
+        <div id="statistics-tab-lesson" data-panel-id="statistics-lessons" class="tab">Lessons</div>
     </div>
 
-    <div id="statistics-courses" class="panel panel-active">
+    <div id="statistics-courses" class="panel">
         <select id="statistics_course">
         </select>
+
+        <div id="statistics_course_info" class="statistics_wrapper"></div>
+
+        <div class="statistics_wrapper">
+            <div id="statistics_joined"></div>
+        </div>
+
+        <div id="statistics_lessons"></div>
     </div>
 
     <div id="statistics-lessons" class="panel">
         <select id="statistics_lesson">
         </select>
+        <div class="statistics_wrapper">
+            <div id="statistics_views"></div>
+        </div>
+        <div class="statistics_wrapper">
+            <div id="statistics_avg_views"></div>
+        </div>
+        <div class="statistics_wrapper">
+            <div id="statistics_avg_attempts"></div>
+        </div>
+        <div class="statistics_wrapper">
+            <div id="statistics_quartiles_views"></div>
+        </div>
     </div>
 </div>

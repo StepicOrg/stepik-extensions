@@ -13,7 +13,7 @@ window.extensions.register("dashboard", new function () {
         var courses_list = $("#dashboard_course");
         courses_list.empty();
 
-        stepik.getCourses(true)
+        stepik.getCourses({"enrolled": true})
             .done(function (courses) {
                 courses.forEach(function (course) {
                     courses_list.append("<option value='" + course.slug + "'>" + course.title + "</option>");
