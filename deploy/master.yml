@@ -1,0 +1,6 @@
+---
+- hosts: extensions
+  gather_facts: no
+  become: yes
+  roles:
+    - stepik-extensions

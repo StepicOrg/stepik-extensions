@@ -1,0 +1,12 @@
+server {
+    listen 80;
+    server_name ext.stepik.org;
+
+    location / {
+        rewrite ^/(.*) https://ext.stepik.org/$1 permanent;
+    }
+
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://certs.stepic.org;
+    }
+}
