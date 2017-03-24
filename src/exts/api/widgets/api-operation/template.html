@@ -44,25 +44,12 @@
     ${models}
 </div>
 
-<div class="tabs">
-    <div data-panel-id="api-item${item_index}-example${index}-0" class="tab tab-active">Try it</div>
-    <div data-panel-id="api-item${item_index}-example${index}-1" class="tab">JQuery</div>
-    <div data-panel-id="api-item${item_index}-example${index}-2" class="tab">Java</div>
-    <div data-panel-id="api-item${item_index}-example${index}-3" class="tab">Python</div>
+<div id="api-${item_index}-operation${index}-examples-tabs" class="tabs">
+    ${example_tabs}
 </div>
 
-<div id="api-item${item_index}-example${index}-0" class="panel panel-active example">
-
+<div id="api-${item_index}-operation${index}-examples-panels">
+    ${example_panels}
 </div>
-
-<div id="api-item${item_index}-example${index}-1" class="panel example" data-path="examples${path}/jquery.js">
-
-</div>
-
-<div id="api-item${item_index}-example${index}-2" class="panel example" data-path="examples${path}/Main.java">
-
-</div>
-
-<div id="api-item${item_index}-example${index}-3" class="panel example" data-path="examples${path}/main.py">
 
 </div>

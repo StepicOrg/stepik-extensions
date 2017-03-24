@@ -7,6 +7,7 @@
 window.extensions.register("api", new function () {
     var EXT_ID = "api";
     var api_docs = {apis: []};
+    var examples = {};
 
     var swaggerUtils = new function () {
         this.getApiDocs = function (url) {
@@ -25,15 +26,21 @@ window.extensions.register("api", new function () {
     };
 
     this.init = function () {
-        swaggerUtils.getApiDocs("https://stepik.org/api/docs/api-docs/")
-            .done(function (data) {
-                api_docs = data;
-                paint();
-            })
-            .fail(function () {
-                api_docs = {apis: []};
-                paint();
-            });
+        $.get({
+            url: "exts/" + EXT_ID + "/examples/examples.json",
+            dataType: "json"
+        }).done(function (data) {
+            examples = data.examples;
+            swaggerUtils.getApiDocs("https://stepik.org/api/docs/api-docs/")
+                .done(function (data) {
+                    api_docs = data;
+                    paint();
+                })
+                .fail(function () {
+                    api_docs = {apis: []};
+                    paint();
+                });
+        });
 
         function paint() {
             var api_list = $("#api-list");
@@ -223,7 +230,22 @@ window.extensions.register("api", new function () {
                             operation.request = getRequest(operation);
                             operation.response = getResponse(operation, data.models);
                             operation.models = getModels(operation, data.models);
+                            operation.example_tabs = "";
+                            operation.example_panels = "";
 
+                            var example = examples[operation.path];
+                            console.log(examples);
+                            console.log(operation.path);
+                            console.log(example);
+
+                            if (!!example) {
+                                for (var tab_name in example) {
+                                    var panel_id = "api-item${item_index}-operation${index}-examples-tab_name";
+                                    operation.example_tabs += "<div class='tab' data-panel-id='" + panel_id + "'>" + tab_name + "</div>";
+                                    var data_path = example[tab_name].filename;
+                                    operation.example_panels += "<div class='panel' id='" + panel_id + "' data-path='" + data_path + "'></div>";
+                                }
+                            }
                             item.operation_list += extensions.processTemplate("${widget.api-operation}", operation);
                         });
 
@@ -233,7 +255,6 @@ window.extensions.register("api", new function () {
 
                         var description = extensions.processTemplate("${widget.api-description}", item);
                         api_description.append(description);
-
                     });
 
                     $('.panel').on('panelShow', function (event) {
@@ -271,6 +292,8 @@ window.extensions.register("api", new function () {
                         panel.show();
                         panel.trigger("panelShow")
                     });
+
+                    $(".tabs .tab:first-child").trigger("click");
                 }
 
                 $.get({
