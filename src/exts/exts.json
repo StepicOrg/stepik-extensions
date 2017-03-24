@@ -14,7 +14,7 @@
       "name": "Login",
       "description": "Authentication on Stepik.org",
       "categories": [
-        10
+        -1
       ],
       "need_authorization": false
     },
@@ -32,7 +32,7 @@
       "name": "Stepik API",
       "description": "Stepik API description and examples",
       "categories": [
-        10
+        -1
       ],
       "need_authorization": false,
       "widgets": [
@@ -57,6 +57,15 @@
         1
       ],
       "need_authorization": true
+    },
+    "about": {
+      "id": "about",
+      "name": "About",
+      "description": "About Stepik Extensions",
+      "categories": [
+        -1
+      ],
+      "need_authorization": false
     }
   },
   "categories": [
@@ -72,7 +81,7 @@
       "name": "Learning"
     },
     {
-      "id": 10,
+      "id": -1,
       "name": "Others"
     }
   ]
