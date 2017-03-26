@@ -90,6 +90,10 @@ window.extensions = new function () {
                 continue;
             }
 
+            if (extension.hidden) {
+                continue;
+            }
+
             if (!isNaN(category) && extension.categories.indexOf(category) == -1) {
                 continue;
             }
@@ -118,6 +122,7 @@ window.extensions = new function () {
         var extension = exts.getExtension(id);
 
         if (!extension) {
+            loadExtension(exts, "unknown", id);
             return;
         }
 
@@ -141,11 +146,13 @@ window.extensions = new function () {
                         });
                     }
                     extension.content = data;
+                    extension.redirect_ext = redirect_ext;
                     content.append(exts.processTemplate("${widget.extheader} ${content}", extension));
                     extension.init(redirect_ext);
                 }
             });
         } else {
+            extension.redirect_ext = redirect_ext;
             content.append(exts.processTemplate("${widget.extheader} ${content}", extension));
             extension.init(redirect_ext);
         }
