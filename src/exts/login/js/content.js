@@ -12,7 +12,9 @@ window.extensions.register("login", new function () {
         "https://sb.stepic.org/"
     ];
 
-    this.init = function (redirect_ext) {
+    this.init = function (call_stack) {
+        var redirect_ext = call_stack[1];
+
         var domain_selector = $("#domain_selector");
         domains.forEach(function (domain) {
             domain_selector.append("<option value='" + domain + "'>" + domain + "</option>");

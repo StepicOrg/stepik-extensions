@@ -110,7 +110,7 @@ window.extensions = new function () {
         updateUserName();
     }
 
-    function loadExtension(exts, id, redirect_ext) {
+    function loadExtension(exts, id, call_stack) {
         if (id == "logout") {
             stepik.logout();
             location.href = exts.getParam("redirect") || "/";
@@ -119,16 +119,25 @@ window.extensions = new function () {
         var content = $("#content");
         content.empty();
 
+        call_stack = call_stack || [];
+        call_stack.unshift(id);
+
         var extension = exts.getExtension(id);
 
         if (!extension) {
-            loadExtension(exts, "unknown", id);
+            loadExtension(exts, "unknown", call_stack);
             return;
         }
 
         if (extension.need_authorization && $.cookie("access_token") == null) {
-            loadExtension(exts, "login", id);
+            loadExtension(exts, "login", call_stack);
             return;
+        }
+
+        function initExtension() {
+            extension.caller = call_stack[1];
+            content.append(exts.processTemplate("${widget.extheader} ${content}", extension));
+            extension.init(call_stack);
         }
 
         if (!extension.content) {
@@ -146,15 +155,11 @@ window.extensions = new function () {
                         });
                     }
                     extension.content = data;
-                    extension.redirect_ext = redirect_ext;
-                    content.append(exts.processTemplate("${widget.extheader} ${content}", extension));
-                    extension.init(redirect_ext);
+                    initExtension();
                 }
             });
         } else {
-            extension.redirect_ext = redirect_ext;
-            content.append(exts.processTemplate("${widget.extheader} ${content}", extension));
-            extension.init(redirect_ext);
+            initExtension();
         }
 
         $("title").text(title + " - " + extension.name);

@@ -10,7 +10,7 @@ window.extensions.register("dashboard", new function () {
     var ratings = {};
 
     this.init = function () {
-        var courses_list = $("#dashboard_course");
+        var courses_list = $("#" + EXT_ID + "_course");
         courses_list.empty();
 
         stepik.getCourses({"enrolled": true})
@@ -45,7 +45,7 @@ window.extensions.register("dashboard", new function () {
                         var d1 = [];
                         var max = 0;
                         for (var index in counts) {
-                            var user_count = counts[index]
+                            var user_count = counts[index];
                             d1.push([bins[index], user_count]);
                             if (max < user_count) {
                                 max = user_count;
@@ -55,14 +55,14 @@ window.extensions.register("dashboard", new function () {
                         var d2 = [[ratings.rating, 0], [ratings.rating, max]];
 
                         function plotWithOptions() {
-                            $.plot("#dashboard_raiting", [{
+                            $.plot("#" + EXT_ID + "_raiting", [{
                                 data: d1,
                                 label: "Users count",
                                 bars: {
                                     show: true,
                                     barWidth: 10
                                 },
-                                color: "green",
+                                color: "green"
 
                             }, {
                                 data: d2,
@@ -96,7 +96,7 @@ window.extensions.register("dashboard", new function () {
                                 }
                             });
 
-                            $("#dashboard_raiting").bind("plothover", function (event, pos, item) {
+                            $("#" + EXT_ID + "_raiting").bind("plothover", function (event, pos, item) {
                                 if (item) {
                                     var x = item.datapoint[0],
                                         y = item.datapoint[1];
@@ -139,7 +139,7 @@ window.extensions.register("dashboard", new function () {
                         var d2 = [];
                         var d3 = [];
                         var d4 = [];
-                        var max = 0;
+
                         for (var i in timeline) {
                             var item = timeline[i];
                             var date = new Date(item.date).getTime();
@@ -150,7 +150,7 @@ window.extensions.register("dashboard", new function () {
                         }
 
                         function plotWithOptions() {
-                            $.plot("#dashboard_progress", [{
+                            $.plot("#" + EXT_ID + "_progress", [{
                                 data: d1,
                                 label: "Practice",
                                 lines: {
@@ -197,7 +197,7 @@ window.extensions.register("dashboard", new function () {
                                 }
                             });
 
-                            $("#dashboard_progress").bind("plothover", function (event, pos, item) {
+                            $("#" + EXT_ID + "_progress").bind("plothover", function (event, pos, item) {
                                 if (item) {
                                     var x = item.datapoint[0];
                                     var y = Math.round(item.datapoint[1] * 10) / 10;
