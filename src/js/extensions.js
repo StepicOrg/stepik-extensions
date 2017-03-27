@@ -177,7 +177,7 @@ window.extensions = new function () {
 
     function updateUserName() {
         function setAnonymousUser() {
-            $("#user-name").html("<a class='authorize' href='/?ext=login'>Sign in</a>");
+            $("#user-name").html("<a class='authorize' href='/?ext=login'>Login</a>");
             $("#user-avatar").attr("src", "img/default_avatar.png");
         }
 

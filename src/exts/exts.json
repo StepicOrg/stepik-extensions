@@ -3,7 +3,7 @@
     "enrollment": {
       "id": "enrollment",
       "name": "Enrollment",
-      "description": "Enrollment of students on Stepik.org",
+      "description": "Mass-enroll students to your Stepik course",
       "categories": [
         1
       ],
@@ -12,7 +12,7 @@
     "login": {
       "id": "login",
       "name": "Login",
-      "description": "Authentication on Stepik.org",
+      "description": "Login with Stepik",
       "categories": [
         -1
       ],
