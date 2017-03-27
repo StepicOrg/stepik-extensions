@@ -94,6 +94,15 @@
         -1
       ],
       "need_authorization": false
+    },
+    "faq": {
+      "id": "faq",
+      "name": "FAQ",
+      "description": "Frequently asked questions",
+      "categories": [
+        -1
+      ],
+      "need_authorization": false
     }
   },
   "categories": [
