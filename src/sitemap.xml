@@ -10,4 +10,16 @@
     <url>
         <loc>https://ext.stepik.org/?ext=api</loc>
     </url>
+    <url>
+        <loc>https://ext.stepik.org/?ext=develop</loc>
+    </url>
+    <url>
+        <loc>https://ext.stepik.org/?ext=faq</loc>
+    </url>
+    <url>
+        <loc>https://ext.stepik.org/?ext=news</loc>
+    </url>
+    <url>
+        <loc>https://ext.stepik.org/?ext=participants</loc>
+    </url>
 </urlset>
