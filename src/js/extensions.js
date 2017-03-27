@@ -129,6 +129,15 @@ window.extensions = new function () {
             return;
         }
 
+        if (extension.disabled) {
+            if (call_stack.length > 1) {
+                loadExtension(call_stack[1], call_stack.slice(2))
+            } else {
+                location.href = "/";
+            }
+            return;
+        }
+
         if (extension.need_authorization && $.cookie("access_token") == null) {
             loadExtension(exts, "login", call_stack);
             return;

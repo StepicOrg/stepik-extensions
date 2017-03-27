@@ -76,8 +76,17 @@
       ],
       "need_authorization": false,
       "hidden": true
+    },
+    "develop": {
+      "id": "develop",
+      "name": "Development",
+      "description": "About Stepik extensions development",
+      "categories": [
+        -1
+      ],
+      "need_authorization": false,
+      "hidden": false
     }
-
   },
   "categories": [
     {
