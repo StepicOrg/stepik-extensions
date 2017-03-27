@@ -5,24 +5,22 @@
 
 window.extensions.register("login", new function () {
     var EXT_ID = "login";
-    var domains = [
-        "https://stepik.org/",
-        "https://dev.stepik.org/",
-        "https://release.stepik.org/",
-        "https://sb.stepic.org/"
-    ];
 
     this.init = function (call_stack) {
         var redirect_ext = call_stack[1];
 
         var domain_selector = $("#domain_selector");
-        domains.forEach(function (domain) {
-            domain_selector.append("<option value='" + domain + "'>" + domain + "</option>");
-        });
         domain_selector.val(stepik.getHost());
 
         $(".authorize").click(function () {
-            stepik.setHost(domain_selector.val());
+            var domain = domain_selector.val();
+            if (!validate(domain)) {
+                return;
+            }
+            if (domain[domain.length - 1] !== '/') {
+                domain += '/';
+            }
+            stepik.setHost(domain);
 
             if (!!redirect_ext) {
                 stepik.authorize(location.origin + "?ext=" + redirect_ext);
@@ -30,6 +28,17 @@ window.extensions.register("login", new function () {
                 stepik.authorize();
             }
         });
+
+        function validate(url) {
+            var pattern = /^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w\.]*)*\/?$/i;
+            var valid = pattern.test(url);
+            if (!valid) {
+                setFailText("URL not valid. Check URL and try again. if you don't know then use https://stepik.org");
+            } else {
+                setSuccessText("URL is valid");
+            }
+            return valid;
+        }
 
         function setFailText(text) {
             $("#login_message").text(text)
