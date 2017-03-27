@@ -103,6 +103,15 @@
         -1
       ],
       "need_authorization": false
+    },
+    "participants": {
+      "id": "participants",
+      "name": "Participants",
+      "description": "Participants list project",
+      "categories": [
+        -1
+      ],
+      "need_authorization": false
     }
   },
   "categories": [
