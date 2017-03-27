@@ -84,8 +84,16 @@
       "categories": [
         -1
       ],
-      "need_authorization": false,
-      "hidden": false
+      "need_authorization": false
+    },
+    "news": {
+      "id": "news",
+      "name": "Project's news",
+      "description": "The Stepik Extensions news",
+      "categories": [
+        -1
+      ],
+      "need_authorization": false
     }
   },
   "categories": [
