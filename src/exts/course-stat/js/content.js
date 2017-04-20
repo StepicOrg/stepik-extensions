@@ -61,7 +61,11 @@ window.extensions.register("course-stat", new function () {
                     .done(function (data) {
                         var users_joined = {};
                         data.forEach(function (item) {
-                            var date = new Date(item.date_joined.substring(0, 10)).getTime();
+                            var date_joined = item.date_joined;
+                            if (!date_joined) {
+                                return;
+                            }
+                            var date = new Date(date_joined.substring(0, 10)).getTime();
                             var count = users_joined[date] || 0;
                             users_joined[date] = ++count;
                         });
