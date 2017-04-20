@@ -133,18 +133,16 @@ window.extensions.register("lesson-stat", new function () {
                 });
 
             function avg(values) {
-                if (values.length === 0) {
+                if (!values) {
                     return;
                 }
-
                 return values.reduce(function (sum, value) {
                         return sum + value;
                     }, 0) / values.length;
             }
 
             function median(values) {
-                var length = values.length;
-                if (length === 0) {
+                if (!values) {
                     return;
                 }
                 values.sort(function (a, b) {
@@ -158,6 +156,7 @@ window.extensions.register("lesson-stat", new function () {
                     return 0;
                 });
 
+                var length = values.length;
                 var index = Math.floor(length / 2);
 
                 if (length % 2 !== 0) {
@@ -169,9 +168,13 @@ window.extensions.register("lesson-stat", new function () {
 
             stepik.getJson("lesson/" + slug + "/stats-boxplot-json/")
                 .done(function (data) {
-                    var steps = data.steps;
-                    var views = data.stat.views;
-                    var attempts = data.stat.attempts;
+                    if (!data) {
+                        return;
+                    }
+                    var steps = data.steps || [];
+                    var stat = data.stat || [];
+                    var views = stat.views || [];
+                    var attempts = stat.attempts || [];
 
                     var avr_views = [];
                     var avr_attempts = [];
@@ -179,9 +182,9 @@ window.extensions.register("lesson-stat", new function () {
                     var points = [];
                     var ticks = [];
                     for (var step_id in views) {
-                        var view = views[step_id];
-                        var attempt = attempts[step_id];
-                        var step = steps[step_id];
+                        var view = views[step_id] || [];
+                        var attempt = attempts[step_id] || [];
+                        var step = steps[step_id] || [];
                         var index = step[2];
                         avr_views.push([index, avg(view)]);
                         avr_attempts.push([index, avg(attempt)]);
