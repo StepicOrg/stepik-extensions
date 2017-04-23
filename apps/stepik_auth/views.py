@@ -37,7 +37,7 @@ def login(request):
             try:
                 request.session['target'] = reverse(cleaned_data['target'])
             except NoReverseMatch:
-                request.session['target'] = redirect_uri
+                request.session['target'] = reverse('main-index')
 
             params = {'client_id': client_id,
                       'redirect_uri': redirect_uri,
@@ -63,5 +63,23 @@ def logout(request):
     return HttpResponse(content_type="application/json")
 
 
-def authorize():
-    return None
+def authorize(request):
+    if 'error' in request.GET:
+        error = request.GET['error']
+        if error == 'access_denied':
+            text = 'Access denied'
+        else:
+            text = 'Not logged'
+
+        context = {
+            'title': 'Error login',
+            'text': text,
+            'language': request.LANGUAGE_CODE,
+        }
+        return render(request, 'stepik_auth/error_auth.html', context)
+    else:
+        # Get and store access_token
+        target = request.session.get('target', None)
+        if target is None:
+            target = reverse('main-index')
+        return redirect(target)
