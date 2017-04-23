@@ -1,0 +1,25 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}exts/unknown/css/content.css">
+{% endblock %}
+
+{% block content %}
+<div class="unknown-content">
+    <h2>Unknown Extension: {{ extension_id }}</h2>
+
+    <h3>Why is this?</h3>
+    <ul>
+        <li>There has never been an extension</li>
+        <li>Extension has removed</li>
+        <li>Extension has disabled</li>
+    </ul>
+
+    <h3>What can i do?</h3>
+    <ul>
+        <li>Create your extension. <a href="/?ext=develop">Learn more</a></li>
+        <li>Write us about it. <a href="mailto:support@stepik.org">support@stepik.org</a></li>
+        <li>Go to the <a href="/">extension catalog</a></li>
+    </ul>
+</div>
+{% endblock %}

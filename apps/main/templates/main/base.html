@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+    <title>{% if title != None %}{{ title }} - {% endif %}Stepik Extensions</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description"
+          content="Stepik Extensions are adding new functions for Stepik, preserves old functions, lets testing experimental functions. Extend Stepik for yourself.">
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Stepik Extensions"/>
+    <meta property="og:title" content="{{ title }}"/>
+    <meta property="og:url" content="https://ext.stepik.org/"/>
+    <meta property="og:description"
+          content="Stepik Extensions are adding new functions for Stepik, preserves old functions, lets testing experimental functions. Extend Stepik for yourself."/>
+    <meta property="og:image" content="{{ STATIC_URL }}img/image.jpg"/>
+
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/favicon-96x96.png" sizes="96x96">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/ui-components.css">
+
+    <script src="{{ STATIC_URL }}js/jquery-3.1.1.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.cookie.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.flot.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.flot.time.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.flot.errorbars.min.js"></script>
+    <script src="{{ STATIC_URL }}js/stepik-api.js"></script>
+
+    {% block import %}
+    {% endblock %}
+</head>
+<body>
+<div class="header">
+    <a href="/">
+        <div class="logo-name">
+            <img class="logo" src="{{ STATIC_URL }}img/topbar_logo.svg"/>
+            <span class="stepik-name">Stepik Extensions</span>
+        </div>
+    </a>
+    <div class="user">
+        <img id="user-avatar" src="{{ STATIC_URL }}img/default_avatar.png">
+        <span id="user-name">{{ user.stepik_user }}</span>
+        <a id="user-logout" href="{% if user.is_authenticated and user.stepik_user %}/auth/logout/" >Logout{% else %}/auth/login/" >Login{% endif %}</a>
+    </div>
+
+</div>
+
+<div class="main">
+    {% block content %}{% endblock %}
+</div>
+
+<div class="footer">
+    <a href="https://stepik.org">Stepik</a>
+    <a href="/about/">About</a>
+    <a href="/news/">News</a>
+    <a href="/develop/">For developers</a>
+    <a href="/participants/">Participants</a>
+    <a href="/faq/">FAQ</a>
+</div>
+</body>
+</html>

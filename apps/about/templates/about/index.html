@@ -1,0 +1,11 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}about/css/content.css">
+{% endblock %}
+
+{% block content %}
+<div class="about-content">
+    {{ text | safe}}
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}participants/css/content.css">
+{% endblock %}
+
+{% block content %}
+<div class="participants-content">
+    <h2>Участники</h2>
+    {% for participant in participants %}
+    {{ participant }} <br>
+    {% empty %}
+    No participants
+    {% endfor %}
+</div>
+{% endblock %}

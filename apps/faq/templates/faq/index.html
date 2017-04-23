@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}faq/css/content.css">
+{% endblock %}
+
+{% block content %}
+<div class="faq-content">
+    <h2>Вопросы и ответы</h2>
+    {% for topic in topics %}
+    <p>
+        <b>{{ topic.question }}</b><br>
+        {{ topic.answer | safe}}
+    </p>
+    {% empty %}
+    Empty
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}main/css/content.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}main/css/left-bar.css">
+{% endblock %}
+
+{% block content %}
+<div class="left-bar">
+    <ul id="categories">
+        <li><a class="category {% if active_category == None %}category-active{% endif %}" href="/">All</a></li>
+
+        {% for category in categories %}
+            <li><a class="category {% if category == active_category %}category-active{% endif %}"
+                   href="/category/{{ category.pk }}/"> {{ category }} </a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="content" class="main-content">
+    {% for extension in extensions %}
+        <a class="main-ext-item-wrapper" href="/extensions/{{ extension.id }}/">
+            <img class="main-ext-item-logo" src="/static/exts/{{ extension.id }}/img/logo.png"
+                 title="{{ extension.description }}" alt="{{ extension.name }}">
+            <span class="main-ext-item-name" title="{{ extension.description }}">{{ extension.name }}</span>
+        </a>
+    {% empty %}
+        No extensions
+    {% endfor %}
+</div>
+{% endblock %}

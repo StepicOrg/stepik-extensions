@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}news/css/content.css">
+{% endblock %}
+
+{% block content %}
+<div class="news-content">
+    <h2>Новости</h2>
+    {% for topic in topics %}
+    <p>
+        <b>{{ topic.title}}</b> {{ topic.pub_date }}<br>
+        {{ topic.text | safe}}
+    </p>
+    <hr>
+    {% empty %}
+    No content
+    {% endfor %}
+</div>
+{% endblock %}

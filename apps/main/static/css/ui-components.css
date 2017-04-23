@@ -1,0 +1,39 @@
+.tabs {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.tab {
+    display: flex;
+    padding: 5px 5px;
+    border: 1px solid coral;
+    border-bottom-width: 0;
+    border-radius: 5px 5px 0 0;
+    color: darkblue;
+}
+
+.tab:hover {
+    background-color: beige;
+    cursor: pointer;
+}
+
+.tab-active {
+    background-color: coral;
+}
+
+.tab-active:hover {
+    color: blue;
+    background-color: coral;
+}
+
+.panel {
+    display: none;
+    margin: 0;
+    padding: 5px;
+    border: 1px solid coral;
+}
+
+.panel-active {
+    display: flex;
+}
