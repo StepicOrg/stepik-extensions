@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 
 
 class LoginForm(forms.Form):
@@ -12,14 +13,9 @@ class LoginForm(forms.Form):
             host += '/'
             cleaned_data['host'] = host
 
-        hosts = (
-            'https://stepik.org/',
-            'https://dev.stepik.org/',
-            'https://release.stepik.org/',
-            'https://sb.stepic.org/',
-        )
-
-        if host not in hosts:
-            self.add_error('host', 'Input a host which support the Stepik API, https://stepik.org')
+        if host not in settings.STEPIK_HOSTS:
+            message = ('Input a host which support the Stepik API (by default: {default_host})'
+                       .format(default_host=settings.STEPIK_DEFAULT_HOST))
+            self.add_error('host', message)
 
         return cleaned_data

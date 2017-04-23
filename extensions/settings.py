@@ -127,3 +127,14 @@ USE_TZ = True
 
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
+
+# Stepik
+STEPIK_AUTH_CLIENT_ID = 'gTUqSYtRjiT9wnrmCYEWKDR2ZfeDOcdlNN8Q0Avc'
+STEPIK_OAUTH2_AUTHORIZE_CODE_PATH = 'oauth2/authorize/'
+STEPIK_DEFAULT_HOST = 'https://stepik.org/'
+STEPIK_HOSTS = (
+    'https://stepik.org/',
+    'https://dev.stepik.org/',
+    'https://release.stepik.org/',
+    'https://sb.stepic.org/',
+)

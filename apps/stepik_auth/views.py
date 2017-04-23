@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, NoReverseMatch
@@ -12,7 +13,7 @@ def login(request):
         try:
             host = request.session['host']
         except KeyError:
-            host = 'https://stepik.org/'
+            host = settings.STEPIK_DEFAULT_HOST
 
         form = LoginForm(initial={
             'host': host,
@@ -28,7 +29,6 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             cleaned_data = form.cleaned_data
-            client_id = "gTUqSYtRjiT9wnrmCYEWKDR2ZfeDOcdlNN8Q0Avc"
             redirect_uri = '{scheme}://{host}{path}'.format(
                 scheme=request.scheme,
                 host=request.META['HTTP_HOST'],
@@ -39,13 +39,13 @@ def login(request):
             except NoReverseMatch:
                 request.session['target'] = reverse('main-index')
 
-            params = {'client_id': client_id,
+            params = {'client_id': settings.STEPIK_AUTH_CLIENT_ID,
                       'redirect_uri': redirect_uri,
                       'scope': 'write',
                       'response_type': 'code',
                       }
             host = cleaned_data['host']
-            response = redirect(host + 'oauth2/authorize/?' + urlencode(params))
+            response = redirect(host + settings.STEPIK_OAUTH2_AUTHORIZE_CODE_PATH + '?' + urlencode(params))
             request.session['host'] = host
             return response
         else:
