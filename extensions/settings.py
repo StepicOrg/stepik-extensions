@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.template.context_processors.static',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -140,5 +141,5 @@ STEPIK_HOSTS = (
     'https://sb.stepic.org/',
 )
 
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
