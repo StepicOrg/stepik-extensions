@@ -1,4 +1,17 @@
 # Stepik Extensions
+## Install server
+```
+mkvirtualenv -p `which python3` extensions
+make init
+```
+
+## Run server
+
+```
+workon extensions
+python manage.py runserver
+```
+
 ## Extension
 
 Расширение представляет из себя набор шаблонов, стилей и кода js, выполняющие определенную функцию.

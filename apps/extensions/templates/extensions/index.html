@@ -1,8 +1,8 @@
 {% extends "main/base.html" %}
 
 {% block import %}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}main/css/content.css">
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}main/css/left-bar.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}extensions/css/content.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}extensions/css/left-bar.css">
 {% endblock %}
 
 {% block content %}
@@ -17,12 +17,12 @@
     </ul>
 </div>
 
-<div id="content" class="main-content">
+<div id="content" class="extensions-content">
     {% for extension in extensions %}
-        <a class="main-ext-item-wrapper" href="/extensions/{{ extension.id }}/">
-            <img class="main-ext-item-logo" src="/static/exts/{{ extension.id }}/img/logo.png"
+        <a class="extensions-ext-item-wrapper" href="/extensions/{{ extension.id }}/">
+            <img class="extensions-ext-item-logo" src="{{ extension.logo.url }}"
                  title="{{ extension.description }}" alt="{{ extension.name }}">
-            <span class="main-ext-item-name" title="{{ extension.description }}">{{ extension.name }}</span>
+            <span class="extensions-ext-item-name" title="{{ extension.description }}">{{ extension.name }}</span>
         </a>
     {% empty %}
         No extensions

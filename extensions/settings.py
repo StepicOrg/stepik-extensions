@@ -32,12 +32,13 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'apps.about',
-    'apps.stepik_auth',
     'apps.develop',
+    'apps.extensions',
     'apps.faq',
     'apps.main',
     'apps.news',
     'apps.participants',
+    'apps.stepik_auth',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,3 +139,6 @@ STEPIK_HOSTS = (
     'https://release.stepik.org/',
     'https://sb.stepic.org/',
 )
+
+MEDIA_ROOT = 'media/'
+MEDIA_URL = '/media/'

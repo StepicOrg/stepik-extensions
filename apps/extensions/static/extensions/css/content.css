@@ -1,4 +1,4 @@
-.main-content {
+.extensions-content {
     display: flex;
     padding: 0;
     margin-top: 10px;
@@ -10,7 +10,7 @@
     justify-content: flex-start;
 }
 
-.main-ext-item-wrapper {
+.extensions-ext-item-wrapper {
     border: 1px solid lightgray;
     border-radius: 5px;
     width: 120px;
@@ -23,14 +23,14 @@
     text-decoration: none;
 }
 
-.main-ext-item-logo {
+.extensions-ext-item-logo {
     display: block;
     margin: auto;
     width: 100px;
     height: 100px;
 }
 
-.main-ext-item-name {
+.extensions-ext-item-name {
     padding: 5px;
     font-size: 15px;
     margin: auto;
@@ -39,7 +39,7 @@
     flex-grow: 1;
 }
 
-.main-ext-item-wrapper:hover {
+.extensions-ext-item-wrapper:hover {
     border-color: black;
 }
 
