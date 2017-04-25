@@ -49,3 +49,15 @@
     max-width: 800px;
     padding: 15px;
 }
+
+.extensions-upload-content {
+    display: flex;
+    margin: auto;
+}
+
+.extensions-uploaded-content {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    text-align: center;
+}

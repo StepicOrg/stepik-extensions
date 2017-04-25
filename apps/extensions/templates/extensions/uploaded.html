@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<div>
-    <p>Successfully upload</p>
+<div class="extensions-uploaded-content">
+    <p>Extension upload successfully!</p>
+    <img src="{{ extension.logo.url }}" width="100%" height="100%">
     <p>{{ extension.name}}</p>
 </div>
 {% endblock %}
