@@ -41,7 +41,11 @@
     <div class="user">
         <img id="user-avatar" src="{{ STATIC_URL }}img/default_avatar.png">
         <span id="user-name">{{ user.stepik_user }}</span>
-        <a id="user-logout" href="{% if user.is_authenticated and user.stepik_user %}/auth/logout/" >Logout{% else %}/auth/login/" >Login{% endif %}</a>
+        <a id="user-logout" href="{% if user.is_authenticated %}/auth/logout/">Logout
+            {% else %}/auth/login/" >Login{% endif %}</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'extensions-upload' %}">Upload extension</a>
+        {% endif %}
     </div>
 
 </div>

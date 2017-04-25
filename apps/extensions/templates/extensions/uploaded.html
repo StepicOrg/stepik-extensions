@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}extensions/css/content.css">
+{% endblock %}
+
+{% block content %}
+<div>
+    <p>Successfully upload</p>
+    <p>{{ extension.name}}</p>
+</div>
+{% endblock %}

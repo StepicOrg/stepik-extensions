@@ -1,3 +1,32 @@
-from django.test import TestCase
+from apps.stepik_auth.utils import check_package_json_1_0
 
-# Create your tests here.
+
+def test_check_package_json_1_0_empty():
+    errors = check_package_json_1_0({})
+    assert "package.json: required key not provided @ data['" in errors
+
+
+def test_check_package_json_1_0_wrong_id():
+    errors = check_package_json_1_0({
+        'id': '1ext',
+        'name': 'Ext',
+        'description': 'description',
+        "logo": "relative/path/to/logo",
+        "allow_anonymous_user": True,
+        "version": "1.0",
+        "package_version": "1.0"
+    })
+    assert 'package.json: Only small ' in errors
+
+
+def test_check_package_json_1_0_correct():
+    errors = check_package_json_1_0({
+        'id': 'ext',
+        'name': 'Ext',
+        'description': 'description',
+        "logo": "relative/path/to/logo",
+        "allow_anonymous_user": True,
+        "version": "1.0",
+        "package_version": "1.0"
+    })
+    assert errors is None

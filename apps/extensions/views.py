@@ -1,5 +1,7 @@
+from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 
+from apps.extensions.forms import ExtensionUploadForm
 from apps.extensions.models import Category, Extension
 
 
@@ -46,3 +48,46 @@ def show_category(request, pk=None):
 
 def show_all_extensions(request):
     return show_category(request)
+
+
+def upload(request):
+    if request.method == 'GET':
+        form = ExtensionUploadForm()
+        context = {
+            'title': 'Upload Extension',
+            'form': form,
+            'language': request.LANGUAGE_CODE,
+        }
+        return render(request, 'extensions/upload.html', context)
+    elif request.method == 'POST':
+        form = ExtensionUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            source = cleaned_data['source']
+            package_json = cleaned_data['package.json']
+            data = {
+                'id': package_json['id'],
+                'name': package_json['name'],
+                'description': package_json['description'],
+                'version': package_json['version'],
+                'allow_anonymous_user': package_json['allow_anonymous_user'],
+                'source': source
+            }
+            extension = Extension(**data)
+            extension.save()
+            logo = ContentFile(cleaned_data['logo'])
+            extension.logo.save(content=logo, name=data['id'] + '.logo')
+
+            context = {
+                'title': 'Upload Extension',
+                'extension': extension,
+                'language': request.LANGUAGE_CODE,
+            }
+            return render(request, 'extensions/uploaded.html', context)
+        else:
+            context = {
+                'title': 'Upload Extension',
+                'form': form,
+                'language': request.LANGUAGE_CODE,
+            }
+            return render(request, 'extensions/upload.html', context)

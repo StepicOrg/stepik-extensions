@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}extensions/css/content.css">
+{% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'extensions-upload' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.source.errors }}
+    <label for="id_source">Extension package (zip):</label> {{ form.source }}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    <input type="submit" value="Submit"/>
+</form>
+
+{% endblock %}

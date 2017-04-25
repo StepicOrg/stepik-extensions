@@ -1,4 +1,8 @@
+import os
+import random
+
 from django.contrib.auth.models import Group
+from django.core.files.storage import default_storage
 from django.db import models
 
 
@@ -13,18 +17,30 @@ class Category(models.Model):
         return self.name
 
 
+def _get_upload_path(instance, filename):
+    path = os.path.join('extensions',
+                        '{:02X}'.format(random.randint(0, 255)),
+                        '{:08X}'.format(random.randint(0, 2 ** 31 - 1)),
+                        '{:08X}'.format(random.randint(0, 2 ** 31 - 1)))
+    if default_storage.exists(path):
+        return _get_upload_path(instance, filename)
+    return path
+
+
 # noinspection PyClassHasNoInit
 class Extension(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=20)
     description = models.TextField(max_length=1024)
-    categories = models.ManyToManyField(Category, related_name='extensions')
-    user_groups = models.ManyToManyField(Group, related_name='extensions')
+    version = models.CharField(max_length=15)
+    categories = models.ManyToManyField(Category, related_name='extensions', blank=True)
+    user_groups = models.ManyToManyField(Group, related_name='extensions', blank=True)
     allow_anonymous_user = models.BooleanField(default=False)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     is_removed = models.BooleanField(default=False)
-    logo = models.ImageField(upload_to='extensions/%Y/%m/%d')
+    logo = models.ImageField(upload_to=_get_upload_path)
+    source = models.ImageField(upload_to=_get_upload_path)
 
     def __str__(self):
         return self.name
