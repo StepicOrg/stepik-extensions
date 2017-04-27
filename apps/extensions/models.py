@@ -12,6 +12,7 @@ class Category(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     is_removed = models.BooleanField(default=False)
+    position = models.IntegerField(default=-1)
 
     def __str__(self):
         return self.name
@@ -40,7 +41,7 @@ class Extension(models.Model):
     update_date = models.DateTimeField(auto_now=True)
     is_removed = models.BooleanField(default=False)
     logo = models.ImageField(upload_to=_get_upload_path)
-    source = models.ImageField(upload_to=_get_upload_path)
+    source = models.FileField(upload_to=_get_upload_path)
 
     def __str__(self):
         return self.name

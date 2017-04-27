@@ -5,21 +5,36 @@ from apps.extensions.forms import ExtensionUploadForm
 from apps.extensions.models import Category, Extension
 
 
-def get_extension(request, extension):
-    # Remove this block on May 1, 2017
-    if extension in ['about', 'develop', 'faq', 'news', 'participants']:
-        return redirect('/' + extension, permanent=True)
+def get_extension(request, extension_id, run=False):
+    # Remove this block on June 1, 2017
+    if extension_id in ['about', 'develop', 'faq', 'news', 'participants']:
+        return redirect('/' + extension_id, permanent=True)
 
+    categories = Category.objects.filter(is_removed=False).order_by('position').all()
     context = {
-        'title': 'Unknown: ' + extension,
-        'extension_id': extension,
+        'title': 'Unknown: ' + extension_id,
         'language': request.LANGUAGE_CODE,
+        'categories': categories,
+        'run': run,
     }
-    return render(request, 'extensions/unknown.html', context)
+
+    try:
+        extension = Extension.objects.prefetch_related('categories').get(pk=extension_id)
+        context['extension'] = extension
+        try:
+            category = extension.categories.filter(is_removed=False).order_by('position').all()[0]
+            context['active_category'] = category
+            context['title'] = extension.name
+        except IndexError:
+            pass
+        return render(request, 'extensions/extension.html', context)
+    except Extension.DoesNotExist:
+        context['extension_id'] = extension_id
+        render(request, 'extensions/unknown.html', context)
 
 
 def show_category(request, pk=None):
-    categories = Category.objects.filter(is_removed=False).all()
+    categories = Category.objects.filter(is_removed=False).order_by('position').all()
 
     if pk is not None:
         category = Category.objects.prefetch_related('extensions').get(pk=pk)
@@ -91,3 +106,11 @@ def upload(request):
                 'language': request.LANGUAGE_CODE,
             }
             return render(request, 'extensions/upload.html', context)
+
+
+def run_extension(request, extension_id):
+    return get_extension(request, extension_id, run=True)
+
+
+def running_extension(request, extension_id):
+    return get_extension(request, extension_id)

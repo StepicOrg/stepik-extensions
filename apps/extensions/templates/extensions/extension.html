@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+
+{% block import %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}extensions/css/content.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}extensions/css/left-bar.css">
+{% endblock %}
+
+{% block content %}
+<div class="left-bar">
+    <ul id="categories">
+        <li><a class="category {% if active_category == None %}category-active{% endif %}" href="/">All</a></li>
+
+        {% for category in categories %}
+        <li><a class="category {% if category == active_category %}category-active{% endif %}"
+               href="/category/{{ category.pk }}/"> {{ category }} </a></li>
+        {% endfor %}
+    </ul>
+</div>
+<div id="content" class="extension-content">
+    <div class="ext-header">
+        <img class="ext-header-logo" src="{{ extension.logo.url }}">
+        <div class="ext-header-text">
+            <div class="ext-header-name">{{ extension.name }}</div>
+            <div class="ext-header-description">{{ extension.description }}</div>
+        </div>
+    </div>
+
+    {% if run %}
+        <iframe class="extensions-frame" src="{% url 'extensions-running' extension.id %}">
+            Sorry, you browser don't support iframes.
+        </iframe>
+    {% else %}
+        <div>
+            <p>Warning! When you push the run button, you run JavaScript code which will used your account for work with Stepik</p>
+            <a href="{% url 'extensions-run' extension.id %}">Run extension</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
