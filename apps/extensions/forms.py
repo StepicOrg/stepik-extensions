@@ -16,8 +16,8 @@ class ExtensionUploadForm(forms.Form):
         source = cleaned_data['source']
 
         try:
-            with ZipFile(source) as myzip:
-                with myzip.open('package.json') as package:
+            with ZipFile(source) as zip_package:
+                with zip_package.open('package.json') as package:
                     content = str(package.read(), encoding='UTF-8')
                     try:
                         package_json = json.loads(content)
@@ -38,7 +38,7 @@ class ExtensionUploadForm(forms.Form):
                                 self.add_error('source', "Extension exists with same id")
                             except Extension.DoesNotExist:
                                 cleaned_data['package.json'] = package_json
-                                with myzip.open(package_json['logo']) as file:
+                                with zip_package.open(package_json['logo']) as file:
                                     cleaned_data['logo'] = file.read()
 
         except BadZipFile:

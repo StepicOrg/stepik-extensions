@@ -1,9 +1,11 @@
 import os
-import random
 
+from django.conf import settings
 from django.contrib.auth.models import Group
-from django.core.files.storage import default_storage
 from django.db import models
+
+# noinspection PyClassHasNoInit
+from apps.extensions.utils import get_upload_path
 
 
 # noinspection PyClassHasNoInit
@@ -25,16 +27,6 @@ class Category(models.Model):
         return self.extensions.filter(is_removed=False).order_by('name').all()
 
 
-def _get_upload_path(instance, filename):
-    path = os.path.join('extensions',
-                        '{:02X}'.format(random.randint(0, 255)),
-                        '{:08X}'.format(random.randint(0, 2 ** 31 - 1)),
-                        '{:08X}'.format(random.randint(0, 2 ** 31 - 1)))
-    if default_storage.exists(path):
-        return _get_upload_path(instance, filename)
-    return path
-
-
 # noinspection PyClassHasNoInit
 class Extension(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
@@ -47,8 +39,9 @@ class Extension(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     is_removed = models.BooleanField(default=False)
-    logo = models.ImageField(upload_to=_get_upload_path)
-    source = models.FileField(upload_to=_get_upload_path)
+    logo = models.ImageField(upload_to=get_upload_path)
+    source = models.FileField(upload_to=get_upload_path)
+    extract_path = models.CharField(max_length=255, editable=False, blank=True)
 
     def __str__(self):
         return self.name
@@ -59,3 +52,25 @@ class Extension(models.Model):
     @staticmethod
     def get_extensions():
         return Extension.objects.filter(is_removed=False).order_by('name').all()
+
+    def get_source_file_url(self, path):
+        """
+        :param path: absolute path file in extension package
+        :return: URL for source file
+        """
+        if len(path) == 0:
+            path = '/'
+        if path[0] != '/':
+            path = '/' + path
+        return settings.MEDIA_URL + self.extract_path + os.path.abspath(path)
+
+    def get_source_file_path(self, path):
+        """
+        :param path: absolute path file in extension package
+        :return: path for source file
+        """
+        if len(path) == 0:
+            path = '/'
+        if path[0] != '/':
+            path = '/' + path
+        return os.path.sep.join((settings.MEDIA_ROOT, self.extract_path, os.path.abspath(path)))

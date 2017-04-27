@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 
-import apps.extensions.models
+import apps.extensions.utils
 
 
 class Migration(migrations.Migration):
@@ -16,12 +16,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='extension',
             name='source',
-            field=models.ImageField(default='', upload_to=apps.extensions.models._get_upload_path),
+            field=models.ImageField(default='', upload_to=apps.extensions.utils.get_upload_path),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='extension',
             name='logo',
-            field=models.ImageField(upload_to=apps.extensions.models._get_upload_path),
+            field=models.ImageField(upload_to=apps.extensions.utils.get_upload_path),
         ),
     ]

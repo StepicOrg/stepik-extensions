@@ -1,8 +1,15 @@
+import mimetypes
+from zipfile import ZipFile
+
+import os
+from django.conf import settings
 from django.core.files.base import ContentFile
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 
 from apps.extensions.forms import ExtensionUploadForm
 from apps.extensions.models import Category, Extension
+from apps.extensions.utils import get_upload_path
 
 
 def get_extension(request, extension_id, run=False):
@@ -30,7 +37,7 @@ def get_extension(request, extension_id, run=False):
         return render(request, 'extensions/extension.html', context)
     except Extension.DoesNotExist:
         context['extension_id'] = extension_id
-        render(request, 'extensions/unknown.html', context)
+        return render(request, 'extensions/unknown.html', context)
 
 
 def show_category(request, pk=None):
@@ -86,12 +93,18 @@ def upload(request):
                 'description': package_json['description'],
                 'version': package_json['version'],
                 'allow_anonymous_user': package_json['allow_anonymous_user'],
-                'source': source
+                'source': source,
+                'extract_path': os.path.join(get_upload_path(), package_json['id']),
             }
             extension = Extension(**data)
             extension.save()
             logo = ContentFile(cleaned_data['logo'])
             extension.logo.save(content=logo, name=data['id'] + '.logo')
+
+            # FIXME ATTENTION! Vulnerability: big file after extract
+            with ZipFile(source) as zip_package:
+                path = os.path.join(settings.MEDIA_ROOT, extension.extract_path)
+                zip_package.extractall(path=path)
 
             context = {
                 'title': 'Upload Extension',
@@ -112,5 +125,18 @@ def run_extension(request, extension_id):
     return get_extension(request, extension_id, run=True)
 
 
-def running_extension(request, extension_id):
-    return get_extension(request, extension_id)
+def running_extension(request, extension_id, path):
+    try:
+        extension = Extension.objects.prefetch_related('categories').get(pk=extension_id)
+        if path is None or path == '':
+            path = '/index.html'
+        if path[-1] == '/':
+            path += 'index.html'
+
+        absolute_path = extension.get_source_file_path(path)
+        with open(absolute_path, 'rb') as file:
+            content = file.read()
+            content_type = mimetypes.guess_type(absolute_path)
+            return HttpResponse(content=content, content_type=content_type)
+    except (Extension.DoesNotExist, FileNotFoundError):
+        raise Http404('File not found\n Extension: {0}\nPath:{1}'.format(extension_id, path))

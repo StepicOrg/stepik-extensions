@@ -2,6 +2,7 @@ from django import forms
 from django.conf import settings
 
 
+# noinspection PyClassHasNoInit
 class LoginForm(forms.Form):
     host = forms.URLField(label='Хост:')
     target = forms.CharField(widget=forms.HiddenInput, required=False)

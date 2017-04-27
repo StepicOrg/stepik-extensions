@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 
+# noinspection PyClassHasNoInit
 class Develop(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField('date published')

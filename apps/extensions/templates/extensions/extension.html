@@ -26,7 +26,7 @@
     </div>
 
     {% if run %}
-        <iframe class="extensions-frame" src="{% url 'extensions-running' extension.id %}">
+        <iframe class="extensions-frame" src="{% url 'extensions-running' extension.id '' %}">
             Sorry, you browser don't support iframes.
         </iframe>
     {% else %}

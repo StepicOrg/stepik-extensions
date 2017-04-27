@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 
+# noinspection PyClassHasNoInit
 class Faq(models.Model):
     question = models.TextField()
     answer = models.TextField()
