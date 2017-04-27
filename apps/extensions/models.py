@@ -17,6 +17,13 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_categories():
+        return Category.objects.filter(is_removed=False).order_by('position').all()
+
+    def get_extensions(self):
+        return self.extensions.filter(is_removed=False).order_by('name').all()
+
 
 def _get_upload_path(instance, filename):
     path = os.path.join('extensions',
@@ -45,3 +52,10 @@ class Extension(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_primary_category(self):
+        return self.categories.filter(is_removed=False).order_by('position').all()[0]
+
+    @staticmethod
+    def get_extensions():
+        return Extension.objects.filter(is_removed=False).order_by('name').all()

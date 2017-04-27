@@ -10,7 +10,7 @@ def get_extension(request, extension_id, run=False):
     if extension_id in ['about', 'develop', 'faq', 'news', 'participants']:
         return redirect('/' + extension_id, permanent=True)
 
-    categories = Category.objects.filter(is_removed=False).order_by('position').all()
+    categories = Category.get_categories()
     context = {
         'title': 'Unknown: ' + extension_id,
         'language': request.LANGUAGE_CODE,
@@ -22,7 +22,7 @@ def get_extension(request, extension_id, run=False):
         extension = Extension.objects.prefetch_related('categories').get(pk=extension_id)
         context['extension'] = extension
         try:
-            category = extension.categories.filter(is_removed=False).order_by('position').all()[0]
+            category = extension.get_primary_category()
             context['active_category'] = category
             context['title'] = extension.name
         except IndexError:
@@ -34,17 +34,17 @@ def get_extension(request, extension_id, run=False):
 
 
 def show_category(request, pk=None):
-    categories = Category.objects.filter(is_removed=False).order_by('position').all()
+    categories = Category.get_categories()
 
     if pk is not None:
         category = Category.objects.prefetch_related('extensions').get(pk=pk)
         if category is not None:
-            extensions = category.extensions.filter(is_removed=False).order_by('name').all()
+            extensions = category.get_extensions()
         else:
             extensions = []
     else:
         category = None
-        extensions = Extension.objects.filter(is_removed=False).order_by('name').all()
+        extensions = Extension.get_extensions()
 
     if category is not None:
         title = category.name
