@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'extensions.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db/db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'develop/db/db.sqlite3'),
     }
 }
 
@@ -127,7 +127,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_ROOT = 'static'
+STATIC_ROOT = 'production/static'
 STATIC_URL = '/static/'
 
 # Stepik
@@ -141,5 +141,7 @@ STEPIK_HOSTS = (
     'https://sb.stepic.org/',
 )
 
-MEDIA_ROOT = 'media'
+PROJECT_PATH = os.path.abspath(os.path.dirname(__name__))
+
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'develop/media')
 MEDIA_URL = '/media/'
