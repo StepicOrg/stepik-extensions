@@ -27,10 +27,26 @@ backend:
 	@$(PYTHON) manage.py migrate
 
 frontend:
+	@$(shell) sudo npm i -g npm
+	@$(shell) sudo npm install -g --save-dev babel-cli@6.24.1
+	@$(shell) npm install --save-dev babel-preset-es2015@6.24.1
+	@$(shell) npm install requirejs-babel-plugin@0.4.0
 	@$(shell) bower install bootstrap#3.3.7
+	@$(shell) bower install requirejs#2.3.3
 
-run_debug:
+prepare_run: translate-apps-js
+	@$(shell) cp -u bower_components/requirejs/require.js apps/main/static/imports/libs/require.js
+	@$(shell) cp -u bower_components/jquery/dist/jquery.min.js apps/main/static/imports/libs/jquery.min.js
+
+run_debug: backend frontend prepare_run
 	@$(PYTHON) manage.py runserver
 
-prepare_production: init
+prepare_production: init zip-packages translate-apps-js
 	@$(PYTHON) manage.py collectstatic --noinput
+	@$(shell) cp -u bower_components/requirejs/require.js production/static/imports/libs/require.js
+
+zip-packages:
+	@$(shell) bash scripts/zip-packages.sh
+
+translate-apps-js:
+	@$(shell) bash scripts/translate-apps-js.sh
