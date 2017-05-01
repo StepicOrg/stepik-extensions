@@ -1,4 +1,4 @@
-import 'jquery.min'
+import "jquery.min";
 
 export let $ = function () {
     return window.$;

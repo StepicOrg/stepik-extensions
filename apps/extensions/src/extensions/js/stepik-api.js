@@ -1,4 +1,4 @@
-import {$} from '../../imports/libs/jquery'
+import {$} from "../../imports/js/jquery";
 
 export let stepik = (function () {
     const {get, post} = $;
@@ -14,7 +14,7 @@ export let stepik = (function () {
 
         function getPage(page) {
             page_count++;
-            if (limit > 0 &&page_count > limit) {
+            if (limit > 0 && page_count > limit) {
                 done();
             }
 

@@ -35,15 +35,19 @@ frontend:
 	@$(shell) bower install requirejs#2.3.3
 
 prepare_run: translate-apps-js
-	@$(shell) cp -u bower_components/requirejs/require.js apps/main/static/imports/libs/require.js
-	@$(shell) cp -u bower_components/jquery/dist/jquery.min.js apps/main/static/imports/libs/jquery.min.js
+	@$(shell) mkdir -p apps/main/static/imports/js/
+	@$(shell) mkdir -p apps/main/static/imports/css/
+	@$(shell) cp -u bower_components/requirejs/require.js apps/main/static/imports/js/require.js
+	@$(shell) cp -u bower_components/jquery/dist/jquery.min.js apps/main/static/imports/js/jquery.min.js
+	@$(shell) cp -u bower_components/bootstrap/dist/js/bootstrap.min.js apps/main/static/imports/js/bootstrap.min.js
+	@$(shell) cp -u bower_components/bootstrap/dist/css/bootstrap.min.css apps/main/static/imports/css/bootstrap.min.css
+	@$(shell) cp -u bower_components/bootstrap/dist/css/bootstrap-theme.min.css apps/main/static/imports/css/bootstrap-theme.min.css
 
 run_debug: backend frontend prepare_run
 	@$(PYTHON) manage.py runserver
 
 prepare_production: init zip-packages translate-apps-js
 	@$(PYTHON) manage.py collectstatic --noinput
-	@$(shell) cp -u bower_components/requirejs/require.js production/static/imports/libs/require.js
 
 zip-packages:
 	@$(shell) bash scripts/zip-packages.sh

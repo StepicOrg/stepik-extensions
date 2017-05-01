@@ -1,5 +1,4 @@
 import os
-
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.db import models
@@ -42,7 +41,7 @@ class Extension(models.Model):
     logo = models.ImageField(upload_to=get_upload_path)
     source = models.FileField(upload_to=get_upload_path)
     extract_path = models.CharField(max_length=255, editable=False, blank=True)
-    imports_path = models.URLField(default='imports/libs/')
+    imports_path = models.URLField(default='imports/')
 
     def __str__(self):
         return self.name

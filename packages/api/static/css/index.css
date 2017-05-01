@@ -1,16 +1,4 @@
-.api-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-
 #api-list {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    list-style: none;
-    margin: 10px 0;
-    padding: 0;
     border: 1px solid lightgray;
     border-radius: 5px;
     overflow: scroll;
@@ -20,13 +8,6 @@
 
 #api-list .api-path:nth-child(odd) {
     background-color: beige;
-}
-
-.api-path {
-    display: block;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
 }
 
 #api-list .api-path:hover {

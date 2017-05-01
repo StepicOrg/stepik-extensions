@@ -57,7 +57,7 @@
 }
 
 .api-params td, .api-params th {
-    border: 1px solid coral;
+    border: 1px solid #555;
 }
 
 .api-params th {
@@ -72,4 +72,3 @@
 .api-parameter-values {
     min-width: 100px;
 }
-

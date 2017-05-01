@@ -154,7 +154,7 @@ def running_extension(request, extension_id, path):
         extension = Extension.objects.prefetch_related('categories').get(pk=extension_id)
         imports_path = extension.imports_path
         if path and imports_path and path.startswith(extension.imports_path):
-            return redirect(settings.STATIC_URL + 'imports/libs/' + path[len(imports_path):])
+            return redirect(settings.STATIC_URL + 'imports/' + path[len(imports_path):])
 
         if path is None or path == '':
             path = '/index.html'

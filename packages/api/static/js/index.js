@@ -1,4 +1,4 @@
-define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _swagger, _jquery) {
+define(["exports", "swagger", "../../imports/js/jquery", "components_factory"], function (exports, _swagger, _jquery, _components_factory) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -40,7 +40,10 @@ define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _
             api_docs.apis.forEach(function (api_item) {
                 var title = api_item.description ? api_item.description : "";
                 var newLi = document.createElement('li');
-                newLi.innerText = api_item.path;
+                var a = document.createElement('a');
+                a.innerText = api_item.path;
+                a.setAttribute('href', '#');
+                newLi.appendChild(a);
                 newLi.setAttribute('class', 'api-path');
                 newLi.setAttribute('title', title);
                 api_list.appendChild(newLi);
@@ -84,53 +87,57 @@ define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _
 
             function drawApi(data) {
                 api_description.innerHTML = '';
+                var api_description_html = '';
+
                 data.apis.forEach(function (item, item_index) {
-                    item.operation_list = "";
+                    if (item['operations'].length === 0) {
+                        return;
+                    }
+                    var operation_list = "<h2>" + item.description + "</h2>";
 
                     function getValues(type, parameter) {
                         var values = [];
-                        if (!!parameter.minimum) {
-                            values.push("minimum: " + parameter.minimum);
+                        if (!!parameter['minimum']) {
+                            values.push("minimum: " + parameter['minimum']);
                         }
 
-                        if (!!parameter.maximum) {
-                            values.push("maximum: " + parameter.maximum);
+                        if (!!parameter['maximum']) {
+                            values.push("maximum: " + parameter['maximum']);
                         }
 
-                        if (!!parameter.uniqueItems) {
+                        if (!!parameter['uniqueItems']) {
                             values.push("Unique items");
                         }
 
                         if (type === "enum" || type === "choice") {
-                            values.push(parameter.enum.join(", "));
+                            values.push(parameter['enum'].join(", "));
                         }
 
                         return values.join("<br>");
                     }
 
                     function getParams(parameters, show_location) {
-                        var params = "";
+                        var params = '';
                         if (!!parameters) {
                             for (var id in parameters) {
+                                if (!parameters.hasOwnProperty(id)) {
+                                    continue;
+                                }
                                 var parameter = parameters[id];
                                 var required = parameter.required ? "*" : "";
                                 var type = parameter.type || parameter.dataType || parameter["$ref"];
                                 var values = getValues(type, parameter);
                                 var defaultValue = parameter.defaultValue ? parameter.defaultValue : "";
                                 var format = parameter.format ? parameter.format : "";
-                                var _description = parameter.description ? parameter.description : "";
-                                params += "<tr>";
-                                params += "<td>" + required + "</td>";
-                                params += "<td>" + (parameter.name || id) + "</td>";
-                                params += "<td>" + type + "</td>";
-                                params += "<td>" + format + "</td>";
-                                params += "<td class='api-parameter-values'>" + values + "</td>";
-                                params += "<td>" + defaultValue + "</td>";
+                                var description = parameter.description ? parameter.description : "";
+                                var name = parameter.name || id;
+                                params += "<tr>\n                                    <td>" + required + "</td>\n                                    <td>" + name + "</td>\n                                    <td>" + type + "</td>\n                                    <td>" + format + "</td>\n                                    <td class='api-parameter-values'>" + values + "</td>\n                                    <td>" + defaultValue + "</td>\n                                    ";
+
                                 if (show_location) {
-                                    params += "<td>" + parameter.paramType + "</td>";
+                                    params += "<td>" + parameter['paramType'] + "</td>";
                                 }
-                                params += "<td>" + _description + "</td>";
-                                params += "</tr>\n";
+
+                                params += "<td>" + description + "</td>\n                                        </tr>\n                                    ";
                             }
                         }
 
@@ -150,8 +157,8 @@ define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _
                     }
 
                     function getRequest(operation) {
-                        var request = operation.method + " " + operation.path + " HTTP/1.1<br>";
-                        request += "Host: " + operation.basePath;
+                        var request = operation.method + " " + item.path + " HTTP/1.1<br>";
+                        request += "Host: " + data.basePath;
 
                         return request;
                     }
@@ -183,6 +190,9 @@ define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _
                         var properties_list = model.properties;
                         var properties = [];
                         for (var name in properties_list) {
+                            if (!properties_list.hasOwnProperty(name)) {
+                                continue;
+                            }
                             var property = properties_list[name];
                             var value = void 0;
                             var type = property.type;
@@ -191,7 +201,7 @@ define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _
                                 var format = type === "string" ? type : property.format;
                                 var defValue = property.defaultValue;
                                 if ((typeof defValue === "undefined" ? "undefined" : _typeof(defValue)) === "object") {
-                                    defValue = JSON.stringify(defValue, ' ', 4);
+                                    defValue = JSON.stringify(defValue);
                                 } else if (!!defValue && (type === "string" || format === "string")) {
                                     defValue = '"' + defValue + '"';
                                 }
@@ -218,9 +228,12 @@ define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _
                         return "<code><pre>" + getModelPresentation(models, operation.type) + "</pre></code>";
                     }
 
-                    function getModels(models) {
+                    function getModels(models, show_location) {
                         var result = "";
                         for (var id in models) {
+                            if (!models.hasOwnProperty(id)) {
+                                continue;
+                            }
                             result += "<b>" + id + "</b><br>";
                             result += "<table class='api-params'>";
                             result += "<tr>";
@@ -230,9 +243,12 @@ define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _
                             result += "<th>Format</th>";
                             result += "<th>Values</th>";
                             result += "<th>Default value</th>";
+                            if (show_location) {
+                                result += "<th>Location</th>";
+                            }
                             result += "<th>Description</th>";
                             result += "</tr>";
-                            result += getParams(models[id].properties);
+                            result += getParams(models[id].properties, show_location);
                             result += "</table>";
                             result += "<br>";
                         }
@@ -240,77 +256,60 @@ define(["exports", "swagger", "../../imports/libs/jquery"], function (exports, _
                         return result;
                     }
 
-                    item.operations.forEach(function (operation, index) {
-                        operation.path = item.path;
-                        operation.basePath = data.basePath;
-                        operation.params = getParams(operation.parameters, true);
-                        operation.item_index = item_index;
-                        operation.index = index;
-                        operation.responseMessages = getResponseMessages(operation);
-                        operation.request = getRequest(operation);
-                        operation.response = getResponse(operation, data.models);
-                        operation.models = getModels(data.models);
-                        operation.example_tabs = "";
-                        operation.example_panels = "";
+                    item['operations'].forEach(function (operation, index) {
+                        operation_list += "\n                        <div class=\"api-item-operation\">\n                            <div class=\"api-item-method api-item-method-" + operation.method + "\">" + operation.method + "</div>\n                            <div class=\"api-item-path\">" + data.basePath + item.path + "</div>\n                        </div>\n                        <div class=\"api-item-notes\">" + operation['notes'] + "</div>\n                        ";
 
-                        var example = examples[operation.path];
+                        var operation_tabs = [{
+                            caption: 'Parameters',
+                            content: getModels({
+                                'Parameters': {
+                                    properties: operation['parameters']
+                                }
+                            }, true)
+                        }, {
+                            caption: 'Request',
+                            content: getRequest(operation)
+                        }, {
+                            caption: 'Response',
+                            content: getResponse(operation, data.models)
+                        }, {
+                            caption: 'Error code',
+                            content: getResponseMessages(operation)
+                        }, {
+                            caption: 'Models',
+                            content: getModels(data.models)
+                        }];
+                        operation_tabs['prefix'] = "api-item" + item_index + "-operation-" + index + "-";
+                        operation_tabs['active_index'] = 0;
+
+                        operation_list += (0, _components_factory.create_tabs)(operation_tabs);
+
+                        var example = examples[item.path];
 
                         if (!!example) {
-                            for (var tab_name in example) {
-                                var panel_id = "api-item${item_index}-operation${index}-examples-tab_name";
-                                operation.example_tabs += "<div class='tab' data-panel-id='" + panel_id + "'>" + tab_name + "</div>";
-                                var data_path = example[tab_name].filename;
-                                operation.example_panels += "<div class='panel' id='" + panel_id + "' data-path='" + data_path + "'></div>";
+                            var examples_tabs = [];
+                            for (var caption in example) {
+                                if (!example.hasOwnProperty(caption)) {
+                                    continue;
+                                }
+                                examples_tabs.push({
+                                    caption: caption,
+                                    content: example[caption].filename
+                                });
                             }
+                            examples_tabs['prefix'] = "api-item" + item_index + "-operation-" + index + "-examples-tab";
+                            examples_tabs['active_index'] = 0;
+                            operation_list += (0, _components_factory.create_tabs)(examples_tabs);
                         }
-                        item.operation_list += extensions.processTemplate("${widget.api-operation}", operation);
                     });
 
-                    if (item.operation_list === "") {
-                        item.operation_list = "Nothing";
+                    if (operation_list === "") {
+                        operation_list = "Nothing";
                     }
 
-                    var description = extensions.processTemplate("${widget.api-description}", item);
-                    api_description.append(description);
+                    api_description_html += operation_list;
                 });
-
-                (0, _jquery.$)('.panel').on('panelShow', function (event) {
-                    var target = event.currentTarget;
-                    if (target !== this) {
-                        return;
-                    }
-                    var url = target.getAttribute("data-path");
-                    if (!url) {
-                        return;
-                    }
-                    get({
-                        url: url
-                    }).done(function (data) {
-                        (0, _jquery.$)(target).text(data);
-                    }).fail(function () {
-                        (0, _jquery.$)(target).text("Not Found");
-                    });
-                });
-
-                (0, _jquery.$)(".tab").click(function (event) {
-                    var target = event.currentTarget;
-                    if (target !== this) {
-                        return;
-                    }
-                    var panel_id = target.getAttribute("data-panel-id");
-
-                    (0, _jquery.$)(target).parent(".tabs").find(".tab").each(function (index, tab) {
-                        (0, _jquery.$)(tab).removeClass("tab-active");
-                        var panel = tab.getAttribute("data-panel-id");
-                        (0, _jquery.$)("#" + panel).hide();
-                    });
-                    (0, _jquery.$)(target).addClass("tab-active");
-                    var panel = (0, _jquery.$)("#" + panel_id);
-                    panel.show();
-                    panel.trigger("panelShow");
-                });
-
-                (0, _jquery.$)(".tabs .tab:first-child").trigger("click");
+                api_description.innerHTML = api_description_html;
             }
 
             get({

@@ -1,5 +1,5 @@
-define(['exports', 'jquery.min'], function (exports) {
-    'use strict';
+define(["exports", "jquery.min"], function (exports) {
+    "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
