@@ -1,21 +1,20 @@
-/**
- * Created by meanmail on 25.02.17.
- */
-(function () {
-    'use strict';
+import {$} from '../../imports/libs/jquery'
 
-    var NO_LIMIT = 0;
+export let stepik = (function () {
+    const {get, post} = $;
+
+    let NO_LIMIT = 0;
 
     function UnPagination(field, query, limit) {
-        var status = "pending";
-        var members = [];
-        var page_count = 0;
+        let status = "pending";
+        let members = [];
+        let page_count = 0;
         limit = limit || 10;
         getPage(1, this);
 
         function getPage(page) {
             page_count++;
-            if (limit > 0 && page_count > limit) {
+            if (limit > 0 &&page_count > limit) {
                 done();
             }
 
@@ -31,9 +30,9 @@
                 .fail(fail)
         }
 
-        var onDone = [];
-        var onFail = [];
-        var onAlways = [];
+        let onDone = [];
+        let onFail = [];
+        let onAlways = [];
 
         function done() {
             onDone.forEach(function (fulfilled) {
@@ -58,18 +57,18 @@
         }
 
         this.done = function (done) {
-            if (status == "fulfilled") {
+            if (status === "fulfilled") {
                 done(members);
-            } else if (status == "pending") {
+            } else if (status === "pending") {
                 onDone.push(done);
             }
             return this;
         };
 
         this.fail = function (fail) {
-            if (status == "rejected") {
+            if (status === "rejected") {
                 fail(members);
-            } else if (status == "pending") {
+            } else if (status === "pending") {
                 onFail.push(fail);
             }
 
@@ -77,9 +76,9 @@
         };
 
         this.always = function (always) {
-            if (status == "fulfilled" || status == "rejected") {
+            if (status === "fulfilled" || status === "rejected") {
                 always(members);
-            } else if (status == "pending") {
+            } else if (status === "pending") {
                 onAlways.push(always);
             }
 
@@ -88,16 +87,14 @@
     }
 
     function asUriParams(parameters) {
-        var params = "";
-        for (var name in parameters) {
-            if (parameters.hasOwnProperty(name)) {
-                params += name + "=" + encodeURIComponent(parameters[name]) + "&";
-            }
+        let params = "";
+        for (let name of parameters) {
+            params += name + "=" + encodeURIComponent(parameters[name]) + "&";
         }
         return params;
     }
 
-    window.stepik = {
+    return {
         _host: null,
         getHost: function () {
             if (!this._host) {
@@ -121,10 +118,10 @@
         },
 
         getJson: function (url) {
-            var access_token = $.cookie("access_token");
-            var token_type = $.cookie("token_type");
+            let access_token = $.cookie("access_token");
+            let token_type = $.cookie("token_type");
 
-            return $.get({
+            return get({
                 url: this.getHost() + url,
                 dataType: "json",
                 headers: {
@@ -134,10 +131,10 @@
         },
 
         postJson: function (url, data) {
-            var access_token = $.cookie("access_token");
-            var token_type = $.cookie("token_type");
+            let access_token = $.cookie("access_token");
+            let token_type = $.cookie("token_type");
 
-            return $.post({
+            return post({
                 url: this.getHost() + url,
                 dataType: "json",
                 data: JSON.stringify(data),
@@ -149,7 +146,7 @@
         },
 
         getCourses: function (parameters) {
-            var params = asUriParams(parameters);
+            let params = asUriParams(parameters);
 
             return new UnPagination("courses",
                 (function (context) {
@@ -160,7 +157,7 @@
         },
 
         getLessons: function (parameters) {
-            var params = asUriParams(parameters);
+            let params = asUriParams(parameters);
 
             return new UnPagination("lessons",
                 (function (context) {
@@ -171,7 +168,7 @@
         },
 
         getCourseGrades: function (course) {
-            var params = (!!course ? "course=" + course + "&" : "");
+            let params = (!!course ? "course=" + course + "&" : "");
             return new UnPagination("course-grades",
                 (function (context) {
                     return function (page) {
@@ -203,11 +200,11 @@
         },
 
         authorize: function (state, code) {
-            var redirect_uri = location.origin;
-            var client_id = "gTUqSYtRjiT9wnrmCYEWKDR2ZfeDOcdlNN8Q0Avc";
+            let redirect_uri = location.origin;
+            let client_id = "gTUqSYtRjiT9wnrmCYEWKDR2ZfeDOcdlNN8Q0Avc";
             if (!code) {
                 state = state || location.origin;
-                var encoded_state = btoa(state + "::" + Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
+                let encoded_state = btoa(state + "::" + Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
                 $.cookie("state", encoded_state);
                 window.location.href = this.getHost() + "oauth2/authorize/" +
                     "?client_id=" + client_id +
@@ -216,7 +213,7 @@
                     "&state=" + encoded_state +
                     "&response_type=code";
             } else {
-                return $.post({
+                return post({
                     url: this.getHost() + "oauth2/token/",
                     dataType: "json",
                     data: {
@@ -226,14 +223,14 @@
                         redirect_uri: redirect_uri
                     }
                 }).done(function (data) {
-                    if (!!state && state == decodeURIComponent($.cookie("state"))) {
-                        var expires = data.expires_in;
+                    if (!!state && state === decodeURIComponent($.cookie("state"))) {
+                        let expires = data.expires_in;
                         $.cookie("access_token", data.access_token, {expires: expires});
                         $.cookie("refresh_token", data.refresh_token, {expires: expires});
                         $.cookie("token_type", data.token_type, {expires: expires});
                         $.cookie("scope", data.scope, {expires: expires});
-                        var decoded_state = atob(state);
-                        var separator_pos = decoded_state.indexOf("::");
+                        let decoded_state = atob(state);
+                        let separator_pos = decoded_state.indexOf("::");
                         location.href = decoded_state.substring(0, separator_pos)
                     } else {
                         location.href = location.origin;
