@@ -1,0 +1,9 @@
+{
+  "id": "org.stepik.extensions.api",
+  "name": "Stepik API",
+  "description": "Stepik API description and examples",
+  "logo": "static/img/logo.png",
+  "allow_anonymous_user": true,
+  "version": "1.0",
+  "package_version": "1.0"
+}
