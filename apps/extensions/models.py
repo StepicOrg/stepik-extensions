@@ -42,6 +42,7 @@ class Extension(models.Model):
     logo = models.ImageField(upload_to=get_upload_path)
     source = models.FileField(upload_to=get_upload_path)
     extract_path = models.CharField(max_length=255, editable=False, blank=True)
+    imports_path = models.URLField(default='imports/libs/')
 
     def __str__(self):
         return self.name
@@ -60,9 +61,14 @@ class Extension(models.Model):
         """
         if len(path) == 0:
             path = '/'
-        if path[0] != '/':
-            path = '/' + path
-        return settings.MEDIA_URL + self.extract_path + os.path.abspath(path)
+        else:
+            if path[0] != '/':
+                path = '/' + path
+            path = os.path.abspath(path)
+
+        url = '/'.join([settings.MEDIA_URL, self.extract_path, path])
+        url = url.replace('//', '/')
+        return url
 
     def get_source_file_path(self, path):
         """
@@ -71,6 +77,11 @@ class Extension(models.Model):
         """
         if len(path) == 0:
             path = '/'
-        if path[0] != '/':
-            path = '/' + path
-        return os.path.sep.join((settings.MEDIA_ROOT, self.extract_path, os.path.abspath(path)))
+        else:
+            if path[0] != '/':
+                path = '/' + path
+            path = os.path.abspath(path)
+
+        source_file_path = os.path.sep.join((settings.MEDIA_ROOT, self.extract_path, path))
+        source_file_path = source_file_path.replace('//', '/')
+        return source_file_path
