@@ -20,11 +20,11 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^about/', include('apps.about.urls')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^auth/', include('apps.stepik_auth.urls')),
     url(r'^develop/', include('apps.develop.urls')),
     url(r'^faq/', include('apps.faq.urls')),
     url(r'^news/', include('apps.news.urls')),
     url(r'^participants/', include('apps.participants.urls')),
-    url(r'^auth/', include('apps.stepik_auth.urls')),
     url(r'^', include('apps.main.urls')),
-    url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
