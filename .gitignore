@@ -1,8 +1,8 @@
 .idea/*
 !.idea/runConfigurations/
 !.idea/codeStyleSettings.xml
-/media/
-/db/
 /.cache/
 /bower_components/
-/static/
+/production/
+/develop/
+/node_modules/
