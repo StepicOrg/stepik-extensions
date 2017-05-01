@@ -112,3 +112,10 @@
     border: none;
     margin: 10px 0;
 }
+
+.extensions-upload-line {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+}

@@ -6,8 +6,12 @@
 
 {% block content %}
 <div class="extensions-uploaded-content">
-    <p>Extension upload successfully!</p>
-    <img src="{{ extension.logo.url }}" width="100%" height="100%">
-    <p>{{ extension.name}}</p>
+    <p>Successfully!</p>
+    {% for extension in extensions %}
+    <p class="extensions-upload-line">
+        <img src="{{ extension.logo.url }}" width="100px">{{ extension.name}}
+    </p>
+    <hr>
+    {% endfor %}
 </div>
 {% endblock %}
