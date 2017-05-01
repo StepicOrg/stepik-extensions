@@ -1,4 +1,5 @@
 import mimetypes
+import shutil
 from zipfile import ZipFile
 
 import os
@@ -28,10 +29,10 @@ def get_extension(request, extension_id, run=False):
     try:
         extension = Extension.objects.prefetch_related('categories').get(pk=extension_id)
         context['extension'] = extension
+        context['title'] = extension.name
         try:
             category = extension.get_primary_category()
             context['active_category'] = category
-            context['title'] = extension.name
         except IndexError:
             pass
         return render(request, 'extensions/extension.html', context)
@@ -86,29 +87,38 @@ def upload(request):
         if form.is_valid():
             cleaned_data = form.cleaned_data
             source = cleaned_data['source']
-            package_json = cleaned_data['package.json']
-            data = {
-                'id': package_json['id'],
-                'name': package_json['name'],
-                'description': package_json['description'],
-                'version': package_json['version'],
-                'allow_anonymous_user': package_json['allow_anonymous_user'],
-                'source': source,
-                'extract_path': os.path.join(get_upload_path(), package_json['id']),
-            }
-            extension = Extension(**data)
-            extension.save()
-            logo = ContentFile(cleaned_data['logo'])
-            extension.logo.save(content=logo, name=data['id'] + '.logo')
+            packages = cleaned_data['packages']
+            extensions = []
 
-            # FIXME ATTENTION! Vulnerability: big file after extract
-            with ZipFile(source) as zip_package:
-                path = os.path.join(settings.MEDIA_ROOT, extension.extract_path)
-                zip_package.extractall(path=path)
+            for key in packages:
+                package = packages[key]
+                package_json = package['package.json']
+                data = {
+                    'id': package_json['id'],
+                    'name': package_json['name'],
+                    'description': package_json['description'],
+                    'version': package_json['version'],
+                    'allow_anonymous_user': package_json['allow_anonymous_user'],
+                    'source': source,
+                    'extract_path': os.path.join(get_upload_path(), package_json['id']),
+                }
+                extension = Extension(**data)
+                extension.save()
+                logo = ContentFile(package['logo'])
+                extension.logo.save(content=logo, name=data['id'] + '.logo')
+                extensions += [extension]
+                # FIXME ATTENTION! Vulnerability: big file after extract
+                with ZipFile(source) as zip_package:
+                    path = os.path.join(settings.MEDIA_ROOT, extension.extract_path)
+                    package_root = package['path']
+                    if not package_root:
+                        zip_package.extractall(path=path)
+                    else:
+                        extract_package(zip_package, package_root, path)
 
             context = {
                 'title': 'Upload Extension',
-                'extension': extension,
+                'extensions': extensions,
                 'language': request.LANGUAGE_CODE,
             }
             return render(request, 'extensions/uploaded.html', context)
@@ -121,6 +131,20 @@ def upload(request):
             return render(request, 'extensions/upload.html', context)
 
 
+def extract_package(zip_package, package_root, path):
+    package_path = package_root + '/'
+    package_path_len = len(package_path)
+    for member in zip_package.namelist():
+        if member.startswith(package_path):
+            target_path = os.path.join(path, member[package_path_len:])
+            upperdirs = os.path.dirname(target_path)
+            if upperdirs and not os.path.exists(upperdirs):
+                os.makedirs(upperdirs)
+            with zip_package.open(member, 'r') as source, \
+                    open(target_path, "wb") as target:
+                shutil.copyfileobj(source, target)
+
+
 def run_extension(request, extension_id):
     return get_extension(request, extension_id, run=True)
 
@@ -128,6 +152,10 @@ def run_extension(request, extension_id):
 def running_extension(request, extension_id, path):
     try:
         extension = Extension.objects.prefetch_related('categories').get(pk=extension_id)
+        imports_path = extension.imports_path
+        if path and imports_path and path.startswith(extension.imports_path):
+            return redirect(settings.STATIC_URL + 'imports/libs/' + path[len(imports_path):])
+
         if path is None or path == '':
             path = '/index.html'
         if path[-1] == '/':
@@ -136,7 +164,7 @@ def running_extension(request, extension_id, path):
         absolute_path = extension.get_source_file_path(path)
         with open(absolute_path, 'rb') as file:
             content = file.read()
-            content_type = mimetypes.guess_type(absolute_path)
+            content_type, _ = mimetypes.guess_type(absolute_path)
             return HttpResponse(content=content, content_type=content_type)
     except (Extension.DoesNotExist, FileNotFoundError):
         raise Http404('File not found\n Extension: {0}\nPath:{1}'.format(extension_id, path))
