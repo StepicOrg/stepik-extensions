@@ -1,5 +1,5 @@
-import {$} from "../../imports/js/jquery";
-import {cookie} from "../../imports/js/jquery.cookie";
+import {$} from "../../imports/jquery/js/jquery";
+import {cookie} from "../../imports/jquery/js/jquery.cookie";
 
 export let stepik = (function () {
     const {get, post} = $;

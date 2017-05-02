@@ -1,4 +1,4 @@
-define(["exports", "../../imports/js/jquery", "../../imports/js/jquery.cookie"], function (exports, _jquery, _jquery2) {
+define(["exports", "../../imports/jquery/js/jquery", "../../imports/jquery/js/jquery.cookie"], function (exports, _jquery, _jquery2) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
