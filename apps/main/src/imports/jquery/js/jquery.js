@@ -1,4 +1,4 @@
-import "../../imports/js/jquery.min";
+import "../../../imports/jquery/js/jquery.min";
 
 export let $ = function () {
     return window.$;

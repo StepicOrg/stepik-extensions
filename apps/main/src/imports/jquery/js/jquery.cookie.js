@@ -1,4 +1,4 @@
-import {$} from "../../imports/js/jquery";
+import {$} from "../../../imports/jquery/js/jquery";
 
 let pluses = /\+/g;
 
@@ -35,7 +35,7 @@ function read(s, converter) {
     return $.isFunction(converter) ? converter(value) : value;
 }
 
-export let cookie = $.cookie = function (key, value, options) {
+export let cookie = $.cookie = (key, value, options) => {
 
     // Write
 
@@ -87,7 +87,7 @@ export let cookie = $.cookie = function (key, value, options) {
 
 cookie.defaults = {};
 
-$.removeCookie = function (key, options) {
+$.removeCookie = (key, options) => {
     if ($.cookie(key) === undefined) {
         return false;
     }
