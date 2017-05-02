@@ -1,5 +1,6 @@
+import "../../imports/js/domReady!";
 import {swagger} from "swagger";
-import {$} from "../../imports/js/jquery";
+import {$} from "../../imports/jquery/js/jquery";
 import {create_tabs} from "components_factory";
 
 export let init = function () {

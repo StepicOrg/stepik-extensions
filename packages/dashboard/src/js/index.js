@@ -1,4 +1,5 @@
-import {$} from "../../imports/js/jquery";
+import "../../imports/js/domReady!";
+import {$} from "../../imports/jquery/js/jquery";
 import {stepik} from "../../imports/js/stepik-api";
 
 export let init = (function () {

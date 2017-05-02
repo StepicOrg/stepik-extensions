@@ -1,4 +1,4 @@
-define(["exports", "../../imports/js/jquery", "../../imports/js/stepik-api"], function (exports, _jquery, _stepikApi) {
+define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../imports/js/domReady!"], function (exports, _jquery, _stepikApi) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {

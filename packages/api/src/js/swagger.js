@@ -1,4 +1,4 @@
-import {$} from "../../imports/js/jquery";
+import {$} from "../../imports/jquery/js/jquery";
 
 export let swagger = {
     getApiDocs: function (url) {

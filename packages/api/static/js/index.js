@@ -1,4 +1,4 @@
-define(["exports", "swagger", "../../imports/js/jquery", "components_factory"], function (exports, _swagger, _jquery, _components_factory) {
+define(["exports", "swagger", "../../imports/jquery/js/jquery", "components_factory", "../../imports/js/domReady!"], function (exports, _swagger, _jquery, _components_factory) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
