@@ -6,7 +6,7 @@ from zipfile import ZipFile, BadZipFile
 from django import forms
 
 from apps.extensions.models import Extension
-from apps.extensions.utils import check_package_json
+from apps.extensions.utils import check_package_json, EXTENSION_JSON
 
 
 # noinspection PyClassHasNoInit
@@ -23,15 +23,15 @@ class ExtensionUploadForm(forms.Form):
             packages = dict()
             try:
                 with ZipFile(source) as zip_package:
-                    if 'package.json' in zip_package.namelist():
-                        package, ext_id = self.check_package(zip_package, cleaned_data, 'package.json')
+                    if EXTENSION_JSON in zip_package.namelist():
+                        package, ext_id = self.check_package(zip_package, cleaned_data, EXTENSION_JSON)
                         if package is not None:
                             packages[ext_id] = package
                     else:
                         for filename in zip_package.namelist():
                             path = filename.split('/')
                             depth = len(path)
-                            if depth == 2 and path[1] == 'package.json':
+                            if depth == 2 and path[1] == EXTENSION_JSON:
                                 package, ext_id = self.check_package(zip_package, cleaned_data, filename)
                                 if package is None:
                                     break
@@ -75,7 +75,7 @@ class ExtensionUploadForm(forms.Form):
                             return None, None
                         except Extension.DoesNotExist:
                             package = dict()
-                            package['package.json'] = package_json
+                            package[EXTENSION_JSON] = package_json
                             path = filename.split('/')
                             logo_filename = '/'.join(path[0:-1] + [package_json['logo']])
                             with zip_package.open(logo_filename) as file:

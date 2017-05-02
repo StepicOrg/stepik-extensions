@@ -5,6 +5,8 @@ import os
 from django.core.files.storage import default_storage
 from voluptuous import Schema, Required, All, Length, MultipleInvalid, Invalid
 
+EXTENSION_JSON = 'extension.json'
+
 
 def get_upload_path(instance=None, filename=None):
     path = os.path.join('extensions',
@@ -21,8 +23,8 @@ ID_PATTERN = re.compile(r'^\w+(\.\w+)*$')
 
 def id_check(ext_id):
     if not ID_PATTERN.match(ext_id):
-        raise Invalid('Only small Latin letters, numbers and underscore, '
-                      'the first character is not a digit')
+        raise Invalid('Only small Latin letters, numbers, underscore and dots, '
+                      'but dot is not first and last. Between a dot and next dot must be character.')
 
 
 package_json_1_0_schema = Schema({
@@ -40,7 +42,7 @@ def check_package_json_1_0(package_json):
     try:
         package_json_1_0_schema(package_json)
     except MultipleInvalid as e:
-        return ['package.json: {0}'.format(e)]
+        return ['{0}: {1}'.format(EXTENSION_JSON, e)]
 
 
 def check_package_json(package_json):

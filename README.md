@@ -167,3 +167,8 @@ make translate-apps-js
 ### Подготовка проекта к деплою
 
 `make prepare_production`
+
+### Запуск тестов
+```
+py.test apps/<app_name>/tests.py
+```

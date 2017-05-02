@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect
 
 from apps.extensions.forms import ExtensionUploadForm
 from apps.extensions.models import Category, Extension
-from apps.extensions.utils import get_upload_path
+from apps.extensions.utils import get_upload_path, EXTENSION_JSON
 
 
 def get_extension(request, extension_id, run=False):
@@ -92,7 +92,7 @@ def upload(request):
 
             for key in packages:
                 package = packages[key]
-                package_json = package['package.json']
+                package_json = package[EXTENSION_JSON]
                 data = {
                     'id': package_json['id'],
                     'name': package_json['name'],
