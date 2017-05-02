@@ -1,0 +1,28 @@
+#course {
+    display: flex;
+    min-width: 230px;
+    margin: 15px 0;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#item-selector {
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    margin: 15px 0;
+    width: 100%;
+}
+
+#joined {
+    padding: 5px;
+    width: 600px;
+    height: 300px
+}
+
+#lessons {
+    padding: 5px;
+}

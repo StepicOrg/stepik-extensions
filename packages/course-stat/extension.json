@@ -1,0 +1,9 @@
+{
+  "id": "org.stepik.extensions.stat.course",
+  "name": "Course statistics",
+  "description": "Courses statistics",
+  "logo": "static/img/logo.png",
+  "allow_anonymous_user": false,
+  "version": "1.0",
+  "package_version": "1.0"
+}
