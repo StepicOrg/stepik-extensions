@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="static/css/index.css">
+    <link rel="stylesheet" href="imports/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="imports/bootstrap/css/bootstrap-theme.min.css">
+
+    <script data-main="static/js/index.js" src="imports/requirejs/js/require.js"></script>
+    <script src="imports/jquery/js/jquery.min.js"></script>
+    <script src="imports/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="buttons">
+    <div id="as-single-id" class="btn btn-default">Add student</div>
+    <div id="enroll" class="btn btn-default">Send</div>
+    <div id="clear" class="btn btn-danger">Clear</div>
+</div>
+<span>Import records from CSV file. Values should be comma separated.</span>
+<div class="file_selector">
+    <input id="ids_file" type="file" class="file" accept="text/*" data-preview-file-type="text"/>
+</div>
+
+<form class="form-inline">
+    <div class="form-group">
+        <label for="course-id-column">Course ID column</label>
+        <select id="course-id-column" class="selectpicker" data-live-search="true" data-width="auto"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="user-id-column">User ID column</label>
+        <select id="user-id-column" class="selectpicker" data-live-search="true" data-width="auto"></select>
+    </div>
+</form>
+
+<div class="info"></div>
+<div class="table-wrapper">
+    <table class="table">
+    </table>
+</div>
+</body>
+</html>

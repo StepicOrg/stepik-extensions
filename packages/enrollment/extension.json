@@ -1,0 +1,9 @@
+{
+  "id": "org.stepik.extensions.enrollment",
+  "name": "Enrollment",
+  "description": "Mass-enroll students to your Stepik course",
+  "logo": "static/img/logo.png",
+  "allow_anonymous_user": false,
+  "version": "1.0",
+  "package_version": "1.0"
+}
