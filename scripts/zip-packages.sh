@@ -24,6 +24,7 @@ do
         cp ${file} ../production/tmp/${file}
     done
     cd ../production/tmp/
+    rm ../packages/${package}.zip
     zip -r -D -9 ../packages/${package}.zip ${package}
     cd "${packages_dir}"
 done
