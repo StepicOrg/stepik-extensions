@@ -1,4 +1,5 @@
 import {$} from "../../imports/js/jquery";
+import {cookie} from "../../imports/js/jquery.cookie";
 
 export let stepik = (function () {
     const {get, post} = $;
@@ -88,7 +89,10 @@ export let stepik = (function () {
 
     function asUriParams(parameters) {
         let params = "";
-        for (let name of parameters) {
+        for (let name in parameters) {
+            if (!parameters.hasOwnProperty(name)) {
+                continue;
+            }
             params += name + "=" + encodeURIComponent(parameters[name]) + "&";
         }
         return params;
@@ -98,11 +102,11 @@ export let stepik = (function () {
         _host: null,
         getHost: function () {
             if (!this._host) {
-                this._host = $.cookie("stepik.host");
+                this._host = cookie("stepik.host");
 
                 if (!this._host) {
                     this._host = "https://stepik.org/";
-                    $.cookie("stepik.host", this._host)
+                    cookie("stepik.host", this._host)
                 }
             }
             return this._host;
@@ -110,7 +114,7 @@ export let stepik = (function () {
 
         setHost: function (host) {
             this._host = host;
-            $.cookie("stepik.host", this._host)
+            cookie("stepik.host", this._host)
         },
 
         getCurrentUser: function () {
@@ -118,8 +122,8 @@ export let stepik = (function () {
         },
 
         getJson: function (url) {
-            let access_token = $.cookie("access_token");
-            let token_type = $.cookie("token_type");
+            let access_token = cookie("access_token");
+            let token_type = cookie("token_type");
 
             return get({
                 url: this.getHost() + url,
@@ -131,8 +135,8 @@ export let stepik = (function () {
         },
 
         postJson: function (url, data) {
-            let access_token = $.cookie("access_token");
-            let token_type = $.cookie("token_type");
+            let access_token = cookie("access_token");
+            let token_type = cookie("token_type");
 
             return post({
                 url: this.getHost() + url,
@@ -205,7 +209,7 @@ export let stepik = (function () {
             if (!code) {
                 state = state || location.origin;
                 let encoded_state = btoa(state + "::" + Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
-                $.cookie("state", encoded_state);
+                cookie("state", encoded_state);
                 window.location.href = this.getHost() + "oauth2/authorize/" +
                     "?client_id=" + client_id +
                     "&redirect_uri=" + redirect_uri +
@@ -223,12 +227,12 @@ export let stepik = (function () {
                         redirect_uri: redirect_uri
                     }
                 }).done(function (data) {
-                    if (!!state && state === decodeURIComponent($.cookie("state"))) {
-                        let expires = data.expires_in;
-                        $.cookie("access_token", data.access_token, {expires: expires});
-                        $.cookie("refresh_token", data.refresh_token, {expires: expires});
-                        $.cookie("token_type", data.token_type, {expires: expires});
-                        $.cookie("scope", data.scope, {expires: expires});
+                    if (!!state && state === decodeURIComponent(cookie("state"))) {
+                        let expires = data['expires_in'];
+                        cookie("access_token", data['access_token'], {expires: expires});
+                        cookie("refresh_token", data['refresh_token'], {expires: expires});
+                        cookie("token_type", data['token_type'], {expires: expires});
+                        cookie("scope", data['scope'], {expires: expires});
                         let decoded_state = atob(state);
                         let separator_pos = decoded_state.indexOf("::");
                         location.href = decoded_state.substring(0, separator_pos)
@@ -240,10 +244,10 @@ export let stepik = (function () {
         },
 
         logout: function () {
-            $.cookie("access_token", null);
-            $.cookie("refresh_token", null);
-            $.cookie("token_type", null);
-            $.cookie("scope", null);
+            cookie("access_token", null);
+            cookie("refresh_token", null);
+            cookie("token_type", null);
+            cookie("scope", null);
         }
     };
 })();
