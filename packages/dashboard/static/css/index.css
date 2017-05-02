@@ -1,0 +1,7 @@
+.svg_wrapper {
+    display: flex;
+    margin: 15px 0;
+    width:600px;
+    height:300px;
+    padding: 5px;
+}

@@ -42,6 +42,8 @@ prepare_run: translate-apps-js
 	@$(shell) cp -u bower_components/bootstrap/dist/js/bootstrap.min.js apps/main/static/imports/js/bootstrap.min.js
 	@$(shell) cp -u bower_components/bootstrap/dist/css/bootstrap.min.css apps/main/static/imports/css/bootstrap.min.css
 	@$(shell) cp -u bower_components/bootstrap/dist/css/bootstrap-theme.min.css apps/main/static/imports/css/bootstrap-theme.min.css
+	@$(shell) cp -u bower_components/bootstrap-select/dist/js/bootstrap-select.min.js apps/main/static/imports/js/bootstrap-select.min.js
+	@$(shell) cp -u bower_components/bootstrap-select/dist/css/bootstrap-select.min.css apps/main/static/imports/css/bootstrap-select.min.css
 
 run_debug: backend frontend prepare_run
 	@$(PYTHON) manage.py runserver
