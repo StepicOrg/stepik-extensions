@@ -57,12 +57,20 @@
 ### Глобальные библиотеки
 
 Во время работы расширения, есму доступны следующие библиотеки:
-- **imports/js/require.js** 2.3.3
-- **imports/js/jquery.min.js** 3.2.1
-- **imports/js/jquery** - это обертка над jquery.min.js для работы с jQuery из *requirejs*
-- **imports/js/bootstrap.min.js** 3.3.7
-- **imports/css/bootstrap.min.css**
-- **imports/css/bootstrap-theme.min.css**
+- **imports/requirejs/js/require.js** 2.3.3
+- **imports/jquery/js/jquery.min.js** 3.2.1
+- **imports/jquery/js/jquery** - это обертка над jquery.min.js для работы с jQuery из *requirejs*
+- **imports/bootstrap/js/bootstrap.min.js** 3.3.7
+- **imports/bootstrap/css/bootstrap.min.css**
+- **imports/bootstrap/css/bootstrap-theme.min.css**
+- **imports/bootstrap-fileinput/js/fileinput.min.js**
+- **imports/bootstrap-fileinput/css/fileinput.min.css**
+- **imports/bootstrap-select/js/bootstrap-select.min.js**
+- **imports/bootstrap-select/css/bootstrap-select.min.css**
+- **imports/flot/js/jquery.flot.js**
+- **imports/flot/js/jquery.flot.errorbars.js**
+- **imports/flot/js/jquery.flot.time.js**
+- **imports/js/stepik-api.js**
 
 Все пути относительно корня расширения. Импортируйте нужные вам глобальные библиотеки и расширения
 будто бы они расположены в корне вашего расширения `imports/...`.
@@ -112,7 +120,7 @@ package.zip
 
 1. Если вы используете глобальные библиотеки, то на время отладки создайте
 директорию `imports` и поместите туда, необходимые библиотеки и ресурсы
-(например для jQuery, *imports/js/jquery.min.js*).
+(например для jQuery, *imports/jquery/js/jquery.min.js*).
 2. Откройте файл *index.html* в браузере.
 
 ### Отладка расширений, которым необходима авторизации на Stepik
