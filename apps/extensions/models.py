@@ -28,8 +28,8 @@ class Category(models.Model):
 
 # noinspection PyClassHasNoInit
 class Extension(models.Model):
-    id = models.CharField(max_length=20, primary_key=True)
-    name = models.CharField(max_length=20)
+    id = models.CharField(max_length=64, primary_key=True)
+    name = models.CharField(max_length=32)
     description = models.TextField(max_length=1024)
     version = models.CharField(max_length=15)
     categories = models.ManyToManyField(Category, related_name='extensions', blank=True)
