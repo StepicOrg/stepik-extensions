@@ -27,7 +27,7 @@
 
     {% if run %}
         <iframe class="extensions-frame" src="{% url 'extensions-running' extension.id '' %}"
-                sandbox="allow-same-origin allow-forms allow-scripts">
+                sandbox="allow-same-origin allow-forms allow-scripts allow-modals allow-popups">
             Sorry, you browser don't support iframes.
         </iframe>
     {% else %}
