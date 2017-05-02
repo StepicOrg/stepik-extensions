@@ -1,0 +1,9 @@
+{
+  "id": "org.stepik.extensions.stat.lesson",
+  "name": "Lesson statistics",
+  "description": "Lesson statistics",
+  "logo": "static/img/logo.png",
+  "allow_anonymous_user": false,
+  "version": "1.0",
+  "package_version": "1.0"
+}

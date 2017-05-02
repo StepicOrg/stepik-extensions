@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="imports/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="imports/bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="imports/bootstrap-select/css/bootstrap-select.min.css">
+
+    <script data-main="static/js/index.js" src="imports/requirejs/js/require.js"></script>
+    <script src="imports/jquery/js/jquery.min.js"></script>
+    <script src="imports/bootstrap/js/bootstrap.min.js"></script>
+    <script src="imports/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="imports/flot/js/jquery.flot.js"></script>
+    <script src="imports/flot/js/jquery.flot.errorbars.js"></script>
+    <script src="imports/flot/js/jquery.flot.time.js"></script>
+</head>
+<body>
+<div id="item-selector">
+    <select id="lesson" class="selectpicker" data-live-search="true" data-width="auto"
+            title="Select a lesson"></select>
+
+    <div class="wrapper">
+        <div id="views" class="lesson-plot"></div>
+    </div>
+    <div class="wrapper">
+        <div id="avg_views" class="lesson-plot"></div>
+    </div>
+    <div class="wrapper">
+        <div id="avg_attempts" class="lesson-plot"></div>
+    </div>
+    <div class="wrapper">
+        <div id="quartiles_views" class="lesson-plot"></div>
+    </div>
+</div>
+
+</body>
+</html>
