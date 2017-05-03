@@ -1,3 +1,4 @@
+import requests
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -64,12 +65,15 @@ def logout(request):
 
 
 def authorize(request):
-    if 'error' in request.GET:
-        error = request.GET['error']
-        if error == 'access_denied':
-            text = 'Access denied'
+    if 'code' not in request.GET:
+        if 'error' in request.GET:
+            error = request.GET['error']
+            if error == 'access_denied':
+                text = 'Access denied'
+            else:
+                text = 'Not logged'
         else:
-            text = 'Not logged'
+            text = 'Unknown error'
 
         context = {
             'title': 'Error login',
@@ -78,8 +82,42 @@ def authorize(request):
         }
         return render(request, 'stepik_auth/error_auth.html', context)
     else:
-        # Get and store access_token
         target = request.session.get('target', None)
         if target is None:
             target = reverse('main-index')
-        return redirect(target)
+
+        response = redirect(target)
+        code = request.GET['code']
+        host = request.session['host']
+        if host[-1] != '/':
+            host += '/'
+        redirect_uri = '{scheme}://{host}{path}'.format(
+            scheme=request.scheme,
+            host=request.META['HTTP_HOST'],
+            path=reverse('stepik_auth-authorize'),
+        )
+        r = requests.post(host + 'oauth2/token/', data={
+            'grant_type': 'authorization_code',
+            'client_id': settings.STEPIK_AUTH_CLIENT_ID,
+            'code': code,
+            'redirect_uri': redirect_uri
+        })
+        if r.status_code == 200:
+            max_age = r.json()['expires_in']
+            access_token = r.json()['access_token']
+            refresh_token = r.json()['refresh_token']
+            token_type = r.json()['token_type']
+            scope = r.json()['scope']
+
+            response.set_cookie('access_token', access_token, max_age=max_age)
+            response.set_cookie('refresh_token', refresh_token, max_age=max_age)
+            response.set_cookie('token_type', token_type, max_age=max_age)
+            response.set_cookie('scope', scope, max_age=max_age)
+        else:
+            context = {
+                'title': 'Error login',
+                'text': 'Unauthorized',
+                'language': request.LANGUAGE_CODE,
+            }
+            return render(request, 'stepik_auth/error_auth.html', context)
+        return response
