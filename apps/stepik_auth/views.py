@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, NoReverseMatch
 from django.utils.http import urlencode
-from django.views.decorators.http import require_http_methods
 
 from apps.stepik_auth.forms import LoginForm
 
@@ -58,10 +57,11 @@ def login(request):
             return render(request, 'stepik_auth/login.html', context)
 
 
-@require_http_methods(["POST"])
 def logout(request):
-    request.session.clear()
-    return HttpResponse(content_type="application/json")
+    redirect_uri = request.GET.get('redirect_uri', '/')
+    response = redirect(redirect_uri)
+    response.delete_cookie('access_token')
+    return response
 
 
 def authorize(request):
@@ -102,17 +102,12 @@ def authorize(request):
             'code': code,
             'redirect_uri': redirect_uri
         })
+
         if r.status_code == 200:
             max_age = r.json()['expires_in']
             access_token = r.json()['access_token']
-            refresh_token = r.json()['refresh_token']
-            token_type = r.json()['token_type']
-            scope = r.json()['scope']
 
             response.set_cookie('access_token', access_token, max_age=max_age)
-            response.set_cookie('refresh_token', refresh_token, max_age=max_age)
-            response.set_cookie('token_type', token_type, max_age=max_age)
-            response.set_cookie('scope', scope, max_age=max_age)
         else:
             context = {
                 'title': 'Error login',
