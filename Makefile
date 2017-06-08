@@ -9,7 +9,7 @@ help:
 	@echo "Please use 'make <target>' where <target> is one of"
 	@echo "  init           to init"
 
-init: clean pip-upgrade pip backend frontend
+init: clean pip-upgrade pip frontend
 
 pip: pip-upgrade pip-production
 
@@ -31,6 +31,7 @@ frontend:
 	@$(shell) sudo npm install -g --save-dev babel-cli@6.24.1
 	@$(shell) npm install --save-dev babel-preset-es2015@6.24.1
 	@$(shell) npm install requirejs-babel-plugin@0.4.0
+	@$(shell) sudo npm install -g bower
 	@$(shell) bower install bootstrap#3.3.7
 	@$(shell) bower install bootstrap-select#1.12.2
 	@$(shell) bower install bootstrap-fileinput#4.3.9
@@ -44,7 +45,7 @@ prepare_run: translate-apps-js
 run_debug: backend frontend prepare_run
 	@$(PYTHON) manage.py runserver
 
-prepare_production: init zip-packages translate-apps-js
+prepare_production: init translate-apps-js
 	@$(PYTHON) manage.py collectstatic --noinput
 
 zip-packages:
