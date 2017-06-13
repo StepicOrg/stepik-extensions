@@ -1,17 +1,21 @@
-define(["exports", "../../imports/jquery/js/jquery", "../../imports/jquery/js/jquery.cookie"], function (exports, _jquery, _jquery2) {
+define(["exports", "jquery", "jquery.cookie"], function (exports, _jquery, _jquery3) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.stepik = undefined;
-    var stepik = exports.stepik = function () {
-        var _this2 = this;
 
-        var get = _jquery.$.get,
-            post = _jquery.$.post;
+    var _jquery2 = _interopRequireDefault(_jquery);
 
+    var _jquery4 = _interopRequireDefault(_jquery3);
 
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    exports.default = function () {
         var NO_LIMIT = 0;
 
         function UnPagination(field, query) {
@@ -108,87 +112,87 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/jquery/js/jq
             return params;
         }
 
-        return {
-            getHost: function getHost() {
-                var host = (0, _jquery2.cookie)("stepik.host");
+        var result = {};
 
-                if (!host) {
-                    host = "https://stepik.org/";
-                }
-                return host;
-            },
+        result.getHost = function () {
+            var host = (0, _jquery4.default)("host");
 
-            getCurrentUser: function getCurrentUser() {
-                return _this2.getJson("api/stepics/1");
-            },
-
-            getJson: function getJson(url) {
-                var access_token = (0, _jquery2.cookie)("access_token");
-                var token_type = (0, _jquery2.cookie)("token_type");
-
-                return get({
-                    url: _this2.getHost() + url,
-                    dataType: "json",
-                    headers: {
-                        "Authorization": token_type + " " + access_token
-                    }
-                });
-            },
-
-            postJson: function postJson(url, data) {
-                var access_token = (0, _jquery2.cookie)("access_token");
-                var token_type = (0, _jquery2.cookie)("token_type");
-
-                return post({
-                    url: _this2.getHost() + url,
-                    dataType: "json",
-                    data: JSON.stringify(data),
-                    headers: {
-                        "Authorization": token_type + " " + access_token
-                    },
-                    contentType: "application/json; charset=UTF-8"
-                });
-            },
-
-            getCourses: function getCourses(parameters) {
-                var params = asUriParams(parameters);
-                return new UnPagination("courses", function (page) {
-                    return _this2.getJson("api/courses?" + params + "page=" + page);
-                });
-            },
-
-            getLessons: function getLessons(parameters) {
-                var params = asUriParams(parameters);
-                return new UnPagination("lessons", function (page) {
-                    return _this2.getJson("api/lessons?" + params + "page=" + page);
-                });
-            },
-
-            getCourseGrades: function getCourseGrades(course) {
-                var params = !!course ? "course=" + course + "&" : "";
-                return new UnPagination("course-grades", function (page) {
-                    return _this2.getJson("api/course-grades?" + params + "page=" + page, NO_LIMIT);
-                });
-            },
-
-            getMembers: function getMembers(group) {
-                return new UnPagination("members", function (page) {
-                    return _this2.getJson("api/members?group=" + group + "&page=" + page);
-                });
-            },
-
-            addMembers: function addMembers(group, user) {
-                return _this2.postJson("api/members", {
-                    member: {
-                        group: group,
-                        user: user
-                    }
-                });
-            },
-
-            getCourse: function getCourse(course_id) {
-                return _this2.getJson("api/courses/" + course_id);
+            if (!host) {
+                host = "https://stepik.org/";
             }
+            return host;
         };
+
+        result.getCurrentUser = function () {
+            return result.getJson("api/stepics/1");
+        };
+
+        result.getJson = function (url) {
+            var access_token = (0, _jquery4.default)("access_token");
+
+            return _jquery2.default.get({
+                url: result.getHost() + url,
+                dataType: "json",
+                headers: {
+                    "Authorization": "Bearer " + access_token
+                }
+            });
+        };
+
+        result.postJson = function (url, data) {
+            var access_token = (0, _jquery4.default)("access_token");
+
+            return _jquery2.default.post({
+                url: result.getHost() + url,
+                dataType: "json",
+                data: JSON.stringify(data),
+                headers: {
+                    "Authorization": "Bearer " + access_token
+                },
+                contentType: "application/json; charset=UTF-8"
+            });
+        };
+
+        result.getCourses = function (parameters) {
+            var params = asUriParams(parameters);
+            return new UnPagination("courses", function (page) {
+                return result.getJson("api/courses?" + params + "page=" + page);
+            });
+        };
+
+        result.getLessons = function (parameters) {
+            var params = asUriParams(parameters);
+            return new UnPagination("lessons", function (page) {
+                return result.getJson("api/lessons?" + params + "page=" + page);
+            });
+        };
+
+        result.getCourseGrades = function (course) {
+            var params = !!course ? "course=" + course + "&" : "";
+            return new UnPagination("course-grades", function (page) {
+                return result.getJson("api/course-grades?" + params + "page=" + page, NO_LIMIT);
+            });
+        };
+
+        result.getMembers = function (group) {
+            return new UnPagination("members", function (page) {
+                return result.getJson("api/members?group=" + group + "&page=" + page);
+            });
+        };
+
+        result.addMembers = function (group, user) {
+            return result.postJson("api/members", {
+                member: {
+                    group: group,
+                    user: user
+                }
+            });
+        };
+
+        result.getCourse = function (course_id) {
+            return result.getJson("api/courses/" + course_id);
+        };
+
+        return result;
     }();
 });
