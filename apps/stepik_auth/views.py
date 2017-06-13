@@ -108,6 +108,7 @@ def authorize(request):
             access_token = r.json()['access_token']
 
             response.set_cookie('access_token', access_token, max_age=max_age)
+            response.set_cookie('host', host, max_age=max_age)
         else:
             context = {
                 'title': 'Error login',
