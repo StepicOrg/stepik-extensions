@@ -1,14 +1,11 @@
-import "../../imports/js/domReady!";
 import {swagger} from "swagger";
-import {$} from "../../imports/jquery/js/jquery";
+import $ from "jquery";
 import {create_tabs} from "components_factory";
 
 export let init = function () {
-        const {get} = $;
-
         let api_docs = {apis: []};
         let examples = {};
-        get({
+        $.get({
             url: "examples/examples.json",
             dataType: "json"
         }).done(function (data) {
@@ -306,7 +303,7 @@ export let init = function () {
                 api_description.innerHTML = api_description_html;
             }
 
-            get({
+            $.get({
                 url: api_docs.basePath + path,
                 dataType: "json"
             }).done(function (data) {

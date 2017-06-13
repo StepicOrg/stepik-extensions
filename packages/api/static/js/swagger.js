@@ -1,13 +1,22 @@
-define(["exports", "../../imports/jquery/js/jquery"], function (exports, _jquery) {
+define(["exports", "jquery"], function (exports, _jquery) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.swagger = undefined;
+
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
     var swagger = exports.swagger = {
         getApiDocs: function getApiDocs(url) {
-            return _jquery.$.get({
+            return _jquery2.default.get({
                 url: url,
                 dataType: "json"
             });

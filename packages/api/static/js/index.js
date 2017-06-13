@@ -1,10 +1,18 @@
-define(["exports", "swagger", "../../imports/jquery/js/jquery", "components_factory", "../../imports/js/domReady!"], function (exports, _swagger, _jquery, _components_factory) {
+define(["exports", "swagger", "jquery", "components_factory"], function (exports, _swagger, _jquery, _components_factory) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.init = undefined;
+
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
 
     var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
         return typeof obj;
@@ -13,12 +21,9 @@ define(["exports", "swagger", "../../imports/jquery/js/jquery", "components_fact
     };
 
     var init = exports.init = function init() {
-        var get = _jquery.$.get;
-
-
         var api_docs = { apis: [] };
         var examples = {};
-        get({
+        _jquery2.default.get({
             url: "examples/examples.json",
             dataType: "json"
         }).done(function (data) {
@@ -312,7 +317,7 @@ define(["exports", "swagger", "../../imports/jquery/js/jquery", "components_fact
                 api_description.innerHTML = api_description_html;
             }
 
-            get({
+            _jquery2.default.get({
                 url: api_docs.basePath + path,
                 dataType: "json"
             }).done(function (data) {
