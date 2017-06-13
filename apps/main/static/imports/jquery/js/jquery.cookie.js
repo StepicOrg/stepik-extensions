@@ -1,11 +1,18 @@
-define(['exports', '../../../imports/jquery/js/jquery'], function (exports, _jquery) {
+define(['exports', 'jquery'], function (exports, _jquery) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.cookie = undefined;
+    exports.default = cookie;
 
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
 
     var pluses = /\+/g;
 
@@ -38,15 +45,15 @@ define(['exports', '../../../imports/jquery/js/jquery'], function (exports, _jqu
 
     function read(s, converter) {
         var value = cookie.raw ? s : parseCookieValue(s);
-        return _jquery.$.isFunction(converter) ? converter(value) : value;
+        return _jquery2.default.isFunction(converter) ? converter(value) : value;
     }
 
-    var cookie = exports.cookie = _jquery.$.cookie = function (key, value, options) {
+    function cookie(key, value, options) {
 
         // Write
 
-        if (value !== undefined && !_jquery.$.isFunction(value)) {
-            options = _jquery.$.extend({}, cookie.defaults, options);
+        if (value !== undefined && !_jquery2.default.isFunction(value)) {
+            options = _jquery2.default.extend({}, cookie.defaults, options);
 
             if (typeof options.expires === 'number') {
                 var days = options.expires,
@@ -89,13 +96,13 @@ define(['exports', '../../../imports/jquery/js/jquery'], function (exports, _jqu
 
     cookie.defaults = {};
 
-    _jquery.$.removeCookie = function (key, options) {
-        if (_jquery.$.cookie(key) === undefined) {
+    _jquery2.default.removeCookie = function (key, options) {
+        if (_jquery2.default.cookie(key) === undefined) {
             return false;
         }
 
         // Must not alter options, thus extending a fresh object...
-        _jquery.$.cookie(key, '', _jquery.$.extend({}, options, { expires: -1 }));
-        return !_jquery.$.cookie(key);
+        _jquery2.default.cookie(key, '', _jquery2.default.extend({}, options, { expires: -1 }));
+        return !_jquery2.default.cookie(key);
     };
 });
