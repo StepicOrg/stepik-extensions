@@ -1,13 +1,13 @@
-import "../../imports/js/domReady!";
-import {$} from "../../imports/jquery/js/jquery";
-import {stepik} from "../../imports/js/stepik-api";
+import $ from "jquery";
+import stepik from "stepik-api";
+import "bootstrap-select";
 
 export let init = (function () {
-    const {get} = $;
     let ratings = {};
 
     let courses_list = $("#course");
     courses_list.empty();
+    $('.selectpicker').selectpicker('refresh')
 
     stepik.getCourses({"enrolled": true})
         .done(function (courses) {
@@ -15,6 +15,8 @@ export let init = (function () {
                 let slug = course['slug'];
                 courses_list.append(`<option value='${slug}'>${course['title']}</option>`);
             });
+
+            courses_list.selectpicker('refresh');
 
             paint();
         });

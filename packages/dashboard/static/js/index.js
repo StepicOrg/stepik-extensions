@@ -1,23 +1,35 @@
-define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../imports/js/domReady!"], function (exports, _jquery, _stepikApi) {
+define(["exports", "jquery", "stepik-api", "bootstrap-select"], function (exports, _jquery, _stepikApi) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.init = undefined;
-    var init = exports.init = function () {
-        var get = _jquery.$.get;
 
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    var _stepikApi2 = _interopRequireDefault(_stepikApi);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var init = exports.init = function () {
         var ratings = {};
 
-        var courses_list = (0, _jquery.$)("#course");
+        var courses_list = (0, _jquery2.default)("#course");
         courses_list.empty();
+        (0, _jquery2.default)('.selectpicker').selectpicker('refresh');
 
-        _stepikApi.stepik.getCourses({ "enrolled": true }).done(function (courses) {
+        _stepikApi2.default.getCourses({ "enrolled": true }).done(function (courses) {
             courses.forEach(function (course) {
                 var slug = course['slug'];
                 courses_list.append("<option value='" + slug + "'>" + course['title'] + "</option>");
             });
+
+            courses_list.selectpicker('refresh');
 
             paint();
         });
@@ -28,7 +40,7 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-ap
                 return;
             }
 
-            (0, _jquery.$)("<div id='tooltip'></div>").css({
+            (0, _jquery2.default)("<div id='tooltip'></div>").css({
                 position: "absolute",
                 display: "none",
                 border: "1px solid #fdd",
@@ -37,11 +49,11 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-ap
                 opacity: 0.80
             }).appendTo("body");
 
-            _stepikApi.stepik.getJson("course/" + course + "/dashboard/ratings.json").done(function (ratings) {
+            _stepikApi2.default.getJson("course/" + course + "/dashboard/ratings.json").done(function (ratings) {
                 var counts = ratings['counts'];
                 var bins = ratings['bins'];
 
-                (0, _jquery.$)(function () {
+                (0, _jquery2.default)(function () {
                     var d1 = [];
                     var max = 0;
                     var _iteratorNormalCompletion = true;
@@ -76,7 +88,7 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-ap
                     var d2 = [[ratings['rating'], 0], [ratings['rating'], max]];
 
                     function plotWithOptions() {
-                        _jquery.$.plot("#rating", [{
+                        _jquery2.default.plot("#rating", [{
                             data: d1,
                             label: "Users count",
                             bars: {
@@ -117,7 +129,7 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-ap
                             }
                         });
 
-                        (0, _jquery.$)("#rating").bind("plothover", function (event, pos, item) {
+                        (0, _jquery2.default)("#rating").bind("plothover", function (event, pos, item) {
                             if (item) {
                                 var x = item.datapoint[0],
                                     y = item.datapoint[1];
@@ -127,9 +139,9 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-ap
                                 } else {
                                     text = "Your points " + x + "%";
                                 }
-                                (0, _jquery.$)("#tooltip").html(text).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
+                                (0, _jquery2.default)("#tooltip").html(text).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
                             } else {
-                                (0, _jquery.$)("#tooltip").hide();
+                                (0, _jquery2.default)("#tooltip").hide();
                             }
                         });
                     }
@@ -151,10 +163,10 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-ap
                 });
             });
 
-            _stepikApi.stepik.getJson("course/" + course + "/dashboard/timeline.json").done(function (data) {
+            _stepikApi2.default.getJson("course/" + course + "/dashboard/timeline.json").done(function (data) {
                 var timeline = data['timeline'];
 
-                (0, _jquery.$)(function () {
+                (0, _jquery2.default)(function () {
                     var d1 = [];
                     var d2 = [];
                     var d3 = [];
@@ -175,7 +187,7 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-ap
                     }
 
                     function plotWithOptions() {
-                        _jquery.$.plot("#progress", [{
+                        _jquery2.default.plot("#progress", [{
                             data: d1,
                             label: "Practice",
                             lines: {
@@ -222,14 +234,14 @@ define(["exports", "../../imports/jquery/js/jquery", "../../imports/js/stepik-ap
                             }
                         });
 
-                        (0, _jquery.$)("#progress").bind("plothover", function (event, pos, item) {
+                        (0, _jquery2.default)("#progress").bind("plothover", function (event, pos, item) {
                             if (item) {
                                 var x = item.datapoint[0];
                                 var y = Math.round(item.datapoint[1] * 10) / 10;
 
-                                (0, _jquery.$)("#tooltip").html(y + "% " + item.series.label + "<br>" + new Date(x)).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
+                                (0, _jquery2.default)("#tooltip").html(y + "% " + item.series.label + "<br>" + new Date(x)).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
                             } else {
-                                (0, _jquery.$)("#tooltip").hide();
+                                (0, _jquery2.default)("#tooltip").hide();
                             }
                         });
                     }
