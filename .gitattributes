@@ -1,2 +1,2 @@
 secretfile filter=git-crypt diff=git-crypt
-*.crypt filter=git-crypt diff=git-crypt
+production-settings.py filter=git-crypt diff=git-crypt
