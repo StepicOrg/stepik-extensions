@@ -15,6 +15,7 @@ export default (function () {
             page_count++;
             if (limit > 0 && page_count > limit) {
                 done();
+                return;
             }
 
             query(page)
