@@ -1,11 +1,13 @@
 import requests
 from django.conf import settings
 
+
 def auth(request):
     access_token = request.COOKIES.get('access_token')
     is_authorized = access_token is not None
     avatar_uri = None
     full_name = None
+    host = None
 
     if is_authorized:
         host = request.session.get('host', settings.STEPIK_HOSTS[0])
@@ -26,6 +28,7 @@ def auth(request):
             'is_authenticated': is_authorized,
             'avatar_uri': avatar_uri,
             'full_name': full_name,
+            'host': host
         },
         'current_path': request.path,
     }
