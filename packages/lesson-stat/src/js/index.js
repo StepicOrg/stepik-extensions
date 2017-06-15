@@ -1,10 +1,16 @@
-import "../../imports/js/domReady!";
-import {$} from "../../imports/jquery/js/jquery";
-import {stepik} from "../../imports/js/stepik-api";
+import "domReady!";
+import $ from "jquery";
+import stepik from "stepik-api";
+import "bootstrap"
+import "bootstrap-select"
+import "flot"
+import "flot.time"
+import "flot.errorbars"
 
 let params = getParams();
 let lesson_list = $("#lesson");
 lesson_list.empty();
+$('.selectpicker').selectpicker('refresh');
 
 stepik.getCurrentUser().done(data => {
     let user_id = data['users'][0].id;
@@ -19,6 +25,8 @@ stepik.getCurrentUser().done(data => {
             if (!!lesson) {
                 lesson_list.val(lesson);
             }
+
+            $('.selectpicker').selectpicker('refresh');
 
             paint();
         });

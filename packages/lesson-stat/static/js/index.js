@@ -1,14 +1,25 @@
-define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../imports/js/domReady!"], function (_jquery, _stepikApi) {
+define(["jquery", "stepik-api", "domReady!", "bootstrap", "bootstrap-select", "flot", "flot.time", "flot.errorbars"], function (_jquery, _stepikApi) {
     "use strict";
 
-    var params = getParams();
-    var lesson_list = (0, _jquery.$)("#lesson");
-    lesson_list.empty();
+    var _jquery2 = _interopRequireDefault(_jquery);
 
-    _stepikApi.stepik.getCurrentUser().done(function (data) {
+    var _stepikApi2 = _interopRequireDefault(_stepikApi);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var params = getParams();
+    var lesson_list = (0, _jquery2.default)("#lesson");
+    lesson_list.empty();
+    (0, _jquery2.default)('.selectpicker').selectpicker('refresh');
+
+    _stepikApi2.default.getCurrentUser().done(function (data) {
         var user_id = data['users'][0].id;
 
-        _stepikApi.stepik.getLessons({ "teacher": user_id }).done(function (lessons) {
+        _stepikApi2.default.getLessons({ "teacher": user_id }).done(function (lessons) {
             lessons.forEach(function (lesson) {
                 lesson_list.append("<option value='" + lesson.id + "' data-slug='" + lesson.slug + "'>" + lesson.title + "</option>");
             });
@@ -18,11 +29,13 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
                 lesson_list.val(lesson);
             }
 
+            (0, _jquery2.default)('.selectpicker').selectpicker('refresh');
+
             paint();
         });
     });
 
-    (0, _jquery.$)("<div id='tooltip'></div>").css({
+    (0, _jquery2.default)("<div id='tooltip'></div>").css({
         position: "absolute",
         display: "none",
         border: "1px solid #fdd",
@@ -38,7 +51,7 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
             return;
         }
 
-        _stepikApi.stepik.getJson("lesson/" + slug + "/stats-json/").done(function (data) {
+        _stepikApi2.default.getJson("lesson/" + slug + "/stats-json/").done(function (data) {
             var total_views = [];
             var unique_views = [];
             var unique_successes = [];
@@ -50,7 +63,7 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
                 ticks.push([index, item['title']]);
             });
 
-            _jquery.$.plot("#views", [{
+            _jquery2.default.plot("#views", [{
                 data: total_views,
                 label: "Total views",
                 points: {
@@ -104,13 +117,13 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
                 }
             });
 
-            (0, _jquery.$)("#views").bind("plothover", function (event, pos, item) {
+            (0, _jquery2.default)("#views").bind("plothover", function (event, pos, item) {
                 if (item) {
                     var count = item.datapoint[1];
 
-                    (0, _jquery.$)("#tooltip").html(item.series.label + ": " + count).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
+                    (0, _jquery2.default)("#tooltip").html(item.series.label + ": " + count).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
                 } else {
-                    (0, _jquery.$)("#tooltip").hide();
+                    (0, _jquery2.default)("#tooltip").hide();
                 }
             });
         });
@@ -149,7 +162,7 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
             }
         }
 
-        _stepikApi.stepik.getJson("lesson/" + slug + "/stats-boxplot-json/").done(function (data) {
+        _stepikApi2.default.getJson("lesson/" + slug + "/stats-boxplot-json/").done(function (data) {
             if (!data) {
                 return;
             }
@@ -187,7 +200,7 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
                 if (_ret === "continue") continue;
             }
 
-            _jquery.$.plot("#avg_views", [{
+            _jquery2.default.plot("#avg_views", [{
                 data: avr_views,
                 label: "Avg views",
                 bars: {
@@ -211,17 +224,17 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
                 }
             });
 
-            (0, _jquery.$)("#avg_views").bind("plothover", function (event, pos, item) {
+            (0, _jquery2.default)("#avg_views").bind("plothover", function (event, pos, item) {
                 if (item) {
                     var count = item.datapoint[1].toFixed(2);
 
-                    (0, _jquery.$)("#tooltip").html(count).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
+                    (0, _jquery2.default)("#tooltip").html(count).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
                 } else {
-                    (0, _jquery.$)("#tooltip").hide();
+                    (0, _jquery2.default)("#tooltip").hide();
                 }
             });
 
-            _jquery.$.plot("#avg_attempts", [{
+            _jquery2.default.plot("#avg_attempts", [{
                 data: avr_attempts,
                 label: "Avg attempts",
                 bars: {
@@ -245,13 +258,13 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
                 }
             });
 
-            (0, _jquery.$)("#avg_attempts").bind("plothover", function (event, pos, item) {
+            (0, _jquery2.default)("#avg_attempts").bind("plothover", function (event, pos, item) {
                 if (item) {
                     var count = item.datapoint[1].toFixed(2);
 
-                    (0, _jquery.$)("#tooltip").html(count).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
+                    (0, _jquery2.default)("#tooltip").html(count).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
                 } else {
-                    (0, _jquery.$)("#tooltip").hide();
+                    (0, _jquery2.default)("#tooltip").hide();
                 }
             });
 
@@ -260,7 +273,7 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
                 ctx.lineTo(x + radius, y);
             }
 
-            _jquery.$.plot("#quartiles_views", [{
+            _jquery2.default.plot("#quartiles_views", [{
                 data: points,
                 label: "Views",
                 points: {
@@ -294,13 +307,13 @@ define(["../../imports/jquery/js/jquery", "../../imports/js/stepik-api", "../../
                 }
             });
 
-            (0, _jquery.$)("#quartiles_views").bind("plothover", function (event, pos, item) {
+            (0, _jquery2.default)("#quartiles_views").bind("plothover", function (event, pos, item) {
                 if (item) {
                     var count = item.datapoint[1].toFixed(2);
 
-                    (0, _jquery.$)("#tooltip").html(count).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
+                    (0, _jquery2.default)("#tooltip").html(count).css({ top: item.pageY + 5, left: item.pageX + 5 }).fadeIn(200);
                 } else {
-                    (0, _jquery.$)("#tooltip").hide();
+                    (0, _jquery2.default)("#tooltip").hide();
                 }
             });
         });
