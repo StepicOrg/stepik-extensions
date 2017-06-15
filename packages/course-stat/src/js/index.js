@@ -1,10 +1,16 @@
-import "../../imports/js/domReady!";
-import {$} from "../../imports/jquery/js/jquery";
-import {stepik} from "../../imports/js/stepik-api";
+import "domReady!";
+import $ from "jquery";
+import stepik from "stepik-api";
+import "bootstrap";
+import "bootstrap-select";
+import "flot";
+import "flot.time";
+import "flot.errorbars";
 
 let params = getParams();
 let course_list = $("#course");
 course_list.empty();
+$('.selectpicker').selectpicker('refresh');
 
 stepik.getCurrentUser().done(data => {
     let user_id = data['users'][0].id;
@@ -18,6 +24,7 @@ stepik.getCurrentUser().done(data => {
             if (!!course) {
                 course_list.val(course);
             }
+            $('.selectpicker').selectpicker('refresh');
 
             paint();
         });
@@ -43,7 +50,7 @@ function paint() {
                 statistics_lessons.html("Lessons:<br>");
                 lessons.forEach(lesson => {
                     step_count += lesson.steps.length;
-                    statistics_lessons.append(`<a href='?ext=lesson-stat&lesson=${lesson.id}'>${lesson.title}</a><br>`);
+                    statistics_lessons.append(`<a href='${window.location.origin}/extensions/org.stepik.extensions.stat.lesson/running/?lesson=${lesson.id}'>${lesson.title}</a><br>`);
                 });
                 $("#course-info").text(`Lessons: ${lessons.length}, steps: ${step_count}`);
             });
@@ -66,6 +73,8 @@ function paint() {
                 for (let date in users_joined) {
                     d1.push([date, users_joined[date]]);
                 }
+
+                d1.sort((a, b) => a[0] - b[0]);
 
                 $.plot("#joined", [{
                     data: d1,
