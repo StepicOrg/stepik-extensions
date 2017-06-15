@@ -19,6 +19,9 @@ export default (function () {
 
             query(page)
                 .done(data => {
+                    if (data[field].length === 0) {
+                        done();
+                    }
                     members = members.concat(data[field]);
                     if (data['meta']['has_next']) {
                         getPage(++page);
@@ -134,9 +137,24 @@ export default (function () {
         return new UnPagination("courses", page => result.getJson(`api/courses?${params}page=${page}`))
     };
 
+    result.getSections = sections_ids => {
+        let params = sections_ids.map(id => "ids[]=" + encodeURIComponent(id)).join("&");
+        return new UnPagination("sections", page => result.getJson(`api/sections?${params}&page=${page}`))
+    };
+
+    result.getUnits = units_ids => {
+        let params = units_ids.map(id => "ids[]=" + encodeURIComponent(id)).join("&");
+        return new UnPagination("units", page => result.getJson(`api/units?${params}&page=${page}`))
+    };
+
     result.getLessons = parameters => {
         let params = asUriParams(parameters);
         return new UnPagination("lessons", page => result.getJson(`api/lessons?${params}page=${page}`))
+    };
+
+    result.getSteps = steps_ids => {
+        let params = steps_ids.map(id => "ids[]=" + encodeURIComponent(id)).join("&");
+        return new UnPagination("steps", page => result.getJson(`api/steps?${params}&page=${page}`))
     };
 
     result.getCourseGrades = course => {

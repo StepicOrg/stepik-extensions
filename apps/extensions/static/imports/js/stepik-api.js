@@ -36,6 +36,9 @@ define(["exports", "jquery", "jquery.cookie"], function (exports, _jquery, _jque
                 }
 
                 query(page).done(function (data) {
+                    if (data[field].length === 0) {
+                        done();
+                    }
                     members = members.concat(data[field]);
                     if (data['meta']['has_next']) {
                         getPage(++page);
@@ -160,10 +163,37 @@ define(["exports", "jquery", "jquery.cookie"], function (exports, _jquery, _jque
             });
         };
 
+        result.getSections = function (sections_ids) {
+            var params = sections_ids.map(function (id) {
+                return "ids[]=" + encodeURIComponent(id);
+            }).join("&");
+            return new UnPagination("sections", function (page) {
+                return result.getJson("api/sections?" + params + "&page=" + page);
+            });
+        };
+
+        result.getUnits = function (units_ids) {
+            var params = units_ids.map(function (id) {
+                return "ids[]=" + encodeURIComponent(id);
+            }).join("&");
+            return new UnPagination("units", function (page) {
+                return result.getJson("api/units?" + params + "&page=" + page);
+            });
+        };
+
         result.getLessons = function (parameters) {
             var params = asUriParams(parameters);
             return new UnPagination("lessons", function (page) {
                 return result.getJson("api/lessons?" + params + "page=" + page);
+            });
+        };
+
+        result.getSteps = function (steps_ids) {
+            var params = steps_ids.map(function (id) {
+                return "ids[]=" + encodeURIComponent(id);
+            }).join("&");
+            return new UnPagination("steps", function (page) {
+                return result.getJson("api/steps?" + params + "&page=" + page);
             });
         };
 
