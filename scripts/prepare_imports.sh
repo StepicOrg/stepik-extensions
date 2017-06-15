@@ -51,5 +51,10 @@ echo "Prepare domReady"
 mkdir -p ${imports_path}js/
 cp -u -v domReady/domReady.js ${imports_path}js/domReady.js
 
+echo "Prepare pdfmake"
+mkdir -p ${imports_path}pdfmake/js/
+cp -u -v pdfmake/build/pdfmake.min.js ${imports_path}pdfmake/js/pdfmake.min.js
+cp -u -v pdfmake/build/vfs_fonts.js ${imports_path}pdfmake/js/vfs_fonts.js
+
 cd ..
 echo "Imports preparing done"
