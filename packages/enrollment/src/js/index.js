@@ -1,6 +1,8 @@
-import "../../imports/js/domReady!";
-import {stepik} from "../../imports/js/stepik-api";
-import {$} from "../../imports/jquery/js/jquery";
+import "domReady!";
+import $ from "jquery";
+import stepik from "stepik-api";
+import "bootstrap-select";
+import "bootstrap";
 
 let local_storage_prefix = 'enrollment';
 let localStorage = window.localStorage;

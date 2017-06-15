@@ -1,5 +1,15 @@
-define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../imports/js/domReady!"], function (_stepikApi, _jquery) {
+define(["jquery", "stepik-api", "domReady!", "bootstrap-select", "bootstrap"], function (_jquery, _stepikApi) {
     "use strict";
+
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    var _stepikApi2 = _interopRequireDefault(_stepikApi);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
 
     var local_storage_prefix = 'enrollment';
     var localStorage = window.localStorage;
@@ -35,8 +45,8 @@ define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../
     function init_column_selector() {
         if (rows.length > 0) {
             var header = rows[0].fields;
-            var userIdColumn = (0, _jquery.$)("#user-id-column");
-            var courseIdColumn = (0, _jquery.$)("#course-id-column");
+            var userIdColumn = (0, _jquery2.default)("#user-id-column");
+            var courseIdColumn = (0, _jquery2.default)("#course-id-column");
             userIdColumn.empty();
             courseIdColumn.empty();
 
@@ -54,13 +64,13 @@ define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../
     }
 
     function clear_table() {
-        (0, _jquery.$)(".table").empty();
+        (0, _jquery2.default)(".table").empty();
     }
 
     function repaintTable() {
         clear_table();
 
-        var table = (0, _jquery.$)(".table");
+        var table = (0, _jquery2.default)(".table");
         var counter = 0;
         var done_counter = 0;
         for (var row_index in rows) {
@@ -80,12 +90,12 @@ define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../
             table.append(table_row);
         }
 
-        (0, _jquery.$)(".info").text(done_counter + " of " + (rows.length - 1) + " is completed.");
+        (0, _jquery2.default)(".info").text(done_counter + " of " + (rows.length - 1) + " is completed.");
     }
 
     reset_ext();
 
-    (0, _jquery.$)("#as-single-id").click(function () {
+    (0, _jquery2.default)("#as-single-id").click(function () {
         var user_id = prompt("User id", "0");
         if (user_id === null) {
             return;
@@ -104,14 +114,14 @@ define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../
         repaintTable();
     });
 
-    (0, _jquery.$)("#clear").click(function () {
+    (0, _jquery2.default)("#clear").click(function () {
         clearRows();
         reset_ext();
         repaintTable();
-        (0, _jquery.$)("#ids_file").val(null);
+        (0, _jquery2.default)("#ids_file").val(null);
     });
 
-    (0, _jquery.$)("#ids_file").change(function (event) {
+    (0, _jquery2.default)("#ids_file").change(function (event) {
         var file = void 0;
         var reader = new FileReader();
 
@@ -155,15 +165,15 @@ define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../
         };
     });
 
-    (0, _jquery.$)("#user-id-column").change(function () {
-        user_id_column = (0, _jquery.$)("#user-id-column").val();
+    (0, _jquery2.default)("#user-id-column").change(function () {
+        user_id_column = (0, _jquery2.default)("#user-id-column").val();
     });
 
-    (0, _jquery.$)("#course-id-column").change(function () {
-        course_id_column = (0, _jquery.$)("#course-id-column").val();
+    (0, _jquery2.default)("#course-id-column").change(function () {
+        course_id_column = (0, _jquery2.default)("#course-id-column").val();
     });
 
-    (0, _jquery.$)("#enroll").click(function () {
+    (0, _jquery2.default)("#enroll").click(function () {
         var members = {};
         for (var i = 1; i < rows.length; i++) {
             var course_id = rows[i].fields[course_id_column];
@@ -217,7 +227,7 @@ define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../
             return;
         }
 
-        _stepikApi.stepik.getCourse(course_id).done(function (data) {
+        _stepikApi2.default.getCourse(course_id).done(function (data) {
             var learners_group = data['courses'][0]['learners_group'];
             if (!learners_group) {
                 var _iteratorNormalCompletion2 = true;
@@ -252,7 +262,7 @@ define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../
 
             var skip = [];
 
-            _stepikApi.stepik.getMembers(learners_group).done(function (members) {
+            _stepikApi2.default.getMembers(learners_group).done(function (members) {
                 var _iteratorNormalCompletion3 = true;
                 var _didIteratorError3 = false;
                 var _iteratorError3 = undefined;
@@ -300,7 +310,7 @@ define(["../../imports/js/stepik-api", "../../imports/jquery/js/jquery", "../../
 
                         skip[_user2.user_id] = _user2.row;
 
-                        _stepikApi.stepik.addMembers(learners_group, _user2.user_id).done(function (user) {
+                        _stepikApi2.default.addMembers(learners_group, _user2.user_id).done(function (user) {
                             return function () {
                                 user.row.status = "added";
                                 user.row.status_description = "Done";
