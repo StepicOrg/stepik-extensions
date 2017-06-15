@@ -199,7 +199,7 @@
         },
 
         getCourse: function (course_id) {
-            return this.getJson("api/courses/" + course_id);
+            return (this.getJson("api/courses/" + course_id)['courses'] || [])[0];
         },
 
         authorize: function (state, code) {
