@@ -1,13 +1,17 @@
+import "domReady!";
 import $ from "jquery";
 import stepik from "stepik-api";
 import "bootstrap-select";
+import "bootstrap";
+import "flot";
+import "flot_time";
 
 export let init = (function () {
     let ratings = {};
 
     let courses_list = $("#course");
     courses_list.empty();
-    $('.selectpicker').selectpicker('refresh')
+    $('.selectpicker').selectpicker('refresh');
 
     stepik.getCourses({"enrolled": true})
         .done(function (courses) {

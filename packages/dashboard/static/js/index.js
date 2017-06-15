@@ -1,4 +1,4 @@
-define(["exports", "jquery", "stepik-api", "bootstrap-select"], function (exports, _jquery, _stepikApi) {
+define(["exports", "jquery", "stepik-api", "domReady!", "bootstrap-select", "bootstrap", "flot", "flot_time"], function (exports, _jquery, _stepikApi) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {

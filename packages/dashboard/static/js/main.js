@@ -21,11 +21,4 @@ requirejs.config({
     }
 });
 
-define(['domReady!',
-    'index',
-    'bootstrap',
-    'bootstrap-select',
-    'flot',
-    'flot_time'], function () {
-    console.log("Loaded index")
-});
+define(['index']);
