@@ -1,0 +1,9 @@
+.buttons {
+    display: flex;
+    padding: 5px 0;
+}
+
+.buttons .btn {
+    margin-right: 5px;
+    padding: 15px;
+}

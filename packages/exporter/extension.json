@@ -1,0 +1,9 @@
+{
+  "id": "org.stepik.extensions.exporter",
+  "name": "Exporter",
+  "description": "Export a course or a lesson from Stepik",
+  "logo": "static/img/logo.png",
+  "allow_anonymous_user": false,
+  "version": "1.0",
+  "package_version": "1.0"
+}
