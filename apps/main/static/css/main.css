@@ -47,8 +47,8 @@ body {
     display: flex;
     flex: none;
     align-items: center;
-    height: 48px;
-    width: 48px;
+    height: 32px;
+    width: 32px;
 }
 
 .stepik-name {
@@ -113,6 +113,7 @@ body {
     padding: 15px;
     box-sizing: border-box;
     background-color: black;
+    text-align: center;
 }
 
 .footer a {

@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('apps.stepik_auth.urls')),
     url(r'^develop/', include('apps.develop.urls')),
+    url(r'^extensions/', include('apps.extensions.urls')),
     url(r'^faq/', include('apps.faq.urls')),
     url(r'^news/', include('apps.news.urls')),
     url(r'^participants/', include('apps.participants.urls')),

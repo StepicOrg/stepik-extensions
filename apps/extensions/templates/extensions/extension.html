@@ -12,7 +12,7 @@
 
         {% for category in categories %}
         <li><a class="category {% if category == active_category %}category-active{% endif %}"
-               href="/category/{{ category.pk }}/"> {{ category }} </a></li>
+               href="/extensions/category/{{ category.pk }}/"> {{ category }} </a></li>
         {% endfor %}
     </ul>
 </div>

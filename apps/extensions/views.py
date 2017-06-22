@@ -14,7 +14,7 @@ from apps.extensions.utils import get_upload_path, EXTENSION_JSON
 
 
 def get_extension(request, extension_id, run=False):
-    # Remove this block on June 1, 2017
+    # Remove this block on August 1, 2017
     if extension_id in ['about', 'develop', 'faq', 'news', 'participants']:
         return redirect('/' + extension_id, permanent=True)
 
