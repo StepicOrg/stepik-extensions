@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Host: ext.stepik.org
-sitemap: https://ext.stepik.org/sitemap.xml
-Clean-param: code&state /

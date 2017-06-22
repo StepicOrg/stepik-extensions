@@ -1,9 +1,0 @@
-{
-  "examples": {
-    "/api/attempts/{pk}": {
-      "jquery": {
-        "filename": "examples/api/attempts/pk/jquery.html"
-      }
-    }
-  }
-}
