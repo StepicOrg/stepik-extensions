@@ -9,7 +9,7 @@
     <p>Successfully!</p>
     {% for extension in extensions %}
     <p class="extensions-upload-line">
-        <img src="{{ extension.logo.url }}" width="100px"><a href="extensions/{{ extension.id }}/run">{{ extension.name}}</a>
+        <img src="{{ extension.logo.url }}" width="100px"><a href="/extensions/{{ extension.id }}/run">{{ extension.name}}</a>
     </p>
     <hr>
     {% endfor %}
