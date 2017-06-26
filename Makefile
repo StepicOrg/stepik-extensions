@@ -32,15 +32,9 @@ frontend:
 	@$(shell) npm install --save-dev babel-preset-es2015@6.24.1
 	@$(shell) npm install requirejs-babel-plugin@0.4.0
 	@$(shell) sudo npm install -g bower
-	@$(shell) bower install bootstrap#3.3.7
-	@$(shell) bower install bootstrap-select#1.12.2
-	@$(shell) bower install bootstrap-fileinput#4.3.9
-	@$(shell) bower install requirejs#2.3.3
-	@$(shell) bower install flot#0.8.3
-	@$(shell) bower install domReady#2.0.1
+	@$(shell) bower install
 
 prepare_run: translate-apps-js
-	@$(shell) bash scripts/prepare_imports.sh
 
 run_debug: backend frontend prepare_run
 	@$(PYTHON) manage.py runserver
