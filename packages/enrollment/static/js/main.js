@@ -1,12 +1,12 @@
 "use strict";
 requirejs.config({
     paths: {
-        'domReady': '../../imports/js/domReady',
-        jquery: '../../imports/jquery/js/jquery.min',
+        'domReady': '../../imports/domReady/domReady',
+        jquery: '../../imports/jquery/dist/jquery.min',
         'stepik-api': '../../imports/js/stepik-api',
         'jquery.cookie': '../../imports/jquery/js/jquery.cookie',
-        bootstrap: '../../imports/bootstrap/js/bootstrap.min',
-        'bootstrap-select': '../../imports/bootstrap-select/js/bootstrap-select.min',
+        bootstrap: '../../imports/bootstrap/dist/js/bootstrap.min',
+        'bootstrap-select': '../../imports/bootstrap-select/dist/js/bootstrap-select.min',
     },
     shim: {
         'bootstrap': ['jquery'],

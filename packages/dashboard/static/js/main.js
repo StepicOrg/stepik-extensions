@@ -1,14 +1,14 @@
 "use strict";
 requirejs.config({
     paths: {
-        'domReady': '../../imports/js/domReady',
-        jquery: '../../imports/jquery/js/jquery.min',
+        'domReady': '../../imports/domReady/domReady',
+        jquery: '../../imports/jquery/dist/jquery.min',
         'stepik-api': '../../imports/js/stepik-api',
         'jquery.cookie': '../../imports/jquery/js/jquery.cookie',
-        bootstrap: '../../imports/bootstrap/js/bootstrap.min',
-        'bootstrap-select': '../../imports/bootstrap-select/js/bootstrap-select.min',
-        flot: '../../imports/flot/js/jquery.flot',
-        flot_time: '../../imports/flot/js/jquery.flot.time',
+        bootstrap: '../../imports/bootstrap/dist/js/bootstrap.min',
+        'bootstrap-select': '../../imports/bootstrap-select/dist/js/bootstrap-select.min',
+        flot: '../../imports/Flot/jquery.flot',
+        'flot.time': '../../imports/Flot/jquery.flot.time',
     },
     shim: {
         'bootstrap': ['jquery'],
@@ -17,7 +17,7 @@ requirejs.config({
             exports: '$.fn.selectpicker'
         },
         'flot': ['jquery'],
-        'flot_time': ['jquery', 'flot']
+        'flot.time': ['jquery', 'flot']
     }
 });
 

@@ -4,7 +4,7 @@ import stepik from "stepik-api";
 import "bootstrap-select";
 import "bootstrap";
 import "flot";
-import "flot_time";
+import "flot.time";
 
 export let init = (function () {
     let ratings = {};

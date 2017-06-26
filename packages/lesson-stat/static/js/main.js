@@ -1,15 +1,15 @@
 "use strict";
 requirejs.config({
     paths: {
-        'domReady': '../../imports/js/domReady',
-        jquery: '../../imports/jquery/js/jquery.min',
+        'domReady': '../../imports/domReady/domReady',
+        jquery: '../../imports/jquery/dist/jquery.min',
         'stepik-api': '../../imports/js/stepik-api',
         'jquery.cookie': '../../imports/jquery/js/jquery.cookie',
-        bootstrap: '../../imports/bootstrap/js/bootstrap.min',
-        'bootstrap-select': '../../imports/bootstrap-select/js/bootstrap-select.min',
-        flot: '../../imports/flot/js/jquery.flot',
-        'flot.time': '../../imports/flot/js/jquery.flot.time',
-        'flot.errorbars': '../../imports/flot/js/jquery.flot.errorbars'
+        bootstrap: '../../imports/bootstrap/dist/js/bootstrap.min',
+        'bootstrap-select': '../../imports/bootstrap-select/dist/js/bootstrap-select.min',
+        flot: '../../imports/Flot/jquery.flot',
+        'flot.time': '../../imports/Flot/jquery.flot.time',
+        'flot.errorbars': '../../imports/Flot/jquery.flot.errorbars'
     },
     shim: {
         'bootstrap': ['jquery'],

@@ -1,9 +1,9 @@
 "use strict";
 requirejs.config({
     paths: {
-        'domReady': '../../imports/js/domReady',
-        jquery: '../../imports/jquery/js/jquery.min',
-        bootstrap: '../../imports/bootstrap/js/bootstrap.min'
+        'domReady': '../../imports/domReady/domReady',
+        jquery: '../../imports/jquery/dist/jquery.min',
+        bootstrap: '../../imports/bootstrap/dist/js/bootstrap.min'
     },
     shim: {
         'bootstrap': ['jquery']
