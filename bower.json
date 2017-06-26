@@ -1,0 +1,28 @@
+{
+  "name": "stepik-extensions",
+  "homepage": "https://github.com/StepicOrg/stepik-extensions",
+  "authors": [
+    "meanmail <meanmail@mail.ru>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "apps/main/static/imports/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-select": "1.12.2",
+    "bootstrap": "3.3.7",
+    "bootstrap-fileinput": "4.3.9",
+    "Flot": "flot#0.8.3",
+    "domReady": "2.0.1",
+    "js-epub-maker": "1.2.0",
+    "pdfmake": "0.1.31",
+    "requirejs": "2.3.3"
+  }
+}
