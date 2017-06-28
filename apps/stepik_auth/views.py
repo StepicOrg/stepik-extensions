@@ -41,7 +41,6 @@ def login(request):
 
             params = {'client_id': settings.STEPIK_AUTH_CLIENT_ID,
                       'redirect_uri': redirect_uri,
-                      'scope': 'write',
                       'response_type': 'code',
                       }
             host = cleaned_data['host']
