@@ -47,3 +47,11 @@ zip-packages:
 
 translate-apps-js:
 	@$(shell) bash scripts/translate-apps-js.sh
+
+start:
+	@$(shell) sudo gunicorn -D -c extensions/gunicorn.conf.py extensions.wsgi:application
+
+stop:
+	@$(shell) sudo killall gunicorn
+
+restart: stop start
