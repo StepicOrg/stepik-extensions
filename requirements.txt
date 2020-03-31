@@ -1,5 +1,5 @@
 django==1.10.6
-Pillow==4.1.0
+Pillow==6.2.0
 voluptuous==0.10.5
 requests==2.20.1
 gunicorn==19.9.0
