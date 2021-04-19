@@ -1,3 +1,7 @@
+# This repository is no longer actively maintained
+
+-----
+
 # Stepik Extensions
 
 ## Для разработчиков расширений
